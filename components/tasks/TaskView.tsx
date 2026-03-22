@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ProjectCard } from "./ProjectCard";
+import { FlightTrackerRow } from "./FlightTrackerRow";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -66,7 +66,7 @@ export function TaskView({ sidebarOpen, onToggleSidebar }: TaskViewProps) {
   );
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col bg-background">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border/50 px-6 py-3">
         <div className="flex items-center gap-3">
@@ -91,26 +91,25 @@ export function TaskView({ sidebarOpen, onToggleSidebar }: TaskViewProps) {
             </Button>
           )}
           <div>
-            <h1 className="text-sm font-semibold tracking-tight">
+            <h1 className="text-sm font-semibold tracking-tight text-foreground">
               Mission Control
             </h1>
-            <p className="text-[11px] text-muted-foreground">
-              {filtered.length} projects · {doneTasks}/{totalTasks}{" "}
-              tasks done
+            <p className="text-[11px] font-mono text-muted-foreground uppercase opacity-80">
+              {filtered.length} SYS · {doneTasks}/{totalTasks} OPT
             </p>
           </div>
         </div>
 
         {/* Filter */}
-        <div className="flex gap-1 rounded-lg bg-muted/30 p-0.5">
+        <div className="flex gap-1 rounded-md border border-border bg-card p-0.5">
           {(["active", "archived", "all"] as const).map((f) => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`rounded-md px-3 py-1 text-[11px] font-medium capitalize transition-colors ${
+              className={`rounded px-3 py-1 text-[10px] font-mono uppercase tracking-widest transition-colors ${
                 filter === f
-                  ? "bg-background text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:bg-muted"
               }`}
             >
               {f}
@@ -119,32 +118,51 @@ export function TaskView({ sidebarOpen, onToggleSidebar }: TaskViewProps) {
         </div>
       </div>
 
-      {/* Projects Grid */}
-      <ScrollArea className="flex-1">
-        <div className="p-6">
-          {loading ? (
-            <div className="flex items-center justify-center py-20 text-sm text-muted-foreground">
-              Loading projects...
+      {/* Flight Tracker Area */}
+      {loading ? (
+        <div className="flex flex-1 items-center justify-center text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
+          Loading telemetry...
+        </div>
+      ) : filtered.length === 0 ? (
+        <div className="flex flex-1 flex-col items-center justify-center gap-3">
+          <div className="text-4xl">📭</div>
+          <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
+            No active systems
+          </p>
+        </div>
+      ) : (
+        <div className="flex-1 overflow-auto">
+          <div className="min-w-[1240px] px-6 py-6">
+            
+            {/* Kanban Header */}
+            <div className="grid grid-cols-[280px_minmax(240px,1fr)_minmax(240px,1fr)_minmax(240px,1fr)_minmax(240px,1fr)] gap-4 border-b border-border/50 pb-3 mb-6 pr-6">
+              <div className="sticky left-0 z-10 bg-background text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase pl-6">
+                System
+              </div>
+              <div className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase">
+                Todo
+              </div>
+              <div className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase">
+                In Progress
+              </div>
+              <div className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase">
+                Waiting
+              </div>
+              <div className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase">
+                Done
+              </div>
             </div>
-          ) : filtered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-3 py-20">
-              <div className="text-4xl">📭</div>
-              <p className="text-sm text-muted-foreground">
-                No projects yet. Start chatting to create some!
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+
+            {/* Kanban Rows */}
+            <div className="flex flex-col gap-6">
               {filtered.map((project) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                />
+                <FlightTrackerRow key={project.id} project={project} />
               ))}
             </div>
-          )}
+
+          </div>
         </div>
-      </ScrollArea>
+      )}
     </div>
   );
 }
