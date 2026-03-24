@@ -111,7 +111,7 @@ export function TaskView({ sidebarOpen, onToggleSidebar }: TaskViewProps) {
             Mission Control
           </h1>
         </div>
-        <div className="font-mono text-[11px] text-muted-foreground">
+        <div className=" text-xs text-muted-foreground">
           {now.length} active
           <span className="mx-1.5 text-border">·</span>
           {next.length} queued
