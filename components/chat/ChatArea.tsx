@@ -183,11 +183,12 @@ function ChatInner({
                 )*/}
                 <div
                   className={cn(
-                    "max-w-[85%] rounded-xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
+                    "max-w-[85%] rounded-3xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
                     message.role === "user"
                       ? "bg-primary text-primary-foreground"
                       : "bg-muted/50 text-foreground"
                   )}
+                  style={{ cornerShape: "superellipse(1.3)" }}
                 >
                   {message.parts.map((part, i) => {
                     if (part.type === "text") {

@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ArrowUp02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useRef, useEffect, type ChangeEvent, type FormEvent } from "react";
 
 interface ChatInputProps {
@@ -66,26 +68,18 @@ export function ChatInput({
           placeholder="Tell me what you're working on..."
           disabled={isStreaming}
           rows={1}
-          className="min-h-[44px] max-h-[160px] resize-none rounded-xl border-border/50 bg-muted/30 px-4 py-3 text-sm placeholder:text-muted-foreground/50 focus-visible:ring-1 focus-visible:ring-primary/30"
+          style={{ cornerShape: "superellipse(1.3)" }}
+          className="min-h-[44px] max-h-[160px] focus-visible:outline-0 focus-visible:border-border/50 resize-none rounded-3xl border-border/50 bg-muted/30 px-4 py-3 text-sm placeholder:text-muted-foreground/50 focus-visible:ring-1 focus-visible:ring-primary/30"
         />
         <Button
           type="submit"
-          size="icon"
+          size="icon-lg"
+
           disabled={!input.trim() || isStreaming}
-          className="h-[44px] w-[44px] shrink-0 rounded-xl"
+          style={{ cornerShape: "superellipse(1.3)" }}
+          className="h-[44px] w-[44px] shrink-0 rounded-3xl"
         >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M3 8h10M9 4l4 4-4 4" />
-          </svg>
+          <HugeiconsIcon className="scale-150" size={64} icon={ArrowUp02Icon} />
         </Button>
       </form>
 
