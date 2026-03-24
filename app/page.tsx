@@ -18,6 +18,13 @@ export default function Page() {
   const [view, setView] = useState<"chat" | "tasks">("chat");
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
+  // Auto-open the latest chat when switching to chat view with nothing selected
+  useEffect(() => {
+    if (view === "chat" && !activeChat && chats.length > 0) {
+      setActiveChat(chats[0].id);
+    }
+  }, [view, activeChat, chats]);
+
   const fetchChats = useCallback(async () => {
     const res = await fetch("/api/chats");
     const data = await res.json();

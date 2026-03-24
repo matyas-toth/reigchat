@@ -140,7 +140,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                       className={cn(
                         "flex-1 truncate",
                         item.status === "DONE" &&
-                          "text-muted-foreground line-through"
+                        "text-muted-foreground line-through"
                       )}
                     >
                       {item.title}

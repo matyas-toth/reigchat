@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FlightTrackerRow } from "./FlightTrackerRow";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import ChatSpinner from "../chat/ChatSpinner";
+
+/* ── Types ─────────────────────────────────────────────── */
 
 interface Item {
   id: string;
@@ -13,6 +15,8 @@ interface Item {
   status: "TODO" | "IN_PROGRESS" | "WAITING" | "DONE";
   dueDate: string | null;
   createdAt: string;
+  updatedAt: string;
+  projectId: string;
 }
 
 interface Project {
@@ -31,44 +35,65 @@ interface TaskViewProps {
   onToggleSidebar: () => void;
 }
 
+/* ── Main View ─────────────────────────────────────────── */
+
 export function TaskView({ sidebarOpen, onToggleSidebar }: TaskViewProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"active" | "archived" | "all">(
-    "active"
-  );
 
   useEffect(() => {
     fetch("/api/projects")
-      .then((res) => res.json())
-      .then((data) => setProjects(data))
+      .then((r) => r.json())
+      .then((d) => setProjects(d))
       .finally(() => setLoading(false));
   }, []);
 
-  const filtered = projects.filter((p) => {
-    if (filter === "active") return p.isActive;
-    if (filter === "archived") return !p.isActive;
-    return true;
-  });
+  // Flatten all items with project context attached
+  const allItems = projects.flatMap((p) =>
+    p.items.map((item) => ({
+      ...item,
+      projectName: p.name,
+      projectEmoji: p.emoji,
+      projectColor: p.color || "#fafafa",
+    }))
+  );
 
-  const totalTasks = filtered.reduce(
-    (acc, p) =>
-      acc + p.items.filter((i) => i.type === "TASK").length,
-    0
+  const now = allItems.filter(
+    (i) => i.type === "TASK" && i.status === "IN_PROGRESS"
   );
-  const doneTasks = filtered.reduce(
-    (acc, p) =>
-      acc +
-      p.items.filter(
-        (i) => i.type === "TASK" && i.status === "DONE"
-      ).length,
-    0
+  const next = allItems.filter(
+    (i) => i.type === "TASK" && i.status === "TODO"
   );
+  const onHold = allItems.filter(
+    (i) => i.type === "TASK" && i.status === "WAITING"
+  );
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const done = allItems
+    .filter(
+      (i) =>
+        i.type === "TASK" &&
+        i.status === "DONE" &&
+        new Date(i.updatedAt) >= sevenDaysAgo
+    );
+  const knowledge = allItems.filter(
+    (i) => i.type === "NOTE" || i.type === "IDEA"
+  );
+
+  const totalTasks = allItems.filter((i) => i.type === "TASK").length;
+
+  if (loading) {
+    return (
+      <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+        <ChatSpinner name="pulse"></ChatSpinner>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex h-full flex-col bg-background">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border/50 px-6 py-3">
+    <div className="flex h-full flex-col">
+      {/* ── Status Bar ───────────────────────────────── */}
+      <header className="flex items-center justify-between border-b border-border px-6 py-3">
         <div className="flex items-center gap-3">
           {!sidebarOpen && (
             <Button
@@ -77,92 +102,350 @@ export function TaskView({ sidebarOpen, onToggleSidebar }: TaskViewProps) {
               className="h-7 w-7 text-muted-foreground"
               onClick={onToggleSidebar}
             >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
                 <path d="M2 4h12M2 8h12M2 12h12" />
               </svg>
             </Button>
           )}
-          <div>
-            <h1 className="text-sm font-semibold tracking-tight text-foreground">
-              Mission Control
-            </h1>
-            <p className="text-[11px] font-mono text-muted-foreground uppercase opacity-80">
-              {filtered.length} SYS · {doneTasks}/{totalTasks} OPT
+          <h1 className="text-base font-medium text-muted-foreground tracking-tight">
+            Mission Control
+          </h1>
+        </div>
+        <div className="font-mono text-[11px] text-muted-foreground">
+          {now.length} active
+          <span className="mx-1.5 text-border">·</span>
+          {next.length} queued
+          <span className="mx-1.5 text-border">·</span>
+          {onHold.length} waiting
+          <span className="mx-1.5 text-border">·</span>
+          {done.length}/{totalTasks} done
+        </div>
+      </header>
+
+      {/* ── Scrollable Briefing ──────────────────────── */}
+      <div className="flex-1 overflow-y-auto">
+        {totalTasks === 0 && knowledge.length === 0 ? (
+          <div className="flex h-full flex-col items-center justify-center gap-3">
+            <span className="text-3xl">📡</span>
+            <p className="text-sm text-muted-foreground">
+              No signals yet. Start chatting to create projects and tasks.
             </p>
           </div>
-        </div>
+        ) : (
+          <div className="mx-auto max-w-2xl px-6 py-8">
 
-        {/* Filter */}
-        <div className="flex gap-1 rounded-md border border-border bg-card p-0.5">
-          {(["active", "archived", "all"] as const).map((f) => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`rounded px-3 py-1 text-[10px] font-mono uppercase tracking-widest transition-colors ${
-                filter === f
-                  ? "bg-foreground text-background"
-                  : "text-muted-foreground hover:bg-muted"
-              }`}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
-      </div>
+            {/* ── NOW ─────────────────────────────────── */}
+            {now.length > 0 && (
+              <section className="mb-10">
+                <SectionHeader label="Now" count={now.length} />
+                <div className="mt-4 flex flex-col gap-3">
+                  {now.map((item) => (
+                    <NowCard key={item.id} item={item} />
+                  ))}
+                </div>
+              </section>
+            )}
 
-      {/* Flight Tracker Area */}
-      {loading ? (
-        <div className="flex flex-1 items-center justify-center text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-          Loading telemetry...
-        </div>
-      ) : filtered.length === 0 ? (
-        <div className="flex flex-1 flex-col items-center justify-center gap-3">
-          <div className="text-4xl">📭</div>
-          <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-            No active systems
-          </p>
-        </div>
-      ) : (
-        <div className="flex-1 overflow-auto">
-          <div className="min-w-[1240px] px-6 py-6">
-            
-            {/* Kanban Header */}
-            <div className="grid grid-cols-[280px_minmax(240px,1fr)_minmax(240px,1fr)_minmax(240px,1fr)_minmax(240px,1fr)] gap-4 border-b border-border/50 pb-3 mb-6 pr-6">
-              <div className="sticky left-0 z-10 bg-background text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase pl-6">
-                System
-              </div>
-              <div className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase">
-                Todo
-              </div>
-              <div className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase">
-                In Progress
-              </div>
-              <div className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase">
-                Waiting
-              </div>
-              <div className="text-[10px] font-mono font-bold tracking-[0.2em] text-muted-foreground uppercase">
-                Done
-              </div>
-            </div>
+            {/* ── NEXT ────────────────────────────────── */}
+            {next.length > 0 && (
+              <section className="mb-10">
+                <SectionHeader label="Next" count={next.length} />
+                <div className="mt-3 flex flex-col">
+                  {next.map((item) => (
+                    <CompactRow key={item.id} item={item} />
+                  ))}
+                </div>
+              </section>
+            )}
 
-            {/* Kanban Rows */}
-            <div className="flex flex-col gap-6">
-              {filtered.map((project) => (
-                <FlightTrackerRow key={project.id} project={project} />
-              ))}
-            </div>
+            {/* ── ON HOLD ─────────────────────────────── */}
+            {onHold.length > 0 && (
+              <section className="mb-10 opacity-50">
+                <SectionHeader label="On Hold" count={onHold.length} />
+                <div className="mt-3 flex flex-col">
+                  {onHold.map((item) => (
+                    <CompactRow key={item.id} item={item} dimmed />
+                  ))}
+                </div>
+              </section>
+            )}
 
+            {/* ── DONE (recent) ───────────────────────── */}
+            {done.length > 0 && (
+              <section className="mb-10">
+                <SectionHeader label="Done" count={done.length} accent={false} />
+                <div className="mt-3 flex flex-col">
+                  {done.map((item) => (
+                    <CompactRow key={item.id} item={item} strikethrough />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* ── Knowledge Bank ──────────────────────── */}
+            {knowledge.length > 0 && (
+              <KnowledgeBank items={knowledge} />
+            )}
           </div>
-        </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── Section Header ────────────────────────────────────── */
+
+function SectionHeader({
+  label,
+  count,
+  accent = true,
+}: {
+  label: string;
+  count: number;
+  accent?: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <h2
+        className={cn(
+          "text-xs font-mono font-medium uppercase tracking-[0.2em]",
+          accent ? "text-foreground" : "text-muted-foreground"
+        )}
+      >
+        {label}
+      </h2>
+      <span className="text-[10px] font-mono text-muted-foreground">
+        {count}
+      </span>
+      <div className="h-px flex-1 bg-border" />
+    </div>
+  );
+}
+
+/* ── NOW Card — large, prominent, alive ───────────────── */
+
+type EnrichedItem = Item & {
+  projectName: string;
+  projectEmoji: string | null;
+  projectColor: string;
+};
+
+function NowCard({ item }: { item: EnrichedItem }) {
+  return (
+    <div className="group relative rounded-lg border border-border bg-card p-5">
+      {/* Accent left bar */}
+
+
+      {/* Pulse indicator */}
+      <span className="absolute right-4 top-4 flex h-2 w-2">
+        <span
+          className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
+          style={{ backgroundColor: item.projectColor }}
+        />
+        <span
+          className="relative inline-flex h-2 w-2 rounded-full"
+          style={{ backgroundColor: item.projectColor }}
+        />
+      </span>
+
+      <p className="pr-8 text-[15px] font-medium leading-snug text-card-foreground">
+        {item.title}
+      </p>
+
+      {item.content && (
+        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+          {item.content}
+        </p>
+      )}
+
+      <div className="mt-3 flex items-center gap-3">
+        <ProjectChip
+          name={item.projectName}
+          emoji={item.projectEmoji}
+          color={item.projectColor}
+        />
+        {item.dueDate && (
+          <span className="text-[10px] font-mono text-muted-foreground">
+            due {new Date(item.dueDate).toLocaleDateString()}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── Compact Row — for NEXT, ON HOLD, DONE ────────────── */
+
+function CompactRow({
+  item,
+  dimmed = false,
+  strikethrough = false,
+}: {
+  item: EnrichedItem;
+  dimmed?: boolean;
+  strikethrough?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-3 border-b border-border/50 py-2.5",
+        dimmed && "opacity-60"
+      )}
+    >
+      {/* Color dot */}
+      <span
+        className="h-1.5 w-1.5 shrink-0 rounded-full"
+        style={{ backgroundColor: item.projectColor }}
+      />
+
+      <span
+        className={cn(
+          "flex-1 truncate text-sm",
+          strikethrough
+            ? "text-muted-foreground line-through"
+            : "text-foreground"
+        )}
+      >
+        {item.title}
+      </span>
+
+      <ProjectChip
+        name={item.projectName}
+        emoji={item.projectEmoji}
+        color={item.projectColor}
+        small
+      />
+
+      {item.dueDate && (
+        <span className="shrink-0 text-[10px] font-mono text-muted-foreground">
+          {new Date(item.dueDate).toLocaleDateString()}
+        </span>
       )}
     </div>
+  );
+}
+
+/* ── Project Chip — small colored context tag ─────────── */
+
+function ProjectChip({
+  name,
+  emoji,
+  color,
+  small = false,
+}: {
+  name: string;
+  emoji: string | null;
+  color: string;
+  small?: boolean;
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex shrink-0 items-center gap-1 rounded-full",
+        small ? "px-2 py-0.5 text-[10px]" : "px-3 py-1 text-[11px]"
+      )}
+      style={{ backgroundColor: color, boxShadow: "0 2px 10px 0px " + color + "30" }}
+    >
+
+      <span className="text-white text-sm font-medium tracking-tight">
+        {emoji && <span className="mr-1">{emoji}</span>}
+        {name}
+      </span>
+    </span>
+  );
+}
+
+/* ── Knowledge Bank — collapsible notes & ideas ──────── */
+
+function KnowledgeBank({ items }: { items: EnrichedItem[] }) {
+  const [open, setOpen] = useState(false);
+
+  const notes = items.filter((i) => i.type === "NOTE");
+  const ideas = items.filter((i) => i.type === "IDEA");
+
+  return (
+    <section className="border-t border-border pt-6">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center gap-3 text-left"
+      >
+        <h2 className="text-xs font-mono font-medium uppercase tracking-[0.2em] text-muted-foreground">
+          Knowledge Bank
+        </h2>
+        <span className="text-[10px] font-mono text-muted-foreground">
+          {items.length}
+        </span>
+        <div className="h-px flex-1 bg-border" />
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          className={cn(
+            "text-muted-foreground transition-transform",
+            open && "rotate-180"
+          )}
+        >
+          <path d="M4 6l4 4 4-4" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="mt-4 flex flex-col gap-4">
+          {notes.length > 0 && (
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground">
+                Notes
+              </span>
+              <div className="mt-2 flex flex-col gap-1">
+                {notes.map((n) => (
+                  <div
+                    key={n.id}
+                    className="flex items-center gap-2 py-1.5 text-sm text-muted-foreground"
+                  >
+                    <span className="text-foreground/60">—</span>
+                    <span className="flex-1 truncate">{n.title}</span>
+                    <ProjectChip
+                      name={n.projectName}
+                      emoji={n.projectEmoji}
+                      color={n.projectColor}
+                      small
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {ideas.length > 0 && (
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground">
+                Ideas
+              </span>
+              <div className="mt-2 flex flex-col gap-1">
+                {ideas.map((n) => (
+                  <div
+                    key={n.id}
+                    className="flex items-center gap-2 py-1.5 text-sm text-muted-foreground"
+                  >
+                    <span className="text-foreground/60">—</span>
+                    <span className="flex-1 truncate">{n.title}</span>
+                    <ProjectChip
+                      name={n.projectName}
+                      emoji={n.projectEmoji}
+                      color={n.projectColor}
+                      small
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </section>
   );
 }

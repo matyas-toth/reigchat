@@ -7,6 +7,9 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import { ChatInput } from "./ChatInput";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import ChatSpinner from "./ChatSpinner";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { AiBrain05Icon, Brain03Icon, BrainIcon } from "@hugeicons/core-free-icons";
 
 interface ChatAreaProps {
   chatId: string | null;
@@ -59,18 +62,16 @@ export function ChatArea({
   // Empty state — no chat selected
   if (!chatId) {
     return (
-      <EmptyState
-        sidebarOpen={sidebarOpen}
-        onToggleSidebar={onToggleSidebar}
-        onNewChat={onNewChat}
-      />
+      <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+        <ChatSpinner name="pulse"></ChatSpinner>
+      </div>
     );
   }
 
   if (!loaded) {
     return (
       <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-        Loading...
+        <ChatSpinner name="pulse"></ChatSpinner>
       </div>
     );
   }
@@ -129,6 +130,7 @@ function ChatInner({
   }, [messages]);
 
   const isStreaming = status === "streaming";
+  const isThinking = status === "submitted" || status === "streaming";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -141,7 +143,7 @@ function ChatInner({
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center gap-2 border-b border-border/50 px-4 py-2.5">
+      <div className="flex items-center gap-2 border-b border-border/50 px-6 py-3">
         {!sidebarOpen && (
           <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground" onClick={onToggleSidebar}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -150,27 +152,22 @@ function ChatInner({
           </Button>
         )}
         <div className="flex items-center gap-2 min-w-0">
-          {isStreaming && (
-            <span className="relative flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-            </span>
-          )}
-          <span className="truncate text-sm font-medium text-muted-foreground">
-            {isStreaming ? "Thinking..." : "Chat"}
+
+          <span className="truncate text-base font-medium tracking-tight text-muted-foreground">
+            {isThinking ? "Thinking..." : "Chat"}
           </span>
         </div>
       </div>
 
       {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto">
-        {messages.length === 0 ? (
+        {messages.length === 0 && !isThinking ? (
           <div className="flex h-full flex-col items-center justify-center gap-3 px-4">
             <div className="text-3xl">💭</div>
             <p className="text-sm text-muted-foreground">Send a message to get started</p>
           </div>
         ) : (
-          <div className="mx-auto max-w-2xl px-4 py-6">
+          <div className="mx-auto max-w-2xl px-0 py-6">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -179,11 +176,11 @@ function ChatInner({
                   message.role === "user" ? "justify-end" : "justify-start"
                 )}
               >
-                {message.role === "assistant" && (
-                  <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-xs">
-                    🧠
+                {/*message.role === "assistant" && (
+                  <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center">
+                    <HugeiconsIcon size={32} icon={AiBrain05Icon} />
                   </div>
-                )}
+                )*/}
                 <div
                   className={cn(
                     "max-w-[85%] rounded-xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
@@ -199,24 +196,20 @@ function ChatInner({
                     return null;
                   })}
                 </div>
-                {message.role === "user" && (
+                {/*message.role === "user" && (
                   <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-foreground/10 text-xs">
                     👤
                   </div>
-                )}
+                )*/}
               </div>
             ))}
-            {isStreaming && messages[messages.length - 1]?.role !== "assistant" && (
-              <div className="mb-4 flex gap-3">
-                <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-primary/10 text-xs">
-                  🧠
-                </div>
-                <div className="rounded-xl bg-muted/50 px-4 py-2.5">
-                  <span className="inline-flex gap-1">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/40" />
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/40 [animation-delay:150ms]" />
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/40 [animation-delay:300ms]" />
-                  </span>
+
+            {/* Thinking indicator — visible the entire time the AI is working */}
+            {isThinking && (
+              <div className="mb-4 flex items-center gap-3">
+
+                <div className="flex items-center gap-2">
+                  <ChatSpinner name="pulse">Thinking</ChatSpinner>
                 </div>
               </div>
             )}
@@ -225,7 +218,7 @@ function ChatInner({
       </div>
 
       {/* Input */}
-      <ChatInput input={input} setInput={setInput} onSubmit={handleSubmit} isStreaming={isStreaming} />
+      <ChatInput input={input} setInput={setInput} onSubmit={handleSubmit} isStreaming={isThinking} />
     </div>
   );
 }

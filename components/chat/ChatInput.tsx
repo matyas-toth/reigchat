@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useRef, type ChangeEvent, type FormEvent } from "react";
+import { useRef, useEffect, type ChangeEvent, type FormEvent } from "react";
 
 interface ChatInputProps {
   input: string;
@@ -18,6 +18,27 @@ export function ChatInput({
   isStreaming,
 }: ChatInputProps) {
   const formRef = useRef<HTMLFormElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Autofocus on mount
+  useEffect(() => {
+    textareaRef.current?.focus();
+  }, []);
+
+  // Global key capture — focus textarea when user starts typing anywhere
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      // Ignore if already focused on an input, or modifier keys, or special keys
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key.length !== 1) return; // ignore Escape, Tab, arrows, etc.
+
+      textareaRef.current?.focus();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -29,13 +50,14 @@ export function ChatInput({
   };
 
   return (
-    <div className="border-t border-border/50 px-4 py-3">
+    <div className="px-0 py-3 mb-4">
       <form
         ref={formRef}
         onSubmit={onSubmit}
         className="mx-auto flex max-w-2xl items-end gap-2"
       >
         <Textarea
+          ref={textareaRef}
           value={input}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
             setInput(e.target.value)
@@ -66,10 +88,7 @@ export function ChatInput({
           </svg>
         </Button>
       </form>
-      <p className="mx-auto mt-2 max-w-2xl text-center text-[11px] text-muted-foreground/40">
-        Messages are parsed by AI to automatically manage your projects
-        &amp; tasks
-      </p>
+
     </div>
   );
 }

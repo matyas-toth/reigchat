@@ -8,6 +8,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import ChatSpinner from "./ChatSpinner";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { AiBrain02Icon, AiBrain04Icon, BrainIcon } from "@hugeicons/core-free-icons";
 
 interface Chat {
   id: string;
@@ -46,12 +49,12 @@ export function ChatSidebar({
       )}
     >
       {/* Logo + New Chat */}
-      <div className="flex items-center justify-between border-b border-border/50 px-4 py-3">
-        <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/10 text-sm">
-            🧠
+      <div className="flex items-center justify-between  px-4 py-3">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 text-sm">
+            <HugeiconsIcon className="text-zinc-700" size={28} strokeWidth={1.65} icon={BrainIcon} />
           </div>
-          <span className="text-sm font-semibold tracking-tight text-foreground">
+          <span className="text-base font-medium tracking-tight text-foreground">
             Second Brain
           </span>
         </div>
@@ -81,28 +84,28 @@ export function ChatSidebar({
       </div>
 
       {/* View Toggle */}
-      <div className="flex gap-1 border-b border-border/50 px-3 py-2">
+      <div className="flex gap-1  px-4 py-2">
         <button
           onClick={() => onViewChange("chat")}
           className={cn(
-            "flex-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
+            "flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
             view === "chat"
               ? "bg-primary/10 text-primary"
               : "text-muted-foreground hover:text-foreground"
           )}
         >
-          💬 Chats
+          Chat
         </button>
         <button
           onClick={() => onViewChange("tasks")}
           className={cn(
-            "flex-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
+            "flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
             view === "tasks"
               ? "bg-primary/10 text-primary"
               : "text-muted-foreground hover:text-foreground"
           )}
         >
-          📋 Tasks
+          Tasks
         </button>
       </div>
 
