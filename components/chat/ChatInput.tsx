@@ -52,7 +52,7 @@ export function ChatInput({
   };
 
   return (
-    <div className="px-0 py-3 mb-4">
+    <div className="px-3 md:px-0 py-3 mb-2 md:mb-4 pb-[env(safe-area-inset-bottom)]">
       <form
         ref={formRef}
         onSubmit={onSubmit}

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-const CreateProjectOperation = z.object({
-  action: z.literal("CREATE_PROJECT"),
+// Individual tool input schemas for streamText tools
+export const createProjectInput = z.object({
   projectName: z
     .string()
     .describe("The name of the new project to create"),
@@ -12,19 +12,17 @@ const CreateProjectOperation = z.object({
   description: z.string().optional(),
 });
 
-const ArchiveProjectOperation = z.object({
-  action: z.literal("ARCHIVE_PROJECT"),
+export const archiveProjectInput = z.object({
   projectId: z
     .string()
     .describe("The ID of the project to archive (set isActive=false)"),
 });
 
-const CreateItemOperation = z.object({
-  action: z.literal("CREATE_ITEM"),
+export const addItemInput = z.object({
   projectName: z
     .string()
     .describe(
-      "Name of the project this item belongs to — can be a newly created project from the same batch"
+      "Name of the project this item belongs to — must match an existing project name or one just created"
     ),
   type: z.enum(["TASK", "NOTE", "IDEA"]),
   title: z.string(),
@@ -38,38 +36,15 @@ const CreateItemOperation = z.object({
     .describe("ISO date string if a deadline is mentioned"),
 });
 
-const UpdateItemStatusOperation = z.object({
-  action: z.literal("UPDATE_ITEM_STATUS"),
+export const updateItemStatusInput = z.object({
   itemId: z
     .string()
-    .describe(
-      "The ID of the item to update, from the injected state"
-    ),
+    .describe("The ID of the item to update, from the injected state"),
   newStatus: z.enum(["TODO", "IN_PROGRESS", "WAITING", "DONE"]),
 });
 
-const UpdateItemContentOperation = z.object({
-  action: z.literal("UPDATE_ITEM_CONTENT"),
+export const updateItemContentInput = z.object({
   itemId: z.string(),
   newTitle: z.string().optional(),
   newContent: z.string().optional(),
 });
-
-export const OperationsSchema = z.object({
-  operations: z.array(
-    z.discriminatedUnion("action", [
-      CreateProjectOperation,
-      ArchiveProjectOperation,
-      CreateItemOperation,
-      UpdateItemStatusOperation,
-      UpdateItemContentOperation,
-    ])
-  ),
-  summary: z
-    .string()
-    .describe(
-      "A brief human-readable summary in Hungarian of what was done, max 2 sentences."
-    ),
-});
-
-export type Operations = z.infer<typeof OperationsSchema>;

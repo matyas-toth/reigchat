@@ -93,7 +93,7 @@ export function TaskView({ sidebarOpen, onToggleSidebar }: TaskViewProps) {
   return (
     <div className="flex h-full flex-col">
       {/* ── Status Bar ───────────────────────────────── */}
-      <header className="flex items-center justify-between border-b border-border px-6 py-3">
+      <header className="flex flex-col gap-2 border-b border-border px-4 md:px-6 py-3 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           {!sidebarOpen && (
             <Button
@@ -111,7 +111,7 @@ export function TaskView({ sidebarOpen, onToggleSidebar }: TaskViewProps) {
             Mission Control
           </h1>
         </div>
-        <div className=" text-xs text-muted-foreground">
+        <div className="text-xs text-muted-foreground">
           {now.length} active
           <span className="mx-1.5 text-border">·</span>
           {next.length} queued
@@ -132,7 +132,7 @@ export function TaskView({ sidebarOpen, onToggleSidebar }: TaskViewProps) {
             </p>
           </div>
         ) : (
-          <div className="mx-auto max-w-2xl px-6 py-8">
+          <div className="mx-auto max-w-2xl px-4 md:px-6 py-6 md:py-8">
 
             {/* ── NOW ─────────────────────────────────── */}
             {now.length > 0 && (
@@ -248,7 +248,7 @@ function NowCard({ item }: { item: EnrichedItem }) {
         />
       </span>
 
-      <p className="pr-8 text-[15px] font-medium leading-snug text-card-foreground">
+      <p className="pr-8 text-sm md:text-[15px] font-medium leading-snug text-card-foreground">
         {item.title}
       </p>
 
@@ -258,7 +258,7 @@ function NowCard({ item }: { item: EnrichedItem }) {
         </p>
       )}
 
-      <div className="mt-3 flex items-center gap-3">
+      <div className="mt-3 flex flex-wrap items-center gap-2 md:gap-3">
         <ProjectChip
           name={item.projectName}
           emoji={item.projectEmoji}
@@ -288,7 +288,7 @@ function CompactRow({
   return (
     <div
       className={cn(
-        "flex items-center gap-3 border-b border-border/50 py-2.5",
+        "flex items-center gap-2 md:gap-3 border-b border-border/50 py-2.5",
         dimmed && "opacity-60"
       )}
     >
@@ -341,13 +341,13 @@ function ProjectChip({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center gap-1 rounded-full",
-        small ? "px-2 py-0.5 text-[10px]" : "px-3 py-1 text-[11px]"
+        "inline-flex shrink-0 items-center gap-1 rounded-full max-w-[120px] md:max-w-none",
+        small ? "px-1.5 md:px-2 py-0.5 text-[10px]" : "px-2 md:px-3 py-0.5 md:py-1 text-[11px]"
       )}
       style={{ backgroundColor: color, boxShadow: "0 2px 10px 0px " + color + "30" }}
     >
 
-      <span className="text-white text-sm font-medium tracking-tight">
+      <span className="truncate text-white text-xs md:text-sm font-medium tracking-tight">
         {emoji && <span className="mr-1">{emoji}</span>}
         {name}
       </span>

@@ -12,11 +12,28 @@ interface Chat {
   updatedAt: string;
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
+
 export default function Page() {
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeChat, setActiveChat] = useState<string | null>(null);
   const [view, setView] = useState<"chat" | "tasks">("chat");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const isMobile = useIsMobile();
+  const [sidebarOpen, setSidebarOpen] = useState(false); // start closed, set after mount
+
+  // Default sidebar open on desktop, closed on mobile
+  useEffect(() => {
+    setSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   // Auto-open the latest chat when switching to chat view with nothing selected
   useEffect(() => {
@@ -41,6 +58,7 @@ export default function Page() {
     setChats((prev) => [chat, ...prev]);
     setActiveChat(chat.id);
     setView("chat");
+    if (isMobile) setSidebarOpen(false);
   };
 
   const deleteChat = async (id: string) => {
@@ -55,22 +73,40 @@ export default function Page() {
     fetchChats();
   };
 
+  const handleSelectChat = (id: string) => {
+    setActiveChat(id);
+    setView("chat");
+    if (isMobile) setSidebarOpen(false);
+  };
+
+  const handleViewChange = (v: "chat" | "tasks") => {
+    setView(v);
+    if (isMobile) setSidebarOpen(false);
+  };
+
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-background">
+    <div className="relative flex h-dvh w-full overflow-hidden bg-background">
+      {/* Mobile overlay backdrop */}
+      {isMobile && sidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       <ChatSidebar
         chats={chats}
         activeChat={activeChat}
-        onSelectChat={(id) => {
-          setActiveChat(id);
-          setView("chat");
-        }}
+        onSelectChat={handleSelectChat}
         onNewChat={createChat}
         onDeleteChat={deleteChat}
         view={view}
-        onViewChange={setView}
+        onViewChange={handleViewChange}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
+        isMobile={isMobile}
       />
+
       <main className="relative flex flex-1 flex-col overflow-hidden">
         {view === "chat" ? (
           <ChatArea

@@ -8,8 +8,9 @@ import { ChatInput } from "./ChatInput";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import ChatSpinner from "./ChatSpinner";
+import { AnimatePresence, motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { AiBrain05Icon, Brain03Icon, BrainIcon } from "@hugeicons/core-free-icons";
+import { ChatSpark01Icon } from "@hugeicons/core-free-icons";
 
 interface ChatAreaProps {
   chatId: string | null;
@@ -26,7 +27,64 @@ interface DbMessage {
   createdAt: string;
 }
 
-// Wrapper that loads history then mounts the chat
+/* ── Helper: extract tool parts from a message ───────── */
+interface ToolPart {
+  toolCallId: string;
+  toolName: string;
+  state: string;
+  output?: string;
+  label: string;
+}
+
+function extractToolParts(message: UIMessage): ToolPart[] {
+  const parts: ToolPart[] = [];
+  if (!message.parts) return parts; // safety check
+
+  for (const part of message.parts) {
+    // Tool parts have type "tool-{name}" pattern
+    if (typeof part === "object" && part.type && part.type.startsWith("tool-")) {
+      const toolName = part.type.substring(5);
+      const toolPart = part as any; // Cast to access state, output, input, toolCallId
+
+      // Build a human-readable label from input
+      let label = toolName;
+      if (toolPart.state === "output-available" && typeof toolPart.output === "string") {
+        label = toolPart.output;
+      } else if (toolPart.input) {
+        const input = toolPart.input;
+        switch (toolName) {
+          case "createProject":
+            label = `Creating project ${input.emoji || ""} ${input.projectName || ""}`.trim();
+            break;
+          case "addItem":
+            label = `Adding ${input.type?.toString().toLowerCase() || "item"} "${input.title}" to ${input.projectName}`;
+            break;
+          case "updateItemStatus":
+            label = `Updating status → ${input.newStatus}`;
+            break;
+          case "updateItemContent":
+            label = `Updating "${input.newTitle || "item"}"`;
+            break;
+          case "archiveProject":
+            label = `Archiving project`;
+            break;
+        }
+      }
+
+      parts.push({
+        toolCallId: toolPart.toolCallId,
+        toolName: toolName,
+        state: toolPart.state,
+        output: typeof toolPart.output === "string" ? toolPart.output : undefined,
+        label,
+      });
+    }
+  }
+  return parts;
+}
+
+/* ── Chat Loader ─────────────────────────────────────── */
+
 export function ChatArea({
   chatId,
   onNewChat,
@@ -34,7 +92,7 @@ export function ChatArea({
   sidebarOpen,
   onToggleSidebar,
 }: ChatAreaProps) {
-  const [loaded, setLoaded] = useState(!chatId); // if no chatId, skip loading
+  const [loaded, setLoaded] = useState(!chatId);
   const [historyMessages, setHistoryMessages] = useState<UIMessage[]>([]);
 
   useEffect(() => {
@@ -59,7 +117,6 @@ export function ChatArea({
       .catch(() => setLoaded(true));
   }, [chatId]);
 
-  // Empty state — no chat selected
   if (!chatId) {
     return (
       <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
@@ -87,7 +144,55 @@ export function ChatArea({
   );
 }
 
-// The actual chat with useChat hook — only mounts after history is loaded
+/* ── Tool Call Notification Stack ─────────────────────── */
+
+function ToolCallStack({
+  toolParts,
+  isFinished,
+}: {
+  toolParts: ToolPart[];
+  isFinished: boolean;
+}) {
+  // Only show last 2 tool calls
+  const visible = toolParts.slice(-2);
+
+  if (visible.length === 0) return null;
+
+  return (
+    <AnimatePresence mode="popLayout">
+      {true &&
+        visible.map((tool) => (
+          <motion.div
+            key={tool.toolCallId}
+            layout
+            initial={{ opacity: 0, y: 16, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -12, scale: 0.97 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="flex items-center gap-2.5 py-1 mb-1"
+          >
+            {tool.state === "output-available" ? (
+              <>
+
+                <span className="text-xs text-muted-foreground">
+                  {tool.output || tool.label}
+                </span>
+              </>
+            ) : (
+              <ChatSpinner name="waverows">
+                <span className="ml-2 text-xs text-muted-foreground">
+                  {tool.label}
+                </span>
+              </ChatSpinner>
+            )}
+          </motion.div>
+        ))}
+    </AnimatePresence>
+  );
+}
+
+/* ── Main Chat Component ─────────────────────────────── */
+
 function ChatInner({
   chatId,
   initialMessages,
@@ -121,13 +226,12 @@ function ChatInner({
     },
   });
 
-  // Auto-scroll on new messages
+  // Auto-scroll
   useEffect(() => {
     if (scrollRef.current) {
-      const container = scrollRef.current;
-      container.scrollTop = container.scrollHeight;
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, status]);
 
   const isStreaming = status === "streaming";
   const isThinking = status === "submitted" || status === "streaming";
@@ -140,10 +244,17 @@ function ChatInner({
     }
   };
 
+  // Extract tool parts from the last assistant message (active during streaming)
+  const lastAssistantMsg = [...messages].reverse().find((m) => m.role === "assistant");
+  const activeToolParts = lastAssistantMsg ? extractToolParts(lastAssistantMsg) : [];
+  const hasText = lastAssistantMsg?.parts.some(
+    (p) => p.type === "text" && (p as { text: string }).text.length > 0
+  );
+
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center gap-2 border-b border-border/50 px-6 py-3">
+      <div className="flex items-center gap-2 border-b border-border/50 px-4 md:px-6 py-3">
         {!sidebarOpen && (
           <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground" onClick={onToggleSidebar}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -152,7 +263,6 @@ function ChatInner({
           </Button>
         )}
         <div className="flex items-center gap-2 min-w-0">
-
           <span className="truncate text-base font-medium tracking-tight text-muted-foreground">
             {isThinking ? "Thinking..." : "Chat"}
           </span>
@@ -162,104 +272,104 @@ function ChatInner({
       {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto">
         {messages.length === 0 && !isThinking ? (
-          <div className="flex h-full flex-col items-center justify-center gap-3 px-4">
-            <div className="text-3xl">💭</div>
-            <p className="text-sm text-muted-foreground">Send a message to get started</p>
+          <div className="flex h-full flex-row items-center justify-center gap-3 px-4">
+            <HugeiconsIcon size={32} className="text-muted-foreground" icon={ChatSpark01Icon} />
+            <p className="text-sm text-muted-foreground">Dump your thoughts here to get started...</p>
           </div>
         ) : (
-          <div className="mx-auto max-w-2xl px-0 py-6">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={cn(
-                  "mb-4 flex gap-3",
-                  message.role === "user" ? "justify-end" : "justify-start"
-                )}
-              >
-                {/*message.role === "assistant" && (
-                  <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center">
-                    <HugeiconsIcon size={32} icon={AiBrain05Icon} />
+          <div className="mx-auto max-w-2xl px-3 md:px-0 py-4 md:py-6">
+            <AnimatePresence initial={false}>
+              {messages.map((message) => {
+                const toolParts = extractToolParts(message);
+                const textParts = message.parts.filter((p) => p.type === "text");
+                const isLastAssistant = message === lastAssistantMsg;
+
+                return (
+                  <div key={message.id}>
+                    {/* User bubble OR assistant text bubble */}
+                    {message.role === "user" ? (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="mb-4 flex justify-end gap-3"
+                      >
+                        <div
+                          className="max-w-[85%] rounded-3xl px-4 py-2.5 text-base md:text-sm leading-relaxed whitespace-pre-wrap bg-primary text-primary-foreground"
+                          style={{ cornerShape: "superellipse(1.3)" } as any}
+                        >
+                          {textParts.map((part, i) =>
+                            part.type === "text" ? <span key={i}>{part.text}</span> : null
+                          )}
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <>
+                        {/* Tool call notifications — above the text bubble */}
+                        {toolParts.length > 0 && (
+                          <div className="mb-2 ml-1">
+                            {isLastAssistant && isThinking ? (
+                              <ToolCallStack
+                                toolParts={toolParts}
+                                isFinished={false}
+                              />
+                            ) : (
+                              /* For finished messages in history, show completed tools briefly or not */
+                              <ToolCallStack
+                                toolParts={toolParts}
+                                isFinished={true}
+                              />
+                            )}
+                          </div>
+                        )}
+
+                        {/* Assistant text */}
+                        {textParts.some(
+                          (p) => p.type === "text" && (p as { text: string }).text.length > 0
+                        ) && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="mb-4 flex justify-start gap-3"
+                            >
+                              <div
+                                className="max-w-[85%] rounded-3xl px-4 py-2.5 text-base md:text-sm leading-relaxed whitespace-pre-wrap bg-muted/50 text-foreground"
+                                style={{ cornerShape: "superellipse(1.3)" } as any}
+                              >
+                                {textParts.map((part, i) =>
+                                  part.type === "text" ? <span key={i}>{part.text}</span> : null
+                                )}
+                              </div>
+                            </motion.div>
+                          )}
+                      </>
+                    )}
                   </div>
-                )*/}
-                <div
-                  className={cn(
-                    "max-w-[85%] rounded-3xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
-                    message.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted/50 text-foreground"
-                  )}
-                  style={{ cornerShape: "superellipse(1.3)" }}
+                );
+              })}
+            </AnimatePresence>
+
+            {/* Thinking indicator — only when no tool calls and no text yet */}
+            <AnimatePresence>
+              {isThinking && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.2 }}
+                  className="mb-4 flex items-center gap-3"
                 >
-                  {message.parts.map((part, i) => {
-                    if (part.type === "text") {
-                      return <span key={i}>{part.text}</span>;
-                    }
-                    return null;
-                  })}
-                </div>
-                {/*message.role === "user" && (
-                  <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-foreground/10 text-xs">
-                    👤
-                  </div>
-                )*/}
-              </div>
-            ))}
-
-            {/* Thinking indicator — visible the entire time the AI is working */}
-            {isThinking && (
-              <div className="mb-4 flex items-center gap-3">
-
-                <div className="flex items-center gap-2">
                   <ChatSpinner name="pulse">Thinking</ChatSpinner>
-                </div>
-              </div>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )}
       </div>
 
       {/* Input */}
       <ChatInput input={input} setInput={setInput} onSubmit={handleSubmit} isStreaming={isThinking} />
-    </div>
-  );
-}
-
-// Empty landing state
-function EmptyState({
-  sidebarOpen,
-  onToggleSidebar,
-  onNewChat,
-}: {
-  sidebarOpen: boolean;
-  onToggleSidebar: () => void;
-  onNewChat: () => void;
-}) {
-  return (
-    <div className="flex h-full flex-col items-center justify-center gap-6">
-      {!sidebarOpen && (
-        <Button variant="ghost" size="icon" className="absolute left-3 top-3 h-8 w-8 text-muted-foreground" onClick={onToggleSidebar}>
-          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-            <path d="M2 4h12M2 8h12M2 12h12" />
-          </svg>
-        </Button>
-      )}
-      <div className="flex flex-col items-center gap-3">
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/5 text-3xl">
-          🧠
-        </div>
-        <h1 className="text-xl font-semibold tracking-tight">Second Brain</h1>
-        <p className="max-w-sm text-center text-sm text-muted-foreground">
-          Start a conversation to organize your thoughts.
-          <br />
-          The AI will automatically manage your projects and tasks.
-        </p>
-      </div>
-      <Button onClick={onNewChat} className="mt-2" variant="default">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="mr-2">
-          <path d="M8 3.5v9M3.5 8h9" />
-        </svg>
-        New Chat
-      </Button>
     </div>
   );
 }

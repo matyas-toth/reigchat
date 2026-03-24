@@ -29,6 +29,7 @@ interface ChatSidebarProps {
   onViewChange: (view: "chat" | "tasks") => void;
   isOpen: boolean;
   onToggle: () => void;
+  isMobile?: boolean;
 }
 
 export function ChatSidebar({
@@ -40,16 +41,23 @@ export function ChatSidebar({
   view,
   onViewChange,
   isOpen,
+  onToggle,
+  isMobile = false,
 }: ChatSidebarProps) {
   return (
     <aside
       className={cn(
         "flex h-full flex-col border-r border-border/50 bg-background transition-all duration-200",
-        isOpen ? "w-72" : "w-0 overflow-hidden border-r-0"
+        isMobile
+          ? cn(
+              "fixed inset-y-0 left-0 z-40 w-[280px] shadow-xl",
+              isOpen ? "translate-x-0" : "-translate-x-full"
+            )
+          : cn(isOpen ? "w-72" : "w-0 overflow-hidden border-r-0")
       )}
     >
       {/* Logo + New Chat */}
-      <div className="flex items-center justify-between  px-4 py-3">
+      <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 text-sm">
             <HugeiconsIcon className="text-zinc-700" size={28} strokeWidth={1.65} icon={BrainIcon} />
@@ -58,33 +66,48 @@ export function ChatSidebar({
             Second Brain
           </span>
         </div>
-        <Tooltip>
-          <TooltipTrigger>
+        <div className="flex items-center gap-1">
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 text-muted-foreground hover:text-foreground"
+                onClick={onNewChat}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                >
+                  <path d="M8 3.5v9M3.5 8h9" />
+                </svg>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">New Chat</TooltipContent>
+          </Tooltip>
+          {/* Mobile close button */}
+          {isMobile && (
             <Button
               variant="ghost"
               size="icon"
               className="h-7 w-7 text-muted-foreground hover:text-foreground"
-              onClick={onNewChat}
+              onClick={onToggle}
             >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              >
-                <path d="M8 3.5v9M3.5 8h9" />
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                <path d="M4.5 4.5l7 7M11.5 4.5l-7 7" />
               </svg>
             </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right">New Chat</TooltipContent>
-        </Tooltip>
+          )}
+        </div>
       </div>
 
       {/* View Toggle */}
-      <div className="flex gap-1  px-4 py-2">
+      <div className="flex gap-1 px-4 py-2">
         <button
           onClick={() => onViewChange("chat")}
           className={cn(
