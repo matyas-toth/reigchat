@@ -96,7 +96,7 @@ export function TaskView({ sidebarOpen, onToggleSidebar, refreshTrigger = 0, isR
   return (
     <div className="flex h-full flex-col">
       {/* ── Status Bar ───────────────────────────────── */}
-      <header className="shrink-0 flex flex-col gap-2 border-b border-border px-4 md:px-6 py-3 md:flex-row md:items-center md:justify-between">
+      <header className="shrink-0 flex flex-col gap-2 border-b border-border/50 px-4 md:px-4 py-2.5 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           {!sidebarOpen && !isRightSidebar && (
             <Button
@@ -127,15 +127,16 @@ export function TaskView({ sidebarOpen, onToggleSidebar, refreshTrigger = 0, isR
             {isRightSidebar ? "Tasks" : "Mission Control"}
           </h1>
         </div>
-        <div className="text-xs text-muted-foreground w-full md:w-auto overflow-x-auto whitespace-nowrap hide-scrollbar">
-          {now.length} active
-          <span className="mx-1.5 text-border">·</span>
-          {next.length} queued
-          <span className="mx-1.5 text-border">·</span>
-          {onHold.length} waiting
-          <span className="mx-1.5 text-border">·</span>
-          {done.length}/{totalTasks} done
-        </div>
+        {!isRightSidebar &&
+          <div className="text-xs text-muted-foreground w-full md:w-auto overflow-x-auto whitespace-nowrap hide-scrollbar">
+            {now.length} active
+            <span className="mx-1.5 text-border">·</span>
+            {next.length} queued
+            <span className="mx-1.5 text-border">·</span>
+            {onHold.length} waiting
+            <span className="mx-1.5 text-border">·</span>
+            {done.length}/{totalTasks} done
+          </div>}
       </header>
 
       {/* ── Scrollable Briefing ──────────────────────── */}
