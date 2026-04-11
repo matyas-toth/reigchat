@@ -9,6 +9,12 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { GithubIcon, GoogleIcon, DiscordIcon, Mail01Icon, AccessIcon } from "@hugeicons/core-free-icons";
 import Link from "next/link";
 
+import Image from "next/image";
+
+import discordLogo from "@/public/discord.svg"
+import googleLogo from "@/public/google.svg"
+import githubLogo from "@/public/github.svg"
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -96,13 +102,13 @@ export default function LoginPage() {
 
         <div className="grid grid-cols-3 gap-3">
           <Button variant="outline" className="h-11" onClick={() => handleSocialLogin("github")}>
-            <HugeiconsIcon icon={GithubIcon} size={20} />
+            <Image src={githubLogo} alt="GitHub" width={20} height={20} />
           </Button>
           <Button variant="outline" className="h-11" onClick={() => handleSocialLogin("google")}>
-            <HugeiconsIcon icon={GoogleIcon} size={20} />
+            <Image src={googleLogo} alt="Google" width={20} height={20} />
           </Button>
           <Button variant="outline" className="h-11" onClick={() => handleSocialLogin("discord")}>
-            <HugeiconsIcon icon={DiscordIcon} size={20} />
+            <Image src={discordLogo} alt="Discord" width={20} height={20} />
           </Button>
         </div>
 

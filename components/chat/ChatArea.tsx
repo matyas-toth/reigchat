@@ -216,6 +216,7 @@ function ChatInner({
 }) {
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [quotaError, setQuotaError] = useState<{ reason: string; resetsAt: string | null } | null>(null);
 
   const [isTaskSidebarOpen, setIsTaskSidebarOpen] = useState(false);
   const [taskSidebarWidth, setTaskSidebarWidth] = useState(350);
@@ -276,6 +277,19 @@ function ChatInner({
     onFinish: () => {
       onChatUpdated();
       setRefreshTrigger((prev) => prev + 1);
+    },
+    onError: async (err) => {
+      // The AI SDK surfaces the raw response body via err.message or the response
+      // Try parsing the error as our quota JSON payload
+      try {
+        const body = JSON.parse((err as any).responseBody ?? err.message ?? "{}");
+        if (body.error === "quota_exceeded") {
+          setQuotaError({ reason: body.reason, resetsAt: body.resetsAt });
+          return;
+        }
+      } catch {
+        // not a quota error - ignore
+      }
     },
   });
 
@@ -450,8 +464,32 @@ function ChatInner({
           )}
         </div>
 
-        {/* Input */}
-        <ChatInput input={input} setInput={setInput} onSubmit={handleSubmit} isStreaming={isThinking} />
+        {/* Quota wall banner or normal input */}
+        {quotaError ? (
+          <div className="border-t border-border/50 bg-background px-4 py-6">
+            <div className="mx-auto flex max-w-2xl flex-col items-center justify-center rounded-xl border border-border bg-card p-6 text-center text-card-foreground shadow-sm">
+              <p className="text-base font-semibold mb-2 flex items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-destructive"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Your thinking space is full.
+              </p>
+              <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto leading-relaxed">
+                {quotaError.reason === "lifetime_exhausted"
+                  ? "You've used your free allowance — and honestly, you made good use of it. Every project you haven't mapped yet, that's what Pro is for."
+                  : `Your 8-hour window is exhausted. Resets ${quotaError.resetsAt ? `in ${Math.max(0, Math.round((new Date(quotaError.resetsAt).getTime() - Date.now()) / 60000))} minutes` : "soon"}.`}
+              </p>
+              <Button 
+                variant="default" 
+                className="w-full max-w-sm"
+                onClick={() => window.location.href = '/profile'}
+              >
+                Unlock Unlimited Thinking — $12/mo
+              </Button>
+              <p className="mt-3 text-[11px] text-muted-foreground/60">No commitment. Cancel anytime. Your data stays.</p>
+            </div>
+          </div>
+        ) : (
+          <ChatInput input={input} setInput={setInput} onSubmit={handleSubmit} isStreaming={isThinking} />
+        )}
       </div>
 
       {isTaskSidebarOpen && (

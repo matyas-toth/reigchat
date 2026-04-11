@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Tooltip,
@@ -52,9 +53,11 @@ export function ChatSidebar({
   const [mounted, setMounted] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
+  const [quota, setQuota] = useState<{ percentUsed: number; tier: string; exhausted: boolean; isLifetime: boolean } | null>(null);
 
   useEffect(() => {
     setMounted(true);
+    fetch("/api/billing/quota").then(r => r.ok ? r.json() : null).then(d => { if (d) setQuota(d); });
   }, []);
 
   const handleSignOut = async () => {
@@ -225,6 +228,43 @@ export function ChatSidebar({
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" x2="9" y1="12" y2="12" /></svg>
                 </Button>
               </div>
+            )}
+
+            {/* Quota mini-bar */}
+            {quota && (
+              <button
+                onClick={() => router.push("/profile")}
+                className="w-full text-left group cursor-pointer"
+                title="View plan & usage"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className={cn(
+                    "text-[10px] font-medium",
+                    quota.exhausted ? "text-destructive" : "text-muted-foreground/70"
+                  )}>
+                    {quota.exhausted
+                      ? quota.tier === "FREE" ? "Free access used up →" : "Window exhausted →"
+                      : quota.tier === "FREE" ? `${quota.percentUsed}% of free access used` : `${quota.percentUsed}% of window used`
+                    }
+                  </span>
+                  <span className="text-[10px] text-muted-foreground/40 group-hover:text-muted-foreground transition-colors">
+                    {quota.tier}
+                  </span>
+                </div>
+                <Progress value={Math.min(100, quota.percentUsed)} className="h-1 shadow-none" />
+              </button>
+            )}
+
+            {/* Upgrade CTA for free users */}
+            {quota?.tier === "FREE" && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => router.push("/profile")}
+                className="w-full h-8 text-xs font-medium"
+              >
+                Upgrade to Pro
+              </Button>
             )}
 
             <div className="flex w-full items-center rounded-md border border-border/50 bg-background/50 p-0.5">

@@ -80,7 +80,7 @@ export function TaskView({ sidebarOpen, onToggleSidebar, refreshTrigger = 0, isR
         new Date(i.updatedAt) >= sevenDaysAgo
     );
   const knowledge = allItems.filter(
-    (i) => i.type === "NOTE" || i.type === "IDEA"
+    (i) => (i.type === "NOTE" || i.type === "IDEA") && i.status !== "DONE"
   );
 
   const totalTasks = allItems.filter((i) => i.type === "TASK").length;
@@ -216,7 +216,7 @@ function SectionHeader({
     <div className="flex items-center gap-3">
       <h2
         className={cn(
-          "text-xs font-mono font-medium uppercase tracking-[0.2em]",
+          "text-xs  font-medium uppercase tracking-[0.2em]",
           accent ? "text-foreground" : "text-muted-foreground"
         )}
       >
@@ -296,7 +296,7 @@ function CompactRow({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 md:gap-3 border-b border-border/50 py-2.5",
+        "flex items-center gap-2 md:gap-3 py-2.5",
         dimmed && "opacity-60"
       )}
     >
@@ -372,12 +372,12 @@ function KnowledgeBank({ items }: { items: EnrichedItem[] }) {
   const ideas = items.filter((i) => i.type === "IDEA");
 
   return (
-    <section className="border-t border-border pt-6">
+    <section className="border-none border-border pt-6">
       <button
         onClick={() => setOpen(!open)}
         className="flex w-full items-center gap-3 text-left"
       >
-        <h2 className="text-xs font-mono font-medium uppercase tracking-[0.2em] text-muted-foreground">
+        <h2 className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
           Knowledge Bank
         </h2>
         <span className="text-[10px] font-mono text-muted-foreground">
@@ -405,7 +405,7 @@ function KnowledgeBank({ items }: { items: EnrichedItem[] }) {
         <div className="mt-4 flex flex-col gap-4">
           {notes.length > 0 && (
             <div>
-              <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground">
+              <span className="text-[10px]  uppercase tracking-[0.15em] text-muted-foreground">
                 Notes
               </span>
               <div className="mt-2 flex flex-col gap-1">
@@ -430,7 +430,7 @@ function KnowledgeBank({ items }: { items: EnrichedItem[] }) {
 
           {ideas.length > 0 && (
             <div>
-              <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground">
+              <span className="text-[10px]  uppercase tracking-[0.15em] text-muted-foreground">
                 Ideas
               </span>
               <div className="mt-2 flex flex-col gap-1">

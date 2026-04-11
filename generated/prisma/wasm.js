@@ -163,6 +163,23 @@ exports.Prisma.VerificationScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SubscriptionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tier: 'tier',
+  status: 'status',
+  stripeCustomerId: 'stripeCustomerId',
+  stripeSubscriptionId: 'stripeSubscriptionId',
+  stripePriceId: 'stripePriceId',
+  totalOutputTokensUsed: 'totalOutputTokensUsed',
+  totalInputTokensUsed: 'totalInputTokensUsed',
+  windowOutputTokensUsed: 'windowOutputTokensUsed',
+  windowInputTokensUsed: 'windowInputTokensUsed',
+  windowResetsAt: 'windowResetsAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ProjectScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -225,6 +242,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Tier = exports.$Enums.Tier = {
+  FREE: 'FREE',
+  PRO: 'PRO',
+  ULTRA: 'ULTRA'
+};
+
 exports.ItemType = exports.$Enums.ItemType = {
   TASK: 'TASK',
   NOTE: 'NOTE',
@@ -248,6 +271,7 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
+  Subscription: 'Subscription',
   Project: 'Project',
   Item: 'Item',
   Chat: 'Chat',

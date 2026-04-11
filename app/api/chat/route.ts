@@ -11,6 +11,7 @@ import { buildSystemPrompt } from "@/lib/ai/prompt";
 import { getProjectColor } from "@/lib/colors";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { checkAndReserveQuota, recordUsage, QuotaError } from "@/lib/quota";
 import {
   createProjectInput,
   archiveProjectInput,
@@ -38,6 +39,24 @@ export async function POST(req: Request) {
 
   const userId = session.user.id;
   const systemPrompt = await buildSystemPrompt(userId);
+
+  // Quota gate — must happen before streaming
+  try {
+    await checkAndReserveQuota(userId);
+  } catch (err) {
+    if (err instanceof QuotaError) {
+      return new Response(
+        JSON.stringify({
+          error: "quota_exceeded",
+          reason: err.reason,
+          resetsAt: err.resetsAt?.toISOString() ?? null,
+          tier: err.tier,
+        }),
+        { status: 429, headers: { "Content-Type": "application/json" } }
+      );
+    }
+    throw err;
+  }
 
   // Verify chat ownership
   if (chatId) {
@@ -257,7 +276,15 @@ export async function POST(req: Request) {
       },
     },
     stopWhen: stepCountIs(5),
-    async onFinish({ text }) {
+    async onFinish({ text, usage }) {
+      // Record token usage
+      if (usage) {
+        await recordUsage(
+          userId,
+          usage.inputTokens ?? 0,
+          usage.outputTokens ?? 0
+        );
+      }
       if (chatId && text) {
         await prisma.message.create({
           data: { chatId, role: "assistant", content: text },

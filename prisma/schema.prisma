@@ -8,10 +8,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Tier {
+  FREE
+  PRO
+  ULTRA
+}
+
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String
-  email         String    @unique
+  email         String        @unique
   emailVerified Boolean
   image         String?
   createdAt     DateTime
@@ -19,9 +25,10 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  projects Project[]
-  chats    Chat[]
-  memories Memory[]
+  projects     Project[]
+  chats        Chat[]
+  memories     Memory[]
+  subscription Subscription?
 
   @@map("user")
 }
@@ -69,6 +76,32 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model Subscription {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  tier   Tier   @default(FREE)
+  status String @default("free") // free | active | canceled | past_due
+
+  // Stripe
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  stripePriceId        String?
+
+  // Lifetime total (used for Free tier wall)
+  totalOutputTokensUsed Int @default(0)
+  totalInputTokensUsed  Int @default(0)
+
+  // Rolling 8h window (paid tiers only)
+  windowOutputTokensUsed Int       @default(0)
+  windowInputTokensUsed  Int       @default(0)
+  windowResetsAt         DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Project {
