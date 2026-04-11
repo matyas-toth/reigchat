@@ -267,9 +267,7 @@ export function ChatSidebar({
             </div>
           </div>
         )}
-        <div className="text-center text-[11px] text-muted-foreground/60">
-          AI-powered task management
-        </div>
+
       </div>
     </aside>
   );

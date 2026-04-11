@@ -127,16 +127,7 @@ export function TaskView({ sidebarOpen, onToggleSidebar, refreshTrigger = 0, isR
             {isRightSidebar ? "Tasks" : "Mission Control"}
           </h1>
         </div>
-        {!isRightSidebar &&
-          <div className="text-xs text-muted-foreground w-full md:w-auto overflow-x-auto whitespace-nowrap hide-scrollbar">
-            {now.length} active
-            <span className="mx-1.5 text-border">·</span>
-            {next.length} queued
-            <span className="mx-1.5 text-border">·</span>
-            {onHold.length} waiting
-            <span className="mx-1.5 text-border">·</span>
-            {done.length}/{totalTasks} done
-          </div>}
+
       </header>
 
       {/* ── Scrollable Briefing ──────────────────────── */}
