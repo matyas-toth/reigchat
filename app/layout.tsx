@@ -35,9 +35,9 @@ const generalSans = localFont({
 })
 
 export const metadata = {
-  title: "Second Brain — AI Task Manager",
+  title: "Reig Chat - Beszélgess a mesterséges intelligenciával",
   description:
-    "Your personal AI-powered second brain. Chat naturally, organize automatically.",
+    "Beszélgess a mesterséges intelligenciával. Azonnali válaszok, intelligens asszisztens.",
 };
 
 export default function RootLayout({

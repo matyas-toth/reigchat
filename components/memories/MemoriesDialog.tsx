@@ -76,16 +76,15 @@ export function MemoriesDialog({ open, onOpenChange }: MemoriesDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl gap-0 p-0 overflow-hidden bg-background/95 backdrop-blur-xl border-border/50">
-        <DialogHeader className="px-6 py-4 border-b border-border/50 bg-accent/20">
+        <DialogHeader className="px-4 py-4 border-b border-border/50 bg-accent/20">
           <DialogTitle className="flex items-center gap-2 text-xl tracking-tight">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
-              <HugeiconsIcon icon={BrainIcon} size={20} />
-            </div>
-            Vault Memories
+            <HugeiconsIcon icon={BrainIcon} size={24} strokeWidth={2} />
+
+            Memória
           </DialogTitle>
         </DialogHeader>
 
-        <div className="p-4 border-b border-border/50 bg-background">
+        <div className="px-4 pt-4  ">
           <div className="relative">
             <svg
               className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4"
@@ -102,7 +101,7 @@ export function MemoriesDialog({ open, onOpenChange }: MemoriesDialogProps) {
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search memories, snippets, logs..."
+              placeholder="Böngéssz a mesterséges intelligencia által elmentett emlékek között..."
               className="pl-9 h-11 bg-accent/5 border-transparent focus-visible:ring-1 focus-visible:bg-transparent"
               autoFocus
             />
@@ -117,7 +116,7 @@ export function MemoriesDialog({ open, onOpenChange }: MemoriesDialogProps) {
               </div>
             ) : filteredMemories.length === 0 ? (
               <div className="py-12 text-center text-sm text-muted-foreground">
-                {search ? "No memories match your intense search." : "The vault is empty. Speak to the AI to save thoughts!"}
+                {search ? "Nem találtunk emléket az alapos keresésed alapján." : "Az emléktár üres. Beszélj a mesterséges intelligenciával, hogy elmentse a gondolataidat!"}
               </div>
             ) : (
               // Masonry style layout effect using columns could be here, but flex col is cleaner for text
@@ -125,9 +124,9 @@ export function MemoriesDialog({ open, onOpenChange }: MemoriesDialogProps) {
                 {filteredMemories.map((memory) => (
                   <div
                     key={memory.id}
-                    className="group relative break-inside-avoid rounded-xl border border-border/50 bg-card p-4 transition-colors hover:bg-accent/5 shadow-sm"
+                    className="group relative break-inside-avoid rounded-xl border-2 border-border/50 bg-card p-4 transition-colors hover:bg-accent/5 "
                   >
-                    <button 
+                    <button
                       onClick={() => deleteMemory(memory.id)}
                       className="absolute top-2 right-2 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md"
                       title="Delete memory"
@@ -139,8 +138,8 @@ export function MemoriesDialog({ open, onOpenChange }: MemoriesDialogProps) {
                     <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground pr-6">
                       {memory.content}
                     </div>
-                    <div className="mt-3 text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-                      {format(new Date(memory.createdAt), "MMM d, yyyy • h:mm a")}
+                    <div className="mt-3 text-[12px]   text-muted-foreground font-medium">
+                      {format(new Date(memory.createdAt), "yyyy, MMM d. HH:mm")}
                     </div>
                   </div>
                 ))}

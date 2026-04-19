@@ -12,6 +12,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ChatSpark01Icon } from "@hugeicons/core-free-icons";
 import { MemoizedMarkdown } from "../memoized-markdown";
+import { useSession } from "@/lib/auth-client";
 
 interface ChatAreaProps {
   chatId: string | null;
@@ -213,10 +214,14 @@ function ChatInner({
   sidebarOpen: boolean;
   onToggleSidebar: () => void;
 }) {
+  const { data: session } = useSession();
+  const userName = session?.user?.name?.split(" ")[0] || "Vendég";
+  const hour = new Date().getHours();
+  const greeting = hour < 9 ? "Jó reggelt" : hour < 18 ? "Jó napot" : "Jó estét";
+
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
   const [quotaError, setQuotaError] = useState<{ reason: string; resetsAt: string | null } | null>(null);
-
 
   const transport = useMemo(
     () =>
@@ -293,153 +298,157 @@ function ChatInner({
     <div className="flex w-full h-full overflow-hidden">
       <div className="flex h-full flex-1 flex-col min-w-[300px]">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-border/50 px-4 md:px-6 py-3">
-          <div className="flex items-center gap-2">
-            {!sidebarOpen && (
-              <Button variant="ghost" size="icon" className="h-7 w-7 text-muted-foreground" onClick={onToggleSidebar}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                  <path d="M2 4h12M2 8h12M2 12h12" />
-                </svg>
-              </Button>
-            )}
-            <div className="flex items-center gap-2 min-w-0">
-              <span className="truncate text-base font-medium tracking-tight text-muted-foreground">
-                {isThinking ? "Thinking..." : "Chat"}
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-          </div>
-        </div>
 
-        {/* Messages */}
-        <div ref={scrollRef} className="flex-1 overflow-y-auto">
-          {messages.length === 0 && !isThinking ? (
-            <div className="flex h-full flex-row items-center justify-center gap-3 px-4">
-              <HugeiconsIcon size={32} className="text-muted-foreground" icon={ChatSpark01Icon} />
-              <p className="text-sm text-muted-foreground">Dump your thoughts here to get started...</p>
-            </div>
-          ) : (
-            <div className="mx-auto max-w-2xl px-3 md:px-0 py-4 md:py-6">
-              <AnimatePresence initial={false}>
-                {messages.map((message) => {
-                  const toolParts = extractToolParts(message);
-                  const textParts = message.parts.filter((p) => p.type === "text");
-                  const isLastAssistant = message === lastAssistantMsg;
 
-                  return (
-                    <div key={message.id}>
-                      {/* User bubble OR assistant text bubble */}
-                      {message.role === "user" ? (
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="mb-4 flex justify-end gap-3"
-                        >
-                          <div
-                            className="max-w-[85%] rounded-3xl prose prose-invert dark:prose-zinc px-4 py-2.5 text-base md:text-sm leading-relaxed whitespace-pre-wrap bg-primary text-primary-foreground"
-                            style={{ cornerShape: "superellipse(1.3)" } as any}
+        {/* Dynamic Area */}
+        <div className="flex-1 flex flex-col relative overflow-hidden">
+          {/* Messages Wrapper */}
+          {(messages.length > 0 || isThinking) && (
+            <div ref={scrollRef} className="flex-1 overflow-y-auto w-full">
+              <div className="mx-auto max-w-2xl px-3 md:px-0 py-4 md:py-6">
+                <AnimatePresence initial={false}>
+                  {messages.map((message) => {
+                    const toolParts = extractToolParts(message);
+                    const textParts = message.parts.filter((p) => p.type === "text");
+                    const isLastAssistant = message === lastAssistantMsg;
+
+                    return (
+                      <div key={message.id}>
+                        {/* User bubble OR assistant text bubble */}
+                        {message.role === "user" ? (
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="mb-4 flex justify-end gap-3"
                           >
-                            {textParts.map((part, i) =>
-                              part.type === "text" ? <MemoizedMarkdown id={message.id} key={`${message.id}-text`} content={part.text}></MemoizedMarkdown> : null
-                            )}
-                          </div>
-                        </motion.div>
-                      ) : (
-                        <>
-                          {/* Tool call notifications — above the text bubble */}
-                          {toolParts.length > 0 && (
-                            <div className="mb-2 ml-1">
-                              {isLastAssistant && isThinking ? (
-                                <ToolCallStack
-                                  toolParts={toolParts}
-                                  isFinished={false}
-                                />
-                              ) : (
-                                /* For finished messages in history, show completed tools briefly or not */
-                                <ToolCallStack
-                                  toolParts={toolParts}
-                                  isFinished={true}
-                                />
+                            <div
+                              className="max-w-[85%] rounded-3xl prose prose-invert dark:prose-zinc px-4 py-2.5 text-base md:text-sm leading-relaxed whitespace-pre-wrap bg-primary text-primary-foreground"
+                              style={{ cornerShape: "superellipse(1.3)" } as any}
+                            >
+                              {textParts.map((part, i) =>
+                                part.type === "text" ? <MemoizedMarkdown id={message.id} key={`${message.id}-text`} content={part.text}></MemoizedMarkdown> : null
                               )}
                             </div>
-                          )}
-
-                          {/* Assistant text */}
-                          {textParts.some(
-                            (p) => p.type === "text" && (p as { text: string }).text.length > 0
-                          ) && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="mb-4 flex justify-start gap-3"
-                              >
-                                <div
-                                  className="max-w-[85%] prose prose-zinc dark:prose-invert rounded-3xl px-4 py-2.5 text-base md:text-sm leading-relaxed whitespace-pre-wrap bg-muted/50 text-foreground"
-                                  style={{ cornerShape: "superellipse(1.3)" } as any}
-                                >
-                                  {textParts.map((part, i) =>
-                                    part.type === "text" ? <MemoizedMarkdown id={message.id} key={`${message.id}-text`} content={part.text}></MemoizedMarkdown> : null
-                                  )}
-                                </div>
-                              </motion.div>
+                          </motion.div>
+                        ) : (
+                          <>
+                            {/* Tool call notifications — above the text bubble */}
+                            {toolParts.length > 0 && (
+                              <div className="mb-2 ml-1">
+                                {isLastAssistant && isThinking ? (
+                                  <ToolCallStack
+                                    toolParts={toolParts}
+                                    isFinished={false}
+                                  />
+                                ) : (
+                                  /* For finished messages in history, show completed tools briefly or not */
+                                  <ToolCallStack
+                                    toolParts={toolParts}
+                                    isFinished={true}
+                                  />
+                                )}
+                              </div>
                             )}
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
-              </AnimatePresence>
 
-              {/* Thinking indicator — only when no tool calls and no text yet */}
-              <AnimatePresence>
-                {isThinking && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.2 }}
-                    className="mb-4 flex items-center gap-3"
-                  >
-                    <ChatSpinner name="pulse">{thinkingText}</ChatSpinner>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                            {/* Assistant text */}
+                            {textParts.some(
+                              (p) => p.type === "text" && (p as { text: string }).text.length > 0
+                            ) && (
+                                <motion.div
+                                  initial={{ opacity: 0, y: 20 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="mb-4 flex justify-start gap-3"
+                                >
+                                  <div
+                                    className="max-w-[85%] prose prose-zinc dark:prose-invert rounded-3xl px-4 py-2.5 text-base md:text-sm leading-relaxed whitespace-pre-wrap bg-muted/50 text-foreground"
+                                    style={{ cornerShape: "superellipse(1.3)" } as any}
+                                  >
+                                    {textParts.map((part, i) =>
+                                      part.type === "text" ? <MemoizedMarkdown id={message.id} key={`${message.id}-text`} content={part.text}></MemoizedMarkdown> : null
+                                    )}
+                                  </div>
+                                </motion.div>
+                              )}
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
+                </AnimatePresence>
+
+                {/* Thinking indicator — only when no tool calls and no text yet */}
+                <AnimatePresence>
+                  {isThinking && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.2 }}
+                      className="mb-4 flex items-center gap-3"
+                    >
+                      <ChatSpinner name="pulse">{thinkingText}</ChatSpinner>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           )}
+
+          {/* Input & Greeting Wrapper */}
+          <motion.div
+            layout
+            initial={false}
+            className={cn(
+              "w-full flex flex-col shrink-0 relative z-10",
+              messages.length === 0 && !isThinking ? "h-[85%] justify-center" : "justify-end"
+            )}
+          >
+            <AnimatePresence mode="popLayout">
+              {messages.length === 0 && !isThinking && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1, transition: { delay: 0.1 } }}
+                  exit={{ opacity: 0, y: -10, scale: 0.98, transition: { duration: 0.15 } }}
+                  className="mb-6 text-center px-4"
+                >
+                  <h2 className="text-5xl font-medium tracking-tighter dark:tracking-tight mb-2">{greeting}, {userName}!</h2>
+                  <p className="text-muted-foreground mt-4">{quotaError ? "Elérted a limited." : "Mi jár a fejedben ma?"}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Quota wall banner or normal input */}
+            {quotaError ? (
+              <div className="border-t border-border/50 bg-background px-4 py-6">
+                <div className="mx-auto flex max-w-2xl flex-col items-center justify-center rounded-xl border border-border bg-card p-6 text-center text-card-foreground shadow-sm">
+                  <p className="text-base font-semibold mb-2 flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-destructive"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+                    Your thinking space is full.
+                  </p>
+                  <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto leading-relaxed">
+                    {quotaError.reason === "lifetime_exhausted"
+                      ? "You've used your free allowance — and honestly, you made good use of it. Every project you haven't mapped yet, that's what Pro is for."
+                      : `Your 8-hour window is exhausted. Resets ${quotaError.resetsAt ? `in ${Math.max(0, Math.round((new Date(quotaError.resetsAt).getTime() - Date.now()) / 60000))} minutes` : "soon"}.`}
+                  </p>
+                  <Button
+                    variant="default"
+                    className="w-full max-w-sm"
+                    onClick={() => window.location.href = '/profile'}
+                  >
+                    Unlock Unlimited Thinking — $12/mo
+                  </Button>
+                  <p className="mt-3 text-[11px] text-muted-foreground/60">No commitment. Cancel anytime. Your data stays.</p>
+                </div>
+              </div>
+            ) : (
+              <ChatInput input={input} setInput={setInput} onSubmit={handleSubmit} isStreaming={isThinking} />
+            )}
+          </motion.div>
         </div>
 
-        {/* Quota wall banner or normal input */}
-        {quotaError ? (
-          <div className="border-t border-border/50 bg-background px-4 py-6">
-            <div className="mx-auto flex max-w-2xl flex-col items-center justify-center rounded-xl border border-border bg-card p-6 text-center text-card-foreground shadow-sm">
-              <p className="text-base font-semibold mb-2 flex items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-destructive"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                Your thinking space is full.
-              </p>
-              <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto leading-relaxed">
-                {quotaError.reason === "lifetime_exhausted"
-                  ? "You've used your free allowance — and honestly, you made good use of it. Every project you haven't mapped yet, that's what Pro is for."
-                  : `Your 8-hour window is exhausted. Resets ${quotaError.resetsAt ? `in ${Math.max(0, Math.round((new Date(quotaError.resetsAt).getTime() - Date.now()) / 60000))} minutes` : "soon"}.`}
-              </p>
-              <Button 
-                variant="default" 
-                className="w-full max-w-sm"
-                onClick={() => window.location.href = '/profile'}
-              >
-                Unlock Unlimited Thinking — $12/mo
-              </Button>
-              <p className="mt-3 text-[11px] text-muted-foreground/60">No commitment. Cancel anytime. Your data stays.</p>
-            </div>
-          </div>
-        ) : (
-          <ChatInput input={input} setInput={setInput} onSubmit={handleSubmit} isStreaming={isThinking} />
-        )}
       </div>
-
-
     </div>
   );
 }

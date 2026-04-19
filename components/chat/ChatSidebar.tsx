@@ -82,11 +82,10 @@ export function ChatSidebar({
     >
       {/* Logo + New Chat */}
       <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 dark:bg-primary/15 text-sm">
-            <HugeiconsIcon className="text-zinc-700 dark:text-zinc-400" size={28} strokeWidth={1.65} icon={BrainIcon} />
-          </div>
-          <span className="text-base font-medium tracking-tight text-foreground">
+        <div className="flex items-center gap-2">
+          <HugeiconsIcon className="text-foreground" size={32} strokeWidth={1.65} icon={BrainIcon} />
+
+          <span className="text-xl font-medium tracking-tight text-foreground">
             Reig Chat
           </span>
         </div>
@@ -185,7 +184,7 @@ export function ChatSidebar({
           <div className="flex flex-col gap-3">
             {session?.user && (
               <div className="flex items-center gap-3 px-1 py-1">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary ring-1 ring-primary/20">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/5 text-[10px] font-medium text-primary ring-1 ring-primary/20">
                   {session.user.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "U"}
                 </div>
                 <div className="flex flex-1 flex-col overflow-hidden">
@@ -217,8 +216,8 @@ export function ChatSidebar({
                     quota.exhausted ? "text-destructive" : "text-muted-foreground/70"
                   )}>
                     {quota.exhausted
-                      ? quota.tier === "FREE" ? "Free access used up →" : "Window exhausted →"
-                      : quota.tier === "FREE" ? `${quota.percentUsed}% of free access used` : `${quota.percentUsed}% of window used`
+                      ? quota.tier === "FREE" ? "Ingyenes hozzáférés elfogyott →" : "Kvóta elfogyott"
+                      : quota.tier === "FREE" ? `${quota.percentUsed}% felhasználva` : `${quota.percentUsed}% felhasználva`
                     }
                   </span>
                   <span className="text-[10px] text-muted-foreground/40 group-hover:text-muted-foreground transition-colors">

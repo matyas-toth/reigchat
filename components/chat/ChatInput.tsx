@@ -96,7 +96,7 @@ export function ChatInput({
                 disabled={isStreaming}
                 rows={1}
                 className={cn(
-                  "w-full resize-none border-0 bg-transparent dark:bg-transparent disabled:bg-transparent px-4 pt-4 pb-2",
+                  "w-full resize-none border-0 bg-transparent dark:bg-transparent disabled:bg-transparent disabled:dark:bg-transparent px-4 pt-4 pb-2",
                   "text-sm leading-relaxed placeholder:text-muted-foreground/50",
                   "focus-visible:ring-0 focus-visible:outline-none",
                   "disabled:cursor-not-allowed disabled:opacity-60",
@@ -204,8 +204,8 @@ export function ChatInput({
           </div>
 
           {/* Hint */}
-          <p className="mt-2 text-center text-[11px] text-muted-foreground/40 select-none">
-            Press <kbd className="font-mono">Enter</kbd> to send · <kbd className="font-mono">Shift+Enter</kbd> for new line
+          <p className="mt-2 text-center text-[11px] text-muted-foreground/40 select-none tracking-wide">
+            <kbd className="font-mono">Enter</kbd> a küldéshez, <kbd className="font-mono">Shift+Enter</kbd> az új sorhoz
           </p>
         </div>
       </div>
