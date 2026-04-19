@@ -8,19 +8,12 @@ import {
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { buildSystemPrompt } from "@/lib/ai/prompt";
-import { getProjectColor } from "@/lib/colors";
+
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { checkAndReserveQuota, recordUsage, QuotaError } from "@/lib/quota";
 import {
-  createProjectInput,
-  archiveProjectInput,
-  addItemInput,
-  updateItemStatusInput,
-  updateItemContentInput,
   saveMemoryInput,
-  searchMemoriesInput,
-  editProjectInput,
 } from "@/lib/ai/schema";
 
 export const maxDuration = 60;
@@ -99,179 +92,20 @@ export async function POST(req: Request) {
     system: systemPrompt,
     messages: await convertToModelMessages(messages),
     tools: {
-      createProject: {
-        description:
-          "Create a new project. Use when the user mentions a new project or context that doesn't exist yet.",
-        inputSchema: createProjectInput,
-        execute: async ({ projectName, emoji, description }) => {
-          const existing = await prisma.project.findUnique({
-            where: { userId_name: { userId, name: projectName } },
-          });
-          if (existing) {
-            await prisma.project.update({
-              where: { id: existing.id },
-              data: { isActive: true },
-            });
-            return `Reactivated project ${projectName}`;
-          }
-          await prisma.project.create({
-            data: {
-              name: projectName,
-              emoji,
-              description,
-              color: getProjectColor(),
-              userId,
-            },
-          });
-          return `Created project ${emoji || ""} ${projectName}`.trim();
-        },
-      },
-
-      archiveProject: {
-        description:
-          "Archive a project when the user says they're stepping back, pausing, or stopping work on it.",
-        inputSchema: archiveProjectInput,
-        execute: async ({ projectId }) => {
-          const project = await prisma.project.findUnique({
-            where: { id: projectId, userId },
-          });
-          if (!project) return "Error: Project not found or unauthorized";
-          await prisma.project.update({
-            where: { id: projectId },
-            data: { isActive: false },
-          });
-          return `Archived project ${project.name}`;
-        },
-      },
-
-      addItem: {
-        description:
-          "Add a task, note, or idea to a project. You can create multiple items by calling this tool multiple times.",
-        inputSchema: addItemInput,
-        execute: async ({
-          projectName,
-          type,
-          title,
-          content,
-          status,
-          dueDate,
-        }) => {
-          const project = await prisma.project.findUnique({
-            where: { userId_name: { userId, name: projectName } },
-          });
-          if (!project) {
-            return `Error: Project "${projectName}" not found or unauthorized`;
-          }
-          await prisma.item.create({
-            data: {
-              type,
-              title,
-              content,
-              status: status ?? "TODO",
-              dueDate: dueDate ? new Date(dueDate) : undefined,
-              projectId: project.id,
-            },
-          });
-          const typeLabel =
-            type === "TASK" ? "task" : type === "NOTE" ? "note" : "idea";
-          return `Added ${typeLabel} "${title}" to ${projectName}`;
-        },
-      },
-
-      updateItemStatus: {
-        description:
-          "Change the status of an existing item. Use when the user says they completed, started, or paused something.",
-        inputSchema: updateItemStatusInput,
-        execute: async ({ itemId, newStatus }) => {
-          const item = await prisma.item.findFirst({
-            where: { id: itemId, project: { userId } },
-            include: { project: true },
-          });
-          if (!item) return `Error: Item not found or unauthorized`;
-          await prisma.item.update({
-            where: { id: itemId },
-            data: { status: newStatus },
-          });
-          const statusMap: Record<string, string> = {
-            TODO: "Todo",
-            IN_PROGRESS: "In Progress",
-            WAITING: "On Hold",
-            DONE: "Done",
-          };
-          return `Moved "${item.title}" to ${statusMap[newStatus] || newStatus}`;
-        },
-      },
-
-      updateItemContent: {
-        description:
-          "Update the title or content of an existing item.",
-        inputSchema: updateItemContentInput,
-        execute: async ({ itemId, newTitle, newContent }) => {
-          const item = await prisma.item.findFirst({
-            where: { id: itemId, project: { userId } },
-          });
-          if (!item) return `Error: Item not found or unauthorized`;
-          await prisma.item.update({
-            where: { id: itemId },
-            data: {
-              ...(newTitle && { title: newTitle }),
-              ...(newContent && { content: newContent }),
-            },
-          });
-          return `Updated "${item.title}"${newTitle ? ` to "${newTitle}"` : ""}`;
-        },
-      },
-
       saveMemory: {
         description: "Save an important snippet, note, or fact into the brain for later retrieval.",
         inputSchema: saveMemoryInput,
         execute: async ({ content }) => {
+          const memoriesCount = await prisma.memory.count({ where: { userId } });
+          if (memoriesCount >= 25) {
+            const oldest = await prisma.memory.findFirst({
+              where: { userId },
+              orderBy: { createdAt: "asc" },
+            });
+            if (oldest) await prisma.memory.delete({ where: { id: oldest.id } });
+          }
           await prisma.memory.create({ data: { content, userId } });
           return `Memory saved: "${content.substring(0, 30)}..."`;
-        },
-      },
-
-      searchMemories: {
-        description: "Search the brain's Vault for past notes, facts, and snippets.",
-        inputSchema: searchMemoriesInput,
-        execute: async ({ query }) => {
-          // Intense fuzzy search using ILIKE
-          const memories = await prisma.memory.findMany({
-            where: {
-              userId,
-              content: { contains: query, mode: "insensitive" },
-            },
-            take: 5,
-            orderBy: { createdAt: "desc" },
-          });
-          if (memories.length === 0) {
-            return `No memories found matching "${query}".`;
-          }
-          const results = memories.map((m) => `[Date: ${m.createdAt.toISOString()}] ${m.content}`).join("\n\n");
-          return `Found ${memories.length} memories:\n\n${results}`;
-        },
-      },
-
-      editProject: {
-        description: "Modify an existing project's metadata (name, emoji, description, color). Use this when the user wants to rename a project or update its appearance.",
-        inputSchema: editProjectInput,
-        execute: async ({ projectId, newName, newEmoji, newDescription, newColor }) => {
-          const project = await prisma.project.findUnique({
-            where: { id: projectId, userId },
-          });
-          if (!project) return "Error: Project not found or unauthorized";
-
-          const updated = await prisma.project.update({
-            where: { id: projectId },
-            data: {
-              ...(newName && { name: newName }),
-              ...(newEmoji && { emoji: newEmoji }),
-              ...(newDescription && { description: newDescription }),
-              ...(newColor && { color: newColor }),
-            },
-          });
-
-          return `Updated project ${updated.emoji || ""} ${updated.name}`.trim();
         },
       },
     },

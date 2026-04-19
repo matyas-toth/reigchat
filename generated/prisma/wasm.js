@@ -180,30 +180,6 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.ProjectScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  description: 'description',
-  isActive: 'isActive',
-  color: 'color',
-  emoji: 'emoji',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  userId: 'userId'
-};
-
-exports.Prisma.ItemScalarFieldEnum = {
-  id: 'id',
-  type: 'type',
-  title: 'title',
-  content: 'content',
-  status: 'status',
-  dueDate: 'dueDate',
-  projectId: 'projectId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.ChatScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -248,19 +224,6 @@ exports.Tier = exports.$Enums.Tier = {
   ULTRA: 'ULTRA'
 };
 
-exports.ItemType = exports.$Enums.ItemType = {
-  TASK: 'TASK',
-  NOTE: 'NOTE',
-  IDEA: 'IDEA'
-};
-
-exports.Status = exports.$Enums.Status = {
-  TODO: 'TODO',
-  IN_PROGRESS: 'IN_PROGRESS',
-  WAITING: 'WAITING',
-  DONE: 'DONE'
-};
-
 exports.MessageRole = exports.$Enums.MessageRole = {
   user: 'user',
   assistant: 'assistant'
@@ -272,8 +235,6 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Verification: 'Verification',
   Subscription: 'Subscription',
-  Project: 'Project',
-  Item: 'Item',
   Chat: 'Chat',
   Message: 'Message',
   Memory: 'Memory'

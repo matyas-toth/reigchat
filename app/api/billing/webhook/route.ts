@@ -3,8 +3,6 @@ import { stripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import Stripe from "stripe";
 
-// Next.js App Router: we need the raw body for Stripe signature verification
-export const config = { api: { bodyParser: false } };
 
 const PRICE_TO_TIER: Record<string, "PRO" | "ULTRA"> = {
   [process.env.STRIPE_PRO_PRICE_ID ?? ""]: "PRO",

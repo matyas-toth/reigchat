@@ -30,8 +30,7 @@ interface ChatSidebarProps {
   onSelectChat: (id: string) => void;
   onNewChat: () => void;
   onDeleteChat: (id: string) => void;
-  view: "chat" | "tasks";
-  onViewChange: (view: "chat" | "tasks") => void;
+
   isOpen: boolean;
   onToggle: () => void;
   isMobile?: boolean;
@@ -43,8 +42,7 @@ export function ChatSidebar({
   onSelectChat,
   onNewChat,
   onDeleteChat,
-  view,
-  onViewChange,
+
   isOpen,
   onToggle,
   isMobile = false,
@@ -89,7 +87,7 @@ export function ChatSidebar({
             <HugeiconsIcon className="text-zinc-700 dark:text-zinc-400" size={28} strokeWidth={1.65} icon={BrainIcon} />
           </div>
           <span className="text-base font-medium tracking-tight text-foreground">
-            Second Brain
+            Reig Chat
           </span>
         </div>
         <div className="flex items-center gap-1">
@@ -114,7 +112,7 @@ export function ChatSidebar({
                 </svg>
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="right">New Chat</TooltipContent>
+            <TooltipContent side="right">Új Chat</TooltipContent>
           </Tooltip>
           {isMobile && (
             <Button
@@ -131,40 +129,16 @@ export function ChatSidebar({
         </div>
       </div>
 
-      {/* View Toggle */}
-      <div className="flex gap-1 px-4 py-2">
-        <button
-          onClick={() => onViewChange("chat")}
-          className={cn(
-            "flex-1 cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-            view === "chat"
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          Chat
-        </button>
-        <button
-          onClick={() => onViewChange("tasks")}
-          className={cn(
-            "flex-1 cursor-pointer rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-            view === "tasks"
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:text-foreground"
-          )}
-        >
-          Tasks
-        </button>
-      </div>
+
 
       {/* Chat List */}
       <ScrollArea className="flex-1">
         <div className="flex flex-col gap-0.5 p-2">
           {chats.length === 0 && (
             <div className="px-3 py-8 text-center text-xs text-muted-foreground">
-              No chats yet.
+              Itt nincs semmi.
               <br />
-              Start a conversation!
+              Kezdj egy beszélgetést!
             </div>
           )}
           {chats.map((chat) => (
@@ -173,8 +147,8 @@ export function ChatSidebar({
               className={cn(
                 "group flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors cursor-pointer",
                 activeChat === chat.id
-                  ? "bg-accent/10 text-foreground"
-                  : "text-muted-foreground hover:bg-accent/5 hover:text-foreground"
+                  ? "bg-accent/50 text-foreground"
+                  : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
               )}
               onClick={() => onSelectChat(chat.id)}
             >

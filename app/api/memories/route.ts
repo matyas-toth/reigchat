@@ -25,3 +25,34 @@ export async function GET() {
     return NextResponse.json({ error: "Failed to fetch memories" }, { status: 500 });
   }
 }
+
+export async function DELETE(req: Request) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    
+    if (!id) {
+      return new NextResponse("Missing id", { status: 400 });
+    }
+
+    await prisma.memory.delete({
+      where: {
+        id,
+        userId: session.user.id,
+      },
+    });
+    
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting memory:", error);
+    return NextResponse.json({ error: "Failed to delete memory" }, { status: 500 });
+  }
+}

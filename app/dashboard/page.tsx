@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { ChatSidebar } from "@/components/chat/ChatSidebar";
 import { ChatArea } from "@/components/chat/ChatArea";
-import { TaskView } from "@/components/tasks/TaskView";
 import { useSession } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 
@@ -29,7 +28,6 @@ export default function DashboardPage() {
   const { data: session, isPending } = useSession();
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeChat, setActiveChat] = useState<string | null>(null);
-  const [view, setView] = useState<"chat" | "tasks">("chat");
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -44,12 +42,12 @@ export default function DashboardPage() {
     setSidebarOpen(!isMobile);
   }, [isMobile]);
 
-  // Auto-open the latest chat when switching to chat view with nothing selected
+  // Auto-open the latest chat with nothing selected
   useEffect(() => {
-    if (view === "chat" && !activeChat && chats.length > 0) {
+    if (!activeChat && chats.length > 0) {
       setActiveChat(chats[0].id);
     }
-  }, [view, activeChat, chats]);
+  }, [activeChat, chats]);
 
   const fetchChats = useCallback(async () => {
     const res = await fetch("/api/chats");
@@ -68,7 +66,6 @@ export default function DashboardPage() {
     const chat = await res.json();
     setChats((prev) => [chat, ...prev]);
     setActiveChat(chat.id);
-    setView("chat");
     if (isMobile) setSidebarOpen(false);
   };
 
@@ -86,12 +83,6 @@ export default function DashboardPage() {
 
   const handleSelectChat = (id: string) => {
     setActiveChat(id);
-    setView("chat");
-    if (isMobile) setSidebarOpen(false);
-  };
-
-  const handleViewChange = (v: "chat" | "tasks") => {
-    setView(v);
     if (isMobile) setSidebarOpen(false);
   };
 
@@ -119,29 +110,20 @@ export default function DashboardPage() {
         onSelectChat={handleSelectChat}
         onNewChat={createChat}
         onDeleteChat={deleteChat}
-        view={view}
-        onViewChange={handleViewChange}
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
         isMobile={isMobile}
       />
 
       <main className="relative flex flex-1 flex-col overflow-hidden">
-        {view === "chat" ? (
-          <ChatArea
-            key={activeChat ?? "empty"}
-            chatId={activeChat}
-            onNewChat={createChat}
-            onChatUpdated={onChatUpdated}
-            sidebarOpen={sidebarOpen}
-            onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-          />
-        ) : (
-          <TaskView
-            sidebarOpen={sidebarOpen}
-            onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-          />
-        )}
+        <ChatArea
+          key={activeChat ?? "empty"}
+          chatId={activeChat}
+          onNewChat={createChat}
+          onChatUpdated={onChatUpdated}
+          sidebarOpen={sidebarOpen}
+          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        />
       </main>
     </div>
   );

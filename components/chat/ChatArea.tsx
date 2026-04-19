@@ -12,7 +12,6 @@ import { AnimatePresence, motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ChatSpark01Icon } from "@hugeicons/core-free-icons";
 import { MemoizedMarkdown } from "../memoized-markdown";
-import { TaskView } from "../tasks/TaskView";
 
 interface ChatAreaProps {
   chatId: string | null;
@@ -218,49 +217,6 @@ function ChatInner({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [quotaError, setQuotaError] = useState<{ reason: string; resetsAt: string | null } | null>(null);
 
-  const [isTaskSidebarOpen, setIsTaskSidebarOpen] = useState(false);
-  const [taskSidebarWidth, setTaskSidebarWidth] = useState(350);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-  useEffect(() => {
-    const savedOpen = localStorage.getItem("brain_task_sidebar_open");
-    const savedWidth = localStorage.getItem("brain_task_sidebar_width");
-    if (savedOpen !== null) setIsTaskSidebarOpen(savedOpen === "true");
-    if (savedWidth !== null) setTaskSidebarWidth(Number(savedWidth));
-  }, []);
-
-  const toggleTaskSidebar = () => {
-    const newState = !isTaskSidebarOpen;
-    setIsTaskSidebarOpen(newState);
-    localStorage.setItem("brain_task_sidebar_open", String(newState));
-  };
-
-  const handleDrag = (e: React.PointerEvent) => {
-    e.preventDefault();
-    const startX = e.clientX;
-    const startWidth = taskSidebarWidth;
-
-    const onPointerMove = (moveEvent: PointerEvent) => {
-      const deltaX = startX - moveEvent.clientX;
-      let newWidth = startWidth + deltaX;
-      if (newWidth < 250) newWidth = 250;
-      if (newWidth > 600) newWidth = 600;
-      setTaskSidebarWidth(newWidth);
-    };
-
-    const onPointerUp = (upEvent: PointerEvent) => {
-      document.removeEventListener("pointermove", onPointerMove);
-      document.removeEventListener("pointerup", onPointerUp);
-      const finalDeltaX = startX - upEvent.clientX;
-      let finalWidth = startWidth + finalDeltaX;
-      if (finalWidth < 250) finalWidth = 250;
-      if (finalWidth > 600) finalWidth = 600;
-      localStorage.setItem("brain_task_sidebar_width", String(finalWidth));
-    };
-
-    document.addEventListener("pointermove", onPointerMove);
-    document.addEventListener("pointerup", onPointerUp);
-  };
 
   const transport = useMemo(
     () =>
@@ -276,7 +232,6 @@ function ChatInner({
     messages: initialMessages,
     onFinish: () => {
       onChatUpdated();
-      setRefreshTrigger((prev) => prev + 1);
     },
     onError: async (err) => {
       // The AI SDK surfaces the raw response body via err.message or the response
@@ -354,14 +309,6 @@ function ChatInner({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {!isTaskSidebarOpen && (
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={toggleTaskSidebar} title="Open Tasks">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="12" height="12" rx="2" />
-                  <path d="M9 2v12" />
-                </svg>
-              </Button>
-            )}
           </div>
         </div>
 
@@ -492,26 +439,7 @@ function ChatInner({
         )}
       </div>
 
-      {isTaskSidebarOpen && (
-        <>
-          <div
-            onPointerDown={handleDrag}
-            className="w-1 cursor-col-resize hover:bg-primary/50 active:bg-primary transition-colors shrink-0 z-10"
-          />
-          <div
-            style={{ width: taskSidebarWidth }}
-            className="h-full shrink-0 bg-background flex flex-col overflow-hidden border-l border-border/50"
-          >
-            <TaskView
-              sidebarOpen={true}
-              onToggleSidebar={() => { }}
-              refreshTrigger={refreshTrigger}
-              isRightSidebar={true}
-              onCloseRightSidebar={toggleTaskSidebar}
-            />
-          </div>
-        </>
-      )}
+
     </div>
   );
 }

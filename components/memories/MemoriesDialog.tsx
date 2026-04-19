@@ -64,6 +64,15 @@ export function MemoriesDialog({ open, onOpenChange }: MemoriesDialogProps) {
     return fuse.search(search).map((result) => result.item);
   }, [search, memories, fuse]);
 
+  const deleteMemory = async (id: string) => {
+    try {
+      await fetch(`/api/memories?id=${id}`, { method: "DELETE" });
+      setMemories((prev) => prev.filter((m) => m.id !== id));
+    } catch (err) {
+      console.error("Failed to delete memory:", err);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl gap-0 p-0 overflow-hidden bg-background/95 backdrop-blur-xl border-border/50">
@@ -116,9 +125,18 @@ export function MemoriesDialog({ open, onOpenChange }: MemoriesDialogProps) {
                 {filteredMemories.map((memory) => (
                   <div
                     key={memory.id}
-                    className="break-inside-avoid rounded-xl border border-border/50 bg-card p-4 transition-colors hover:bg-accent/5 shadow-sm"
+                    className="group relative break-inside-avoid rounded-xl border border-border/50 bg-card p-4 transition-colors hover:bg-accent/5 shadow-sm"
                   >
-                    <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground">
+                    <button 
+                      onClick={() => deleteMemory(memory.id)}
+                      className="absolute top-2 right-2 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-md"
+                      title="Delete memory"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                        <path d="M4.5 4.5l7 7M11.5 4.5l-7 7" />
+                      </svg>
+                    </button>
+                    <div className="whitespace-pre-wrap text-sm leading-relaxed text-foreground pr-6">
                       {memory.content}
                     </div>
                     <div className="mt-3 text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
