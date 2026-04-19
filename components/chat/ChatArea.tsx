@@ -220,16 +220,24 @@ function ChatInner({
   const greeting = hour < 9 ? "Jó reggelt" : hour < 18 ? "Jó napot" : "Jó estét";
 
   const [input, setInput] = useState("");
+  const [selectedModelId, setSelectedModelId] = useState<string>("openrouter/auto");
+  const selectedModelIdRef = useRef(selectedModelId);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [quotaError, setQuotaError] = useState<{ reason: string; resetsAt: string | null } | null>(null);
+
+  // Keep ref in sync so the stable transport closure always reads the latest model
+  useEffect(() => {
+    selectedModelIdRef.current = selectedModelId;
+  }, [selectedModelId]);
 
   const transport = useMemo(
     () =>
       new DefaultChatTransport({
         api: "/api/chat",
-        body: { chatId },
+        // body is evaluated at send-time; use a getter so we always get the current model
+        body: { chatId, get modelId() { return selectedModelIdRef.current; } },
       }),
-    [chatId]
+    [chatId] // only recreate on chat switch, NOT on model change
   );
 
   const { messages, sendMessage, status } = useChat({
@@ -443,7 +451,14 @@ function ChatInner({
                 </div>
               </div>
             ) : (
-              <ChatInput input={input} setInput={setInput} onSubmit={handleSubmit} isStreaming={isThinking} />
+              <ChatInput
+                input={input}
+                setInput={setInput}
+                onSubmit={handleSubmit}
+                isStreaming={isThinking}
+                selectedModelId={selectedModelId}
+                onModelChange={setSelectedModelId}
+              />
             )}
           </motion.div>
         </div>

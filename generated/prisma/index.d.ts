@@ -53,6 +53,16 @@ export type Message = $Result.DefaultSelection<Prisma.$MessagePayload>
  * 
  */
 export type Memory = $Result.DefaultSelection<Prisma.$MemoryPayload>
+/**
+ * Model TierModel
+ * 
+ */
+export type TierModel = $Result.DefaultSelection<Prisma.$TierModelPayload>
+/**
+ * Model ModelBlocklist
+ * 
+ */
+export type ModelBlocklist = $Result.DefaultSelection<Prisma.$ModelBlocklistPayload>
 
 /**
  * Enums
@@ -67,6 +77,14 @@ export namespace $Enums {
 export type Tier = (typeof Tier)[keyof typeof Tier]
 
 
+export const Role: {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
+
+export type Role = (typeof Role)[keyof typeof Role]
+
+
 export const MessageRole: {
   user: 'user',
   assistant: 'assistant'
@@ -79,6 +97,10 @@ export type MessageRole = (typeof MessageRole)[keyof typeof MessageRole]
 export type Tier = $Enums.Tier
 
 export const Tier: typeof $Enums.Tier
+
+export type Role = $Enums.Role
+
+export const Role: typeof $Enums.Role
 
 export type MessageRole = $Enums.MessageRole
 
@@ -288,6 +310,26 @@ export class PrismaClient<
     * ```
     */
   get memory(): Prisma.MemoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.tierModel`: Exposes CRUD operations for the **TierModel** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TierModels
+    * const tierModels = await prisma.tierModel.findMany()
+    * ```
+    */
+  get tierModel(): Prisma.TierModelDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.modelBlocklist`: Exposes CRUD operations for the **ModelBlocklist** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ModelBlocklists
+    * const modelBlocklists = await prisma.modelBlocklist.findMany()
+    * ```
+    */
+  get modelBlocklist(): Prisma.ModelBlocklistDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -735,7 +777,9 @@ export namespace Prisma {
     Subscription: 'Subscription',
     Chat: 'Chat',
     Message: 'Message',
-    Memory: 'Memory'
+    Memory: 'Memory',
+    TierModel: 'TierModel',
+    ModelBlocklist: 'ModelBlocklist'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -754,7 +798,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "chat" | "message" | "memory"
+      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "chat" | "message" | "memory" | "tierModel" | "modelBlocklist"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1350,6 +1394,154 @@ export namespace Prisma {
           }
         }
       }
+      TierModel: {
+        payload: Prisma.$TierModelPayload<ExtArgs>
+        fields: Prisma.TierModelFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TierModelFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TierModelFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload>
+          }
+          findFirst: {
+            args: Prisma.TierModelFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TierModelFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload>
+          }
+          findMany: {
+            args: Prisma.TierModelFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload>[]
+          }
+          create: {
+            args: Prisma.TierModelCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload>
+          }
+          createMany: {
+            args: Prisma.TierModelCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TierModelCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload>[]
+          }
+          delete: {
+            args: Prisma.TierModelDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload>
+          }
+          update: {
+            args: Prisma.TierModelUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload>
+          }
+          deleteMany: {
+            args: Prisma.TierModelDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TierModelUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TierModelUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload>[]
+          }
+          upsert: {
+            args: Prisma.TierModelUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TierModelPayload>
+          }
+          aggregate: {
+            args: Prisma.TierModelAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTierModel>
+          }
+          groupBy: {
+            args: Prisma.TierModelGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TierModelGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TierModelCountArgs<ExtArgs>
+            result: $Utils.Optional<TierModelCountAggregateOutputType> | number
+          }
+        }
+      }
+      ModelBlocklist: {
+        payload: Prisma.$ModelBlocklistPayload<ExtArgs>
+        fields: Prisma.ModelBlocklistFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ModelBlocklistFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ModelBlocklistFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload>
+          }
+          findFirst: {
+            args: Prisma.ModelBlocklistFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ModelBlocklistFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload>
+          }
+          findMany: {
+            args: Prisma.ModelBlocklistFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload>[]
+          }
+          create: {
+            args: Prisma.ModelBlocklistCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload>
+          }
+          createMany: {
+            args: Prisma.ModelBlocklistCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ModelBlocklistCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload>[]
+          }
+          delete: {
+            args: Prisma.ModelBlocklistDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload>
+          }
+          update: {
+            args: Prisma.ModelBlocklistUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload>
+          }
+          deleteMany: {
+            args: Prisma.ModelBlocklistDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ModelBlocklistUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ModelBlocklistUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload>[]
+          }
+          upsert: {
+            args: Prisma.ModelBlocklistUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModelBlocklistPayload>
+          }
+          aggregate: {
+            args: Prisma.ModelBlocklistAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateModelBlocklist>
+          }
+          groupBy: {
+            args: Prisma.ModelBlocklistGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ModelBlocklistGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ModelBlocklistCountArgs<ExtArgs>
+            result: $Utils.Optional<ModelBlocklistCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1442,6 +1634,8 @@ export namespace Prisma {
     chat?: ChatOmit
     message?: MessageOmit
     memory?: MemoryOmit
+    tierModel?: TierModelOmit
+    modelBlocklist?: ModelBlocklistOmit
   }
 
   /* Types for Logging */
@@ -1642,6 +1836,7 @@ export namespace Prisma {
     image: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    role: $Enums.Role | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1652,6 +1847,7 @@ export namespace Prisma {
     image: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    role: $Enums.Role | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1662,6 +1858,7 @@ export namespace Prisma {
     image: number
     createdAt: number
     updatedAt: number
+    role: number
     _all: number
   }
 
@@ -1674,6 +1871,7 @@ export namespace Prisma {
     image?: true
     createdAt?: true
     updatedAt?: true
+    role?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1684,6 +1882,7 @@ export namespace Prisma {
     image?: true
     createdAt?: true
     updatedAt?: true
+    role?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1694,6 +1893,7 @@ export namespace Prisma {
     image?: true
     createdAt?: true
     updatedAt?: true
+    role?: true
     _all?: true
   }
 
@@ -1777,6 +1977,7 @@ export namespace Prisma {
     image: string | null
     createdAt: Date
     updatedAt: Date
+    role: $Enums.Role
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1804,6 +2005,7 @@ export namespace Prisma {
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    role?: boolean
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
     chats?: boolean | User$chatsArgs<ExtArgs>
@@ -1820,6 +2022,7 @@ export namespace Prisma {
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    role?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1830,6 +2033,7 @@ export namespace Prisma {
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    role?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1840,9 +2044,10 @@ export namespace Prisma {
     image?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    role?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "role", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     accounts?: boolean | User$accountsArgs<ExtArgs>
@@ -1871,6 +2076,7 @@ export namespace Prisma {
       image: string | null
       createdAt: Date
       updatedAt: Date
+      role: $Enums.Role
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2306,6 +2512,7 @@ export namespace Prisma {
     readonly image: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly role: FieldRef<"User", 'Role'>
   }
     
 
@@ -10520,6 +10727,1983 @@ export namespace Prisma {
 
 
   /**
+   * Model TierModel
+   */
+
+  export type AggregateTierModel = {
+    _count: TierModelCountAggregateOutputType | null
+    _min: TierModelMinAggregateOutputType | null
+    _max: TierModelMaxAggregateOutputType | null
+  }
+
+  export type TierModelMinAggregateOutputType = {
+    id: string | null
+    modelId: string | null
+    tier: $Enums.Tier | null
+    label: string | null
+    createdAt: Date | null
+  }
+
+  export type TierModelMaxAggregateOutputType = {
+    id: string | null
+    modelId: string | null
+    tier: $Enums.Tier | null
+    label: string | null
+    createdAt: Date | null
+  }
+
+  export type TierModelCountAggregateOutputType = {
+    id: number
+    modelId: number
+    tier: number
+    label: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type TierModelMinAggregateInputType = {
+    id?: true
+    modelId?: true
+    tier?: true
+    label?: true
+    createdAt?: true
+  }
+
+  export type TierModelMaxAggregateInputType = {
+    id?: true
+    modelId?: true
+    tier?: true
+    label?: true
+    createdAt?: true
+  }
+
+  export type TierModelCountAggregateInputType = {
+    id?: true
+    modelId?: true
+    tier?: true
+    label?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type TierModelAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TierModel to aggregate.
+     */
+    where?: TierModelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TierModels to fetch.
+     */
+    orderBy?: TierModelOrderByWithRelationInput | TierModelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TierModelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TierModels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TierModels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TierModels
+    **/
+    _count?: true | TierModelCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TierModelMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TierModelMaxAggregateInputType
+  }
+
+  export type GetTierModelAggregateType<T extends TierModelAggregateArgs> = {
+        [P in keyof T & keyof AggregateTierModel]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTierModel[P]>
+      : GetScalarType<T[P], AggregateTierModel[P]>
+  }
+
+
+
+
+  export type TierModelGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TierModelWhereInput
+    orderBy?: TierModelOrderByWithAggregationInput | TierModelOrderByWithAggregationInput[]
+    by: TierModelScalarFieldEnum[] | TierModelScalarFieldEnum
+    having?: TierModelScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TierModelCountAggregateInputType | true
+    _min?: TierModelMinAggregateInputType
+    _max?: TierModelMaxAggregateInputType
+  }
+
+  export type TierModelGroupByOutputType = {
+    id: string
+    modelId: string
+    tier: $Enums.Tier
+    label: string
+    createdAt: Date
+    _count: TierModelCountAggregateOutputType | null
+    _min: TierModelMinAggregateOutputType | null
+    _max: TierModelMaxAggregateOutputType | null
+  }
+
+  type GetTierModelGroupByPayload<T extends TierModelGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TierModelGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TierModelGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TierModelGroupByOutputType[P]>
+            : GetScalarType<T[P], TierModelGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TierModelSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    modelId?: boolean
+    tier?: boolean
+    label?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["tierModel"]>
+
+  export type TierModelSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    modelId?: boolean
+    tier?: boolean
+    label?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["tierModel"]>
+
+  export type TierModelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    modelId?: boolean
+    tier?: boolean
+    label?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["tierModel"]>
+
+  export type TierModelSelectScalar = {
+    id?: boolean
+    modelId?: boolean
+    tier?: boolean
+    label?: boolean
+    createdAt?: boolean
+  }
+
+  export type TierModelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "modelId" | "tier" | "label" | "createdAt", ExtArgs["result"]["tierModel"]>
+
+  export type $TierModelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TierModel"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      modelId: string
+      tier: $Enums.Tier
+      label: string
+      createdAt: Date
+    }, ExtArgs["result"]["tierModel"]>
+    composites: {}
+  }
+
+  type TierModelGetPayload<S extends boolean | null | undefined | TierModelDefaultArgs> = $Result.GetResult<Prisma.$TierModelPayload, S>
+
+  type TierModelCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TierModelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TierModelCountAggregateInputType | true
+    }
+
+  export interface TierModelDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TierModel'], meta: { name: 'TierModel' } }
+    /**
+     * Find zero or one TierModel that matches the filter.
+     * @param {TierModelFindUniqueArgs} args - Arguments to find a TierModel
+     * @example
+     * // Get one TierModel
+     * const tierModel = await prisma.tierModel.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TierModelFindUniqueArgs>(args: SelectSubset<T, TierModelFindUniqueArgs<ExtArgs>>): Prisma__TierModelClient<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TierModel that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TierModelFindUniqueOrThrowArgs} args - Arguments to find a TierModel
+     * @example
+     * // Get one TierModel
+     * const tierModel = await prisma.tierModel.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TierModelFindUniqueOrThrowArgs>(args: SelectSubset<T, TierModelFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TierModelClient<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TierModel that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierModelFindFirstArgs} args - Arguments to find a TierModel
+     * @example
+     * // Get one TierModel
+     * const tierModel = await prisma.tierModel.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TierModelFindFirstArgs>(args?: SelectSubset<T, TierModelFindFirstArgs<ExtArgs>>): Prisma__TierModelClient<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TierModel that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierModelFindFirstOrThrowArgs} args - Arguments to find a TierModel
+     * @example
+     * // Get one TierModel
+     * const tierModel = await prisma.tierModel.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TierModelFindFirstOrThrowArgs>(args?: SelectSubset<T, TierModelFindFirstOrThrowArgs<ExtArgs>>): Prisma__TierModelClient<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TierModels that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierModelFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TierModels
+     * const tierModels = await prisma.tierModel.findMany()
+     * 
+     * // Get first 10 TierModels
+     * const tierModels = await prisma.tierModel.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tierModelWithIdOnly = await prisma.tierModel.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TierModelFindManyArgs>(args?: SelectSubset<T, TierModelFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TierModel.
+     * @param {TierModelCreateArgs} args - Arguments to create a TierModel.
+     * @example
+     * // Create one TierModel
+     * const TierModel = await prisma.tierModel.create({
+     *   data: {
+     *     // ... data to create a TierModel
+     *   }
+     * })
+     * 
+     */
+    create<T extends TierModelCreateArgs>(args: SelectSubset<T, TierModelCreateArgs<ExtArgs>>): Prisma__TierModelClient<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TierModels.
+     * @param {TierModelCreateManyArgs} args - Arguments to create many TierModels.
+     * @example
+     * // Create many TierModels
+     * const tierModel = await prisma.tierModel.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TierModelCreateManyArgs>(args?: SelectSubset<T, TierModelCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TierModels and returns the data saved in the database.
+     * @param {TierModelCreateManyAndReturnArgs} args - Arguments to create many TierModels.
+     * @example
+     * // Create many TierModels
+     * const tierModel = await prisma.tierModel.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TierModels and only return the `id`
+     * const tierModelWithIdOnly = await prisma.tierModel.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TierModelCreateManyAndReturnArgs>(args?: SelectSubset<T, TierModelCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TierModel.
+     * @param {TierModelDeleteArgs} args - Arguments to delete one TierModel.
+     * @example
+     * // Delete one TierModel
+     * const TierModel = await prisma.tierModel.delete({
+     *   where: {
+     *     // ... filter to delete one TierModel
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TierModelDeleteArgs>(args: SelectSubset<T, TierModelDeleteArgs<ExtArgs>>): Prisma__TierModelClient<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TierModel.
+     * @param {TierModelUpdateArgs} args - Arguments to update one TierModel.
+     * @example
+     * // Update one TierModel
+     * const tierModel = await prisma.tierModel.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TierModelUpdateArgs>(args: SelectSubset<T, TierModelUpdateArgs<ExtArgs>>): Prisma__TierModelClient<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TierModels.
+     * @param {TierModelDeleteManyArgs} args - Arguments to filter TierModels to delete.
+     * @example
+     * // Delete a few TierModels
+     * const { count } = await prisma.tierModel.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TierModelDeleteManyArgs>(args?: SelectSubset<T, TierModelDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TierModels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierModelUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TierModels
+     * const tierModel = await prisma.tierModel.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TierModelUpdateManyArgs>(args: SelectSubset<T, TierModelUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TierModels and returns the data updated in the database.
+     * @param {TierModelUpdateManyAndReturnArgs} args - Arguments to update many TierModels.
+     * @example
+     * // Update many TierModels
+     * const tierModel = await prisma.tierModel.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TierModels and only return the `id`
+     * const tierModelWithIdOnly = await prisma.tierModel.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TierModelUpdateManyAndReturnArgs>(args: SelectSubset<T, TierModelUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TierModel.
+     * @param {TierModelUpsertArgs} args - Arguments to update or create a TierModel.
+     * @example
+     * // Update or create a TierModel
+     * const tierModel = await prisma.tierModel.upsert({
+     *   create: {
+     *     // ... data to create a TierModel
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TierModel we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TierModelUpsertArgs>(args: SelectSubset<T, TierModelUpsertArgs<ExtArgs>>): Prisma__TierModelClient<$Result.GetResult<Prisma.$TierModelPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TierModels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierModelCountArgs} args - Arguments to filter TierModels to count.
+     * @example
+     * // Count the number of TierModels
+     * const count = await prisma.tierModel.count({
+     *   where: {
+     *     // ... the filter for the TierModels we want to count
+     *   }
+     * })
+    **/
+    count<T extends TierModelCountArgs>(
+      args?: Subset<T, TierModelCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TierModelCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TierModel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierModelAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TierModelAggregateArgs>(args: Subset<T, TierModelAggregateArgs>): Prisma.PrismaPromise<GetTierModelAggregateType<T>>
+
+    /**
+     * Group by TierModel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TierModelGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TierModelGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TierModelGroupByArgs['orderBy'] }
+        : { orderBy?: TierModelGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TierModelGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTierModelGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TierModel model
+   */
+  readonly fields: TierModelFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TierModel.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TierModelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TierModel model
+   */
+  interface TierModelFieldRefs {
+    readonly id: FieldRef<"TierModel", 'String'>
+    readonly modelId: FieldRef<"TierModel", 'String'>
+    readonly tier: FieldRef<"TierModel", 'Tier'>
+    readonly label: FieldRef<"TierModel", 'String'>
+    readonly createdAt: FieldRef<"TierModel", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TierModel findUnique
+   */
+  export type TierModelFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * Filter, which TierModel to fetch.
+     */
+    where: TierModelWhereUniqueInput
+  }
+
+  /**
+   * TierModel findUniqueOrThrow
+   */
+  export type TierModelFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * Filter, which TierModel to fetch.
+     */
+    where: TierModelWhereUniqueInput
+  }
+
+  /**
+   * TierModel findFirst
+   */
+  export type TierModelFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * Filter, which TierModel to fetch.
+     */
+    where?: TierModelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TierModels to fetch.
+     */
+    orderBy?: TierModelOrderByWithRelationInput | TierModelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TierModels.
+     */
+    cursor?: TierModelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TierModels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TierModels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TierModels.
+     */
+    distinct?: TierModelScalarFieldEnum | TierModelScalarFieldEnum[]
+  }
+
+  /**
+   * TierModel findFirstOrThrow
+   */
+  export type TierModelFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * Filter, which TierModel to fetch.
+     */
+    where?: TierModelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TierModels to fetch.
+     */
+    orderBy?: TierModelOrderByWithRelationInput | TierModelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TierModels.
+     */
+    cursor?: TierModelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TierModels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TierModels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TierModels.
+     */
+    distinct?: TierModelScalarFieldEnum | TierModelScalarFieldEnum[]
+  }
+
+  /**
+   * TierModel findMany
+   */
+  export type TierModelFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * Filter, which TierModels to fetch.
+     */
+    where?: TierModelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TierModels to fetch.
+     */
+    orderBy?: TierModelOrderByWithRelationInput | TierModelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TierModels.
+     */
+    cursor?: TierModelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TierModels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TierModels.
+     */
+    skip?: number
+    distinct?: TierModelScalarFieldEnum | TierModelScalarFieldEnum[]
+  }
+
+  /**
+   * TierModel create
+   */
+  export type TierModelCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * The data needed to create a TierModel.
+     */
+    data: XOR<TierModelCreateInput, TierModelUncheckedCreateInput>
+  }
+
+  /**
+   * TierModel createMany
+   */
+  export type TierModelCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TierModels.
+     */
+    data: TierModelCreateManyInput | TierModelCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TierModel createManyAndReturn
+   */
+  export type TierModelCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * The data used to create many TierModels.
+     */
+    data: TierModelCreateManyInput | TierModelCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TierModel update
+   */
+  export type TierModelUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * The data needed to update a TierModel.
+     */
+    data: XOR<TierModelUpdateInput, TierModelUncheckedUpdateInput>
+    /**
+     * Choose, which TierModel to update.
+     */
+    where: TierModelWhereUniqueInput
+  }
+
+  /**
+   * TierModel updateMany
+   */
+  export type TierModelUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TierModels.
+     */
+    data: XOR<TierModelUpdateManyMutationInput, TierModelUncheckedUpdateManyInput>
+    /**
+     * Filter which TierModels to update
+     */
+    where?: TierModelWhereInput
+    /**
+     * Limit how many TierModels to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TierModel updateManyAndReturn
+   */
+  export type TierModelUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * The data used to update TierModels.
+     */
+    data: XOR<TierModelUpdateManyMutationInput, TierModelUncheckedUpdateManyInput>
+    /**
+     * Filter which TierModels to update
+     */
+    where?: TierModelWhereInput
+    /**
+     * Limit how many TierModels to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TierModel upsert
+   */
+  export type TierModelUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * The filter to search for the TierModel to update in case it exists.
+     */
+    where: TierModelWhereUniqueInput
+    /**
+     * In case the TierModel found by the `where` argument doesn't exist, create a new TierModel with this data.
+     */
+    create: XOR<TierModelCreateInput, TierModelUncheckedCreateInput>
+    /**
+     * In case the TierModel was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TierModelUpdateInput, TierModelUncheckedUpdateInput>
+  }
+
+  /**
+   * TierModel delete
+   */
+  export type TierModelDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+    /**
+     * Filter which TierModel to delete.
+     */
+    where: TierModelWhereUniqueInput
+  }
+
+  /**
+   * TierModel deleteMany
+   */
+  export type TierModelDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TierModels to delete
+     */
+    where?: TierModelWhereInput
+    /**
+     * Limit how many TierModels to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TierModel without action
+   */
+  export type TierModelDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TierModel
+     */
+    select?: TierModelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TierModel
+     */
+    omit?: TierModelOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ModelBlocklist
+   */
+
+  export type AggregateModelBlocklist = {
+    _count: ModelBlocklistCountAggregateOutputType | null
+    _min: ModelBlocklistMinAggregateOutputType | null
+    _max: ModelBlocklistMaxAggregateOutputType | null
+  }
+
+  export type ModelBlocklistMinAggregateOutputType = {
+    id: string | null
+    modelId: string | null
+    reason: string | null
+    createdAt: Date | null
+  }
+
+  export type ModelBlocklistMaxAggregateOutputType = {
+    id: string | null
+    modelId: string | null
+    reason: string | null
+    createdAt: Date | null
+  }
+
+  export type ModelBlocklistCountAggregateOutputType = {
+    id: number
+    modelId: number
+    reason: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ModelBlocklistMinAggregateInputType = {
+    id?: true
+    modelId?: true
+    reason?: true
+    createdAt?: true
+  }
+
+  export type ModelBlocklistMaxAggregateInputType = {
+    id?: true
+    modelId?: true
+    reason?: true
+    createdAt?: true
+  }
+
+  export type ModelBlocklistCountAggregateInputType = {
+    id?: true
+    modelId?: true
+    reason?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ModelBlocklistAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ModelBlocklist to aggregate.
+     */
+    where?: ModelBlocklistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModelBlocklists to fetch.
+     */
+    orderBy?: ModelBlocklistOrderByWithRelationInput | ModelBlocklistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ModelBlocklistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModelBlocklists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModelBlocklists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ModelBlocklists
+    **/
+    _count?: true | ModelBlocklistCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ModelBlocklistMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ModelBlocklistMaxAggregateInputType
+  }
+
+  export type GetModelBlocklistAggregateType<T extends ModelBlocklistAggregateArgs> = {
+        [P in keyof T & keyof AggregateModelBlocklist]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateModelBlocklist[P]>
+      : GetScalarType<T[P], AggregateModelBlocklist[P]>
+  }
+
+
+
+
+  export type ModelBlocklistGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModelBlocklistWhereInput
+    orderBy?: ModelBlocklistOrderByWithAggregationInput | ModelBlocklistOrderByWithAggregationInput[]
+    by: ModelBlocklistScalarFieldEnum[] | ModelBlocklistScalarFieldEnum
+    having?: ModelBlocklistScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ModelBlocklistCountAggregateInputType | true
+    _min?: ModelBlocklistMinAggregateInputType
+    _max?: ModelBlocklistMaxAggregateInputType
+  }
+
+  export type ModelBlocklistGroupByOutputType = {
+    id: string
+    modelId: string
+    reason: string | null
+    createdAt: Date
+    _count: ModelBlocklistCountAggregateOutputType | null
+    _min: ModelBlocklistMinAggregateOutputType | null
+    _max: ModelBlocklistMaxAggregateOutputType | null
+  }
+
+  type GetModelBlocklistGroupByPayload<T extends ModelBlocklistGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ModelBlocklistGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ModelBlocklistGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ModelBlocklistGroupByOutputType[P]>
+            : GetScalarType<T[P], ModelBlocklistGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ModelBlocklistSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    modelId?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["modelBlocklist"]>
+
+  export type ModelBlocklistSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    modelId?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["modelBlocklist"]>
+
+  export type ModelBlocklistSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    modelId?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["modelBlocklist"]>
+
+  export type ModelBlocklistSelectScalar = {
+    id?: boolean
+    modelId?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }
+
+  export type ModelBlocklistOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "modelId" | "reason" | "createdAt", ExtArgs["result"]["modelBlocklist"]>
+
+  export type $ModelBlocklistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ModelBlocklist"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      modelId: string
+      reason: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["modelBlocklist"]>
+    composites: {}
+  }
+
+  type ModelBlocklistGetPayload<S extends boolean | null | undefined | ModelBlocklistDefaultArgs> = $Result.GetResult<Prisma.$ModelBlocklistPayload, S>
+
+  type ModelBlocklistCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ModelBlocklistFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ModelBlocklistCountAggregateInputType | true
+    }
+
+  export interface ModelBlocklistDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ModelBlocklist'], meta: { name: 'ModelBlocklist' } }
+    /**
+     * Find zero or one ModelBlocklist that matches the filter.
+     * @param {ModelBlocklistFindUniqueArgs} args - Arguments to find a ModelBlocklist
+     * @example
+     * // Get one ModelBlocklist
+     * const modelBlocklist = await prisma.modelBlocklist.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ModelBlocklistFindUniqueArgs>(args: SelectSubset<T, ModelBlocklistFindUniqueArgs<ExtArgs>>): Prisma__ModelBlocklistClient<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ModelBlocklist that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ModelBlocklistFindUniqueOrThrowArgs} args - Arguments to find a ModelBlocklist
+     * @example
+     * // Get one ModelBlocklist
+     * const modelBlocklist = await prisma.modelBlocklist.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ModelBlocklistFindUniqueOrThrowArgs>(args: SelectSubset<T, ModelBlocklistFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ModelBlocklistClient<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ModelBlocklist that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelBlocklistFindFirstArgs} args - Arguments to find a ModelBlocklist
+     * @example
+     * // Get one ModelBlocklist
+     * const modelBlocklist = await prisma.modelBlocklist.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ModelBlocklistFindFirstArgs>(args?: SelectSubset<T, ModelBlocklistFindFirstArgs<ExtArgs>>): Prisma__ModelBlocklistClient<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ModelBlocklist that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelBlocklistFindFirstOrThrowArgs} args - Arguments to find a ModelBlocklist
+     * @example
+     * // Get one ModelBlocklist
+     * const modelBlocklist = await prisma.modelBlocklist.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ModelBlocklistFindFirstOrThrowArgs>(args?: SelectSubset<T, ModelBlocklistFindFirstOrThrowArgs<ExtArgs>>): Prisma__ModelBlocklistClient<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ModelBlocklists that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelBlocklistFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ModelBlocklists
+     * const modelBlocklists = await prisma.modelBlocklist.findMany()
+     * 
+     * // Get first 10 ModelBlocklists
+     * const modelBlocklists = await prisma.modelBlocklist.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const modelBlocklistWithIdOnly = await prisma.modelBlocklist.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ModelBlocklistFindManyArgs>(args?: SelectSubset<T, ModelBlocklistFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ModelBlocklist.
+     * @param {ModelBlocklistCreateArgs} args - Arguments to create a ModelBlocklist.
+     * @example
+     * // Create one ModelBlocklist
+     * const ModelBlocklist = await prisma.modelBlocklist.create({
+     *   data: {
+     *     // ... data to create a ModelBlocklist
+     *   }
+     * })
+     * 
+     */
+    create<T extends ModelBlocklistCreateArgs>(args: SelectSubset<T, ModelBlocklistCreateArgs<ExtArgs>>): Prisma__ModelBlocklistClient<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ModelBlocklists.
+     * @param {ModelBlocklistCreateManyArgs} args - Arguments to create many ModelBlocklists.
+     * @example
+     * // Create many ModelBlocklists
+     * const modelBlocklist = await prisma.modelBlocklist.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ModelBlocklistCreateManyArgs>(args?: SelectSubset<T, ModelBlocklistCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ModelBlocklists and returns the data saved in the database.
+     * @param {ModelBlocklistCreateManyAndReturnArgs} args - Arguments to create many ModelBlocklists.
+     * @example
+     * // Create many ModelBlocklists
+     * const modelBlocklist = await prisma.modelBlocklist.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ModelBlocklists and only return the `id`
+     * const modelBlocklistWithIdOnly = await prisma.modelBlocklist.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ModelBlocklistCreateManyAndReturnArgs>(args?: SelectSubset<T, ModelBlocklistCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ModelBlocklist.
+     * @param {ModelBlocklistDeleteArgs} args - Arguments to delete one ModelBlocklist.
+     * @example
+     * // Delete one ModelBlocklist
+     * const ModelBlocklist = await prisma.modelBlocklist.delete({
+     *   where: {
+     *     // ... filter to delete one ModelBlocklist
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ModelBlocklistDeleteArgs>(args: SelectSubset<T, ModelBlocklistDeleteArgs<ExtArgs>>): Prisma__ModelBlocklistClient<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ModelBlocklist.
+     * @param {ModelBlocklistUpdateArgs} args - Arguments to update one ModelBlocklist.
+     * @example
+     * // Update one ModelBlocklist
+     * const modelBlocklist = await prisma.modelBlocklist.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ModelBlocklistUpdateArgs>(args: SelectSubset<T, ModelBlocklistUpdateArgs<ExtArgs>>): Prisma__ModelBlocklistClient<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ModelBlocklists.
+     * @param {ModelBlocklistDeleteManyArgs} args - Arguments to filter ModelBlocklists to delete.
+     * @example
+     * // Delete a few ModelBlocklists
+     * const { count } = await prisma.modelBlocklist.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ModelBlocklistDeleteManyArgs>(args?: SelectSubset<T, ModelBlocklistDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ModelBlocklists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelBlocklistUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ModelBlocklists
+     * const modelBlocklist = await prisma.modelBlocklist.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ModelBlocklistUpdateManyArgs>(args: SelectSubset<T, ModelBlocklistUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ModelBlocklists and returns the data updated in the database.
+     * @param {ModelBlocklistUpdateManyAndReturnArgs} args - Arguments to update many ModelBlocklists.
+     * @example
+     * // Update many ModelBlocklists
+     * const modelBlocklist = await prisma.modelBlocklist.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ModelBlocklists and only return the `id`
+     * const modelBlocklistWithIdOnly = await prisma.modelBlocklist.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ModelBlocklistUpdateManyAndReturnArgs>(args: SelectSubset<T, ModelBlocklistUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ModelBlocklist.
+     * @param {ModelBlocklistUpsertArgs} args - Arguments to update or create a ModelBlocklist.
+     * @example
+     * // Update or create a ModelBlocklist
+     * const modelBlocklist = await prisma.modelBlocklist.upsert({
+     *   create: {
+     *     // ... data to create a ModelBlocklist
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ModelBlocklist we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ModelBlocklistUpsertArgs>(args: SelectSubset<T, ModelBlocklistUpsertArgs<ExtArgs>>): Prisma__ModelBlocklistClient<$Result.GetResult<Prisma.$ModelBlocklistPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ModelBlocklists.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelBlocklistCountArgs} args - Arguments to filter ModelBlocklists to count.
+     * @example
+     * // Count the number of ModelBlocklists
+     * const count = await prisma.modelBlocklist.count({
+     *   where: {
+     *     // ... the filter for the ModelBlocklists we want to count
+     *   }
+     * })
+    **/
+    count<T extends ModelBlocklistCountArgs>(
+      args?: Subset<T, ModelBlocklistCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ModelBlocklistCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ModelBlocklist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelBlocklistAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ModelBlocklistAggregateArgs>(args: Subset<T, ModelBlocklistAggregateArgs>): Prisma.PrismaPromise<GetModelBlocklistAggregateType<T>>
+
+    /**
+     * Group by ModelBlocklist.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelBlocklistGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ModelBlocklistGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ModelBlocklistGroupByArgs['orderBy'] }
+        : { orderBy?: ModelBlocklistGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ModelBlocklistGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetModelBlocklistGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ModelBlocklist model
+   */
+  readonly fields: ModelBlocklistFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ModelBlocklist.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ModelBlocklistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ModelBlocklist model
+   */
+  interface ModelBlocklistFieldRefs {
+    readonly id: FieldRef<"ModelBlocklist", 'String'>
+    readonly modelId: FieldRef<"ModelBlocklist", 'String'>
+    readonly reason: FieldRef<"ModelBlocklist", 'String'>
+    readonly createdAt: FieldRef<"ModelBlocklist", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ModelBlocklist findUnique
+   */
+  export type ModelBlocklistFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * Filter, which ModelBlocklist to fetch.
+     */
+    where: ModelBlocklistWhereUniqueInput
+  }
+
+  /**
+   * ModelBlocklist findUniqueOrThrow
+   */
+  export type ModelBlocklistFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * Filter, which ModelBlocklist to fetch.
+     */
+    where: ModelBlocklistWhereUniqueInput
+  }
+
+  /**
+   * ModelBlocklist findFirst
+   */
+  export type ModelBlocklistFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * Filter, which ModelBlocklist to fetch.
+     */
+    where?: ModelBlocklistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModelBlocklists to fetch.
+     */
+    orderBy?: ModelBlocklistOrderByWithRelationInput | ModelBlocklistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ModelBlocklists.
+     */
+    cursor?: ModelBlocklistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModelBlocklists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModelBlocklists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModelBlocklists.
+     */
+    distinct?: ModelBlocklistScalarFieldEnum | ModelBlocklistScalarFieldEnum[]
+  }
+
+  /**
+   * ModelBlocklist findFirstOrThrow
+   */
+  export type ModelBlocklistFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * Filter, which ModelBlocklist to fetch.
+     */
+    where?: ModelBlocklistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModelBlocklists to fetch.
+     */
+    orderBy?: ModelBlocklistOrderByWithRelationInput | ModelBlocklistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ModelBlocklists.
+     */
+    cursor?: ModelBlocklistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModelBlocklists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModelBlocklists.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModelBlocklists.
+     */
+    distinct?: ModelBlocklistScalarFieldEnum | ModelBlocklistScalarFieldEnum[]
+  }
+
+  /**
+   * ModelBlocklist findMany
+   */
+  export type ModelBlocklistFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * Filter, which ModelBlocklists to fetch.
+     */
+    where?: ModelBlocklistWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModelBlocklists to fetch.
+     */
+    orderBy?: ModelBlocklistOrderByWithRelationInput | ModelBlocklistOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ModelBlocklists.
+     */
+    cursor?: ModelBlocklistWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModelBlocklists from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModelBlocklists.
+     */
+    skip?: number
+    distinct?: ModelBlocklistScalarFieldEnum | ModelBlocklistScalarFieldEnum[]
+  }
+
+  /**
+   * ModelBlocklist create
+   */
+  export type ModelBlocklistCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ModelBlocklist.
+     */
+    data: XOR<ModelBlocklistCreateInput, ModelBlocklistUncheckedCreateInput>
+  }
+
+  /**
+   * ModelBlocklist createMany
+   */
+  export type ModelBlocklistCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ModelBlocklists.
+     */
+    data: ModelBlocklistCreateManyInput | ModelBlocklistCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ModelBlocklist createManyAndReturn
+   */
+  export type ModelBlocklistCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * The data used to create many ModelBlocklists.
+     */
+    data: ModelBlocklistCreateManyInput | ModelBlocklistCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ModelBlocklist update
+   */
+  export type ModelBlocklistUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ModelBlocklist.
+     */
+    data: XOR<ModelBlocklistUpdateInput, ModelBlocklistUncheckedUpdateInput>
+    /**
+     * Choose, which ModelBlocklist to update.
+     */
+    where: ModelBlocklistWhereUniqueInput
+  }
+
+  /**
+   * ModelBlocklist updateMany
+   */
+  export type ModelBlocklistUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ModelBlocklists.
+     */
+    data: XOR<ModelBlocklistUpdateManyMutationInput, ModelBlocklistUncheckedUpdateManyInput>
+    /**
+     * Filter which ModelBlocklists to update
+     */
+    where?: ModelBlocklistWhereInput
+    /**
+     * Limit how many ModelBlocklists to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ModelBlocklist updateManyAndReturn
+   */
+  export type ModelBlocklistUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * The data used to update ModelBlocklists.
+     */
+    data: XOR<ModelBlocklistUpdateManyMutationInput, ModelBlocklistUncheckedUpdateManyInput>
+    /**
+     * Filter which ModelBlocklists to update
+     */
+    where?: ModelBlocklistWhereInput
+    /**
+     * Limit how many ModelBlocklists to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ModelBlocklist upsert
+   */
+  export type ModelBlocklistUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ModelBlocklist to update in case it exists.
+     */
+    where: ModelBlocklistWhereUniqueInput
+    /**
+     * In case the ModelBlocklist found by the `where` argument doesn't exist, create a new ModelBlocklist with this data.
+     */
+    create: XOR<ModelBlocklistCreateInput, ModelBlocklistUncheckedCreateInput>
+    /**
+     * In case the ModelBlocklist was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ModelBlocklistUpdateInput, ModelBlocklistUncheckedUpdateInput>
+  }
+
+  /**
+   * ModelBlocklist delete
+   */
+  export type ModelBlocklistDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+    /**
+     * Filter which ModelBlocklist to delete.
+     */
+    where: ModelBlocklistWhereUniqueInput
+  }
+
+  /**
+   * ModelBlocklist deleteMany
+   */
+  export type ModelBlocklistDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ModelBlocklists to delete
+     */
+    where?: ModelBlocklistWhereInput
+    /**
+     * Limit how many ModelBlocklists to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ModelBlocklist without action
+   */
+  export type ModelBlocklistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModelBlocklist
+     */
+    select?: ModelBlocklistSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModelBlocklist
+     */
+    omit?: ModelBlocklistOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10540,7 +12724,8 @@ export namespace Prisma {
     emailVerified: 'emailVerified',
     image: 'image',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    role: 'role'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -10644,6 +12829,27 @@ export namespace Prisma {
   export type MemoryScalarFieldEnum = (typeof MemoryScalarFieldEnum)[keyof typeof MemoryScalarFieldEnum]
 
 
+  export const TierModelScalarFieldEnum: {
+    id: 'id',
+    modelId: 'modelId',
+    tier: 'tier',
+    label: 'label',
+    createdAt: 'createdAt'
+  };
+
+  export type TierModelScalarFieldEnum = (typeof TierModelScalarFieldEnum)[keyof typeof TierModelScalarFieldEnum]
+
+
+  export const ModelBlocklistScalarFieldEnum: {
+    id: 'id',
+    modelId: 'modelId',
+    reason: 'reason',
+    createdAt: 'createdAt'
+  };
+
+  export type ModelBlocklistScalarFieldEnum = (typeof ModelBlocklistScalarFieldEnum)[keyof typeof ModelBlocklistScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -10705,6 +12911,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role'
+   */
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role[]'
+   */
+  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
     
 
 
@@ -10778,6 +12998,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     chats?: ChatListRelationFilter
@@ -10793,6 +13014,7 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    role?: SortOrder
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
     chats?: ChatOrderByRelationAggregateInput
@@ -10811,6 +13033,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
     chats?: ChatListRelationFilter
@@ -10826,6 +13049,7 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    role?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -10842,6 +13066,7 @@ export namespace Prisma {
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
   }
 
   export type SessionWhereInput = {
@@ -11336,6 +13561,106 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"Memory"> | string
   }
 
+  export type TierModelWhereInput = {
+    AND?: TierModelWhereInput | TierModelWhereInput[]
+    OR?: TierModelWhereInput[]
+    NOT?: TierModelWhereInput | TierModelWhereInput[]
+    id?: StringFilter<"TierModel"> | string
+    modelId?: StringFilter<"TierModel"> | string
+    tier?: EnumTierFilter<"TierModel"> | $Enums.Tier
+    label?: StringFilter<"TierModel"> | string
+    createdAt?: DateTimeFilter<"TierModel"> | Date | string
+  }
+
+  export type TierModelOrderByWithRelationInput = {
+    id?: SortOrder
+    modelId?: SortOrder
+    tier?: SortOrder
+    label?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TierModelWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    modelId_tier?: TierModelModelIdTierCompoundUniqueInput
+    AND?: TierModelWhereInput | TierModelWhereInput[]
+    OR?: TierModelWhereInput[]
+    NOT?: TierModelWhereInput | TierModelWhereInput[]
+    modelId?: StringFilter<"TierModel"> | string
+    tier?: EnumTierFilter<"TierModel"> | $Enums.Tier
+    label?: StringFilter<"TierModel"> | string
+    createdAt?: DateTimeFilter<"TierModel"> | Date | string
+  }, "id" | "modelId_tier">
+
+  export type TierModelOrderByWithAggregationInput = {
+    id?: SortOrder
+    modelId?: SortOrder
+    tier?: SortOrder
+    label?: SortOrder
+    createdAt?: SortOrder
+    _count?: TierModelCountOrderByAggregateInput
+    _max?: TierModelMaxOrderByAggregateInput
+    _min?: TierModelMinOrderByAggregateInput
+  }
+
+  export type TierModelScalarWhereWithAggregatesInput = {
+    AND?: TierModelScalarWhereWithAggregatesInput | TierModelScalarWhereWithAggregatesInput[]
+    OR?: TierModelScalarWhereWithAggregatesInput[]
+    NOT?: TierModelScalarWhereWithAggregatesInput | TierModelScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TierModel"> | string
+    modelId?: StringWithAggregatesFilter<"TierModel"> | string
+    tier?: EnumTierWithAggregatesFilter<"TierModel"> | $Enums.Tier
+    label?: StringWithAggregatesFilter<"TierModel"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"TierModel"> | Date | string
+  }
+
+  export type ModelBlocklistWhereInput = {
+    AND?: ModelBlocklistWhereInput | ModelBlocklistWhereInput[]
+    OR?: ModelBlocklistWhereInput[]
+    NOT?: ModelBlocklistWhereInput | ModelBlocklistWhereInput[]
+    id?: StringFilter<"ModelBlocklist"> | string
+    modelId?: StringFilter<"ModelBlocklist"> | string
+    reason?: StringNullableFilter<"ModelBlocklist"> | string | null
+    createdAt?: DateTimeFilter<"ModelBlocklist"> | Date | string
+  }
+
+  export type ModelBlocklistOrderByWithRelationInput = {
+    id?: SortOrder
+    modelId?: SortOrder
+    reason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ModelBlocklistWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    modelId?: string
+    AND?: ModelBlocklistWhereInput | ModelBlocklistWhereInput[]
+    OR?: ModelBlocklistWhereInput[]
+    NOT?: ModelBlocklistWhereInput | ModelBlocklistWhereInput[]
+    reason?: StringNullableFilter<"ModelBlocklist"> | string | null
+    createdAt?: DateTimeFilter<"ModelBlocklist"> | Date | string
+  }, "id" | "modelId">
+
+  export type ModelBlocklistOrderByWithAggregationInput = {
+    id?: SortOrder
+    modelId?: SortOrder
+    reason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: ModelBlocklistCountOrderByAggregateInput
+    _max?: ModelBlocklistMaxOrderByAggregateInput
+    _min?: ModelBlocklistMinOrderByAggregateInput
+  }
+
+  export type ModelBlocklistScalarWhereWithAggregatesInput = {
+    AND?: ModelBlocklistScalarWhereWithAggregatesInput | ModelBlocklistScalarWhereWithAggregatesInput[]
+    OR?: ModelBlocklistScalarWhereWithAggregatesInput[]
+    NOT?: ModelBlocklistScalarWhereWithAggregatesInput | ModelBlocklistScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ModelBlocklist"> | string
+    modelId?: StringWithAggregatesFilter<"ModelBlocklist"> | string
+    reason?: StringNullableWithAggregatesFilter<"ModelBlocklist"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ModelBlocklist"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -11344,6 +13669,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutUserInput
@@ -11359,6 +13685,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutUserInput
@@ -11374,6 +13701,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutUserNestedInput
@@ -11389,6 +13717,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
@@ -11404,6 +13733,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
   }
 
   export type UserUpdateManyMutationInput = {
@@ -11414,6 +13744,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -11424,6 +13755,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
   }
 
   export type SessionCreateInput = {
@@ -11963,6 +14295,111 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type TierModelCreateInput = {
+    id?: string
+    modelId: string
+    tier: $Enums.Tier
+    label: string
+    createdAt?: Date | string
+  }
+
+  export type TierModelUncheckedCreateInput = {
+    id?: string
+    modelId: string
+    tier: $Enums.Tier
+    label: string
+    createdAt?: Date | string
+  }
+
+  export type TierModelUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    modelId?: StringFieldUpdateOperationsInput | string
+    tier?: EnumTierFieldUpdateOperationsInput | $Enums.Tier
+    label?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TierModelUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    modelId?: StringFieldUpdateOperationsInput | string
+    tier?: EnumTierFieldUpdateOperationsInput | $Enums.Tier
+    label?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TierModelCreateManyInput = {
+    id?: string
+    modelId: string
+    tier: $Enums.Tier
+    label: string
+    createdAt?: Date | string
+  }
+
+  export type TierModelUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    modelId?: StringFieldUpdateOperationsInput | string
+    tier?: EnumTierFieldUpdateOperationsInput | $Enums.Tier
+    label?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TierModelUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    modelId?: StringFieldUpdateOperationsInput | string
+    tier?: EnumTierFieldUpdateOperationsInput | $Enums.Tier
+    label?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelBlocklistCreateInput = {
+    id?: string
+    modelId: string
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModelBlocklistUncheckedCreateInput = {
+    id?: string
+    modelId: string
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModelBlocklistUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    modelId?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelBlocklistUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    modelId?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelBlocklistCreateManyInput = {
+    id?: string
+    modelId: string
+    reason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModelBlocklistUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    modelId?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelBlocklistUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    modelId?: StringFieldUpdateOperationsInput | string
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -12007,6 +14444,13 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
   export type SessionListRelationFilter = {
@@ -12067,6 +14511,7 @@ export namespace Prisma {
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    role?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -12077,6 +14522,7 @@ export namespace Prisma {
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    role?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -12087,6 +14533,7 @@ export namespace Prisma {
     image?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    role?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -12145,6 +14592,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type UserScalarRelationFilter = {
@@ -12498,6 +14955,56 @@ export namespace Prisma {
     userId?: SortOrder
   }
 
+  export type TierModelModelIdTierCompoundUniqueInput = {
+    modelId: string
+    tier: $Enums.Tier
+  }
+
+  export type TierModelCountOrderByAggregateInput = {
+    id?: SortOrder
+    modelId?: SortOrder
+    tier?: SortOrder
+    label?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TierModelMaxOrderByAggregateInput = {
+    id?: SortOrder
+    modelId?: SortOrder
+    tier?: SortOrder
+    label?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TierModelMinOrderByAggregateInput = {
+    id?: SortOrder
+    modelId?: SortOrder
+    tier?: SortOrder
+    label?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ModelBlocklistCountOrderByAggregateInput = {
+    id?: SortOrder
+    modelId?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ModelBlocklistMaxOrderByAggregateInput = {
+    id?: SortOrder
+    modelId?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ModelBlocklistMinOrderByAggregateInput = {
+    id?: SortOrder
+    modelId?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type SessionCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -12580,6 +15087,10 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
   }
 
   export type SessionUpdateManyWithoutUserNestedInput = {
@@ -12904,6 +15415,13 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -12980,6 +15498,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
@@ -13395,6 +15923,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     accounts?: AccountCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutUserInput
@@ -13409,6 +15938,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutUserInput
@@ -13439,6 +15969,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     accounts?: AccountUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutUserNestedInput
@@ -13453,6 +15984,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutUserNestedInput
@@ -13467,6 +15999,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     sessions?: SessionCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutUserInput
@@ -13481,6 +16014,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutUserInput
@@ -13511,6 +16045,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutUserNestedInput
@@ -13525,6 +16060,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutUserNestedInput
@@ -13539,6 +16075,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutUserInput
@@ -13553,6 +16090,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutUserInput
@@ -13583,6 +16121,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutUserNestedInput
@@ -13597,6 +16136,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
@@ -13635,6 +16175,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutUserInput
@@ -13649,6 +16190,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutUserInput
@@ -13706,6 +16248,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutUserNestedInput
@@ -13720,6 +16263,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutUserNestedInput
@@ -13782,6 +16326,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutUserInput
@@ -13796,6 +16341,7 @@ export namespace Prisma {
     image?: string | null
     createdAt: Date | string
     updatedAt: Date | string
+    role?: $Enums.Role
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutUserInput
@@ -13826,6 +16372,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutUserNestedInput
@@ -13840,6 +16387,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutUserNestedInput

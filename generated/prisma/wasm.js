@@ -124,7 +124,8 @@ exports.Prisma.UserScalarFieldEnum = {
   emailVerified: 'emailVerified',
   image: 'image',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  role: 'role'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
@@ -204,6 +205,21 @@ exports.Prisma.MemoryScalarFieldEnum = {
   userId: 'userId'
 };
 
+exports.Prisma.TierModelScalarFieldEnum = {
+  id: 'id',
+  modelId: 'modelId',
+  tier: 'tier',
+  label: 'label',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ModelBlocklistScalarFieldEnum = {
+  id: 'id',
+  modelId: 'modelId',
+  reason: 'reason',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -218,6 +234,11 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Role = exports.$Enums.Role = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
+
 exports.Tier = exports.$Enums.Tier = {
   FREE: 'FREE',
   PRO: 'PRO',
@@ -237,7 +258,9 @@ exports.Prisma.ModelName = {
   Subscription: 'Subscription',
   Chat: 'Chat',
   Message: 'Message',
-  Memory: 'Memory'
+  Memory: 'Memory',
+  TierModel: 'TierModel',
+  ModelBlocklist: 'ModelBlocklist'
 };
 
 /**

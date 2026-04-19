@@ -3,7 +3,7 @@ import spinners from 'unicode-animations';
 
 export default function ChatSpinner({ name = 'braille', children }: { name?: string, children?: React.ReactNode }) {
     const [frame, setFrame] = useState(0);
-    const s = spinners[name];
+    const s = (spinners as any)[name];
 
     useEffect(() => {
         const timer = setInterval(

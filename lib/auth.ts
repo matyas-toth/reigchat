@@ -23,4 +23,14 @@ export const auth = betterAuth({
             clientSecret: process.env.DISCORD_CLIENT_SECRET as string,
         },
     },
+    user: {
+        additionalFields: {
+            role: {
+                type: "string",
+                required: false,
+                defaultValue: "USER",
+                input: false, // not settable from client
+            },
+        },
+    },
 });
