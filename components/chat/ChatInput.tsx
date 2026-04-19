@@ -8,9 +8,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ArrowUp02Icon, BrainIcon, ChevronDown, Paperclip } from "@hugeicons/core-free-icons";
+import { Airplane01Icon, ArrowUp02Icon, BrainIcon, ChevronDown, Paperclip, RepeatIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useRef, useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { MemoriesDialog } from "@/components/memories/MemoriesDialog";
 import { cn } from "@/lib/utils";
 
@@ -18,7 +19,8 @@ interface ModelOption {
   id: string;
   label: string;
   provider: string;
-  isFree: boolean;
+  requiredTier: "FREE" | "PRO" | "ULTRA";
+  accessible: boolean;
 }
 
 interface ChatInputProps {
@@ -34,8 +36,102 @@ const ALWAYS_FIRST: ModelOption = {
   id: "openrouter/auto",
   label: "Automatikus",
   provider: "Reig Chat",
-  isFree: false,
+  requiredTier: "FREE",
+  accessible: true,
 };
+
+// Provider accent colors & display names
+const PROVIDER_META: Record<string, { color: string; dot: string; name: string }> = {
+  anthropic: { color: "text-amber-500/80", dot: "bg-amber-500/70", name: "Anthropic" },
+  openai: { color: "text-emerald-500/80", dot: "bg-emerald-500/70", name: "OpenAI" },
+  google: { color: "text-blue-400/80", dot: "bg-blue-400/70", name: "Google" },
+  mistralai: { color: "text-orange-400/80", dot: "bg-orange-400/70", name: "Mistral AI" },
+  deepseek: { color: "text-cyan-400/80", dot: "bg-cyan-400/70", name: "DeepSeek" },
+  qwen: { color: "text-violet-400/80", dot: "bg-violet-400/70", name: "Qwen" },
+  "reig chat": { color: "text-foreground/60", dot: "bg-foreground/40", name: "Reig Chat" },
+  codestral: { color: "text-orange-400/80", dot: "bg-orange-400/70", name: "Codestral" },
+  devstral: { color: "text-orange-400/80", dot: "bg-orange-400/70", name: "Mistral AI" },
+};
+
+function getProviderMeta(provider: string) {
+  const key = provider.toLowerCase();
+  return PROVIDER_META[key] ?? { color: "text-muted-foreground/60", dot: "bg-muted-foreground/40", name: provider };
+}
+
+function ModelCard({
+  model,
+  isSelected,
+  onSelect,
+}: {
+  model: ModelOption;
+  isSelected: boolean;
+  onSelect: () => void;
+}) {
+  const meta = getProviderMeta(model.provider);
+  const tierLabel = model.requiredTier !== "FREE" ? model.requiredTier : null;
+
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className={cn(
+        "group cursor-pointer relative w-full text-left rounded-xl px-3.5 py-3 transition-all duration-150 overflow-hidden",
+        "border-2",
+        isSelected
+          ? "bg-foreground text-background border-foreground/80"
+          : model.accessible
+            ? "border-border/40 hover:border-border/80 hover:bg-accent/40 bg-transparent"
+            : "border-border/20 bg-transparent opacity-60 hover:opacity-80"
+      )}
+    >
+      {/* Tier badge */}
+      {tierLabel && (
+        <span className={cn(
+          "absolute top-2.5 right-2.5 text-[9px] font-bold tracking-wider px-1.5 py-px rounded-md",
+          isSelected
+            ? "bg-background/20 text-background/80"
+            : tierLabel === "ULTRA"
+              ? "bg-purple-500/15 text-purple-400"
+              : "bg-gray-500/15 text-gray-400"
+        )}>
+          {tierLabel}
+        </span>
+      )}
+
+      {/* Lock overlay for inaccessible */}
+      {!model.accessible && (
+        <span className="absolute bottom-2.5 right-2.5">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" className="text-muted-foreground/40">
+            <rect x="3" y="7" width="10" height="7" rx="1.5" />
+            <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
+          </svg>
+        </span>
+      )}
+
+      {/* Provider row */}
+      <div className="flex items-center gap-1.5 mb-1.5">
+        <div className={cn("h-1.5 w-1.5 rounded-full shrink-0", isSelected ? "bg-background/50" : meta.dot)} />
+        <span className={cn(
+          "text-[10px] font-medium tracking-wide uppercase",
+          isSelected ? "text-background/60" : meta.color
+        )}>
+          {meta.name}
+        </span>
+      </div>
+
+      {/* Model name */}
+      <p className={cn(
+        "text-[13px] font-medium leading-snug pr-6",
+        isSelected ? "text-background" : "text-foreground/90"
+      )}>
+        {model.label} {model.label.includes("Auto") ? <HugeiconsIcon size={16} className="inline ml-1 -translate-y-[2px]" strokeWidth={1} fill="currentColor" icon={Airplane01Icon} /> : ""}
+      </p>
+
+      {/* Upgrade hint on hover for inaccessible */}
+
+    </button>
+  );
+}
 
 export function ChatInput({
   input,
@@ -45,6 +141,7 @@ export function ChatInput({
   selectedModelId,
   onModelChange,
 }: ChatInputProps) {
+  const router = useRouter();
   const [memoriesOpen, setMemoriesOpen] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [models, setModels] = useState<ModelOption[]>([ALWAYS_FIRST]);
@@ -52,7 +149,6 @@ export function ChatInput({
   const formRef = useRef<HTMLFormElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Fetch allowed models on mount
   useEffect(() => {
     let cancelled = false;
     fetch("/api/models")
@@ -60,36 +156,33 @@ export function ChatInput({
       .then((data) => {
         if (cancelled || !data?.models) return;
         setModels(data.models);
-        // Restore from localStorage if still valid
         const saved = localStorage.getItem("selected_model_id");
-        if (saved && data.models.find((m: ModelOption) => m.id === saved)) {
-          onModelChange(saved);
+        const savedModel = data.models.find((m: ModelOption) => m.id === saved && m.accessible);
+        if (savedModel) {
+          onModelChange(savedModel.id);
         } else {
-          onModelChange(data.models[0]?.id ?? "openrouter/auto");
+          const first = data.models.find((m: ModelOption) => m.accessible) ?? data.models[0];
+          onModelChange(first?.id ?? "openrouter/auto");
           localStorage.removeItem("selected_model_id");
         }
         setModelsLoading(false);
       })
-      .catch(() => {
-        if (!cancelled) setModelsLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
+      .catch(() => { if (!cancelled) setModelsLoading(false); });
+    return () => { cancelled = true; };
   }, []);
 
-  const handleModelSelect = (id: string) => {
-    onModelChange(id);
-    localStorage.setItem("selected_model_id", id);
+  const handleModelSelect = (model: ModelOption) => {
+    if (!model.accessible) {
+      router.push("/profile");
+      setPickerOpen(false);
+      return;
+    }
+    onModelChange(model.id);
+    localStorage.setItem("selected_model_id", model.id);
     setPickerOpen(false);
   };
 
   const selectedModel = models.find((m) => m.id === selectedModelId) ?? ALWAYS_FIRST;
-
-  // Split into two categories
-  // Automatikus (openrouter/auto) always goes in the top section regardless of isFree
-  const premiumModels = models.filter((m) => !m.isFree || m.id === "openrouter/auto");
-  const experimentalModels = models.filter((m) => m.isFree && m.id !== "openrouter/auto");
 
   // Auto-resize textarea
   useEffect(() => {
@@ -99,12 +192,8 @@ export function ChatInput({
     textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`;
   }, [input]);
 
-  // Autofocus on mount
-  useEffect(() => {
-    textareaRef.current?.focus();
-  }, []);
+  useEffect(() => { textareaRef.current?.focus(); }, []);
 
-  // Global key capture — focus textarea when user starts typing anywhere
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement)?.tagName;
@@ -120,22 +209,22 @@ export function ChatInput({
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      if (input.trim() && !isStreaming) {
-        formRef.current?.requestSubmit();
-      }
+      if (input.trim() && !isStreaming) formRef.current?.requestSubmit();
     }
   };
 
   const canSubmit = input.trim() && !isStreaming;
 
+  // Separate Automatikus from the rest
+  const automatikus = models.find((m) => m.id === "openrouter/auto");
+  const restModels = models.filter((m) => m.id !== "openrouter/auto");
+
   return (
     <>
       <div className="w-full px-4 md:px-0 py-3 pb-[env(safe-area-inset-bottom)]">
         <div className="mx-auto w-full max-w-2xl">
-          {/* Main input card */}
           <div className="relative rounded-2xl border-2 border-border/60 dark:border-border/30 bg-background shadow-none focus-within:border-border/80 dark:focus-within:border-border/60 transition-all duration-200">
             <form ref={formRef} onSubmit={onSubmit}>
-              {/* Textarea */}
               <Textarea
                 ref={textareaRef}
                 value={input}
@@ -153,137 +242,101 @@ export function ChatInput({
                 )}
               />
 
-              {/* Bottom toolbar */}
               <div className="flex items-center justify-between gap-2 px-3 pb-3 pt-1">
-                {/* Left: model picker + memories + attach */}
                 <div className="flex items-center gap-1.5">
 
-                  {/* Model Picker (Popover) */}
+                  {/* Model Picker */}
                   <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
-                      >
-                        {modelsLoading ? (
-                          <span className="opacity-50">Betöltés...</span>
-                        ) : (
+                    <PopoverTrigger
+                      type="button"
+                      className="h-8 gap-1.5 inline-flex items-center rounded-lg px-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                    >
+                      {modelsLoading ? (
+                        <span className="opacity-50">Betöltés...</span>
+                      ) : (
+                        <>
+                          {/* Provider dot */}
+                          <div className={cn(
+                            "h-1.5 w-1.5 rounded-full shrink-0",
+                            getProviderMeta(selectedModel.provider).dot
+                          )} />
                           <span className="max-w-[140px] truncate">{selectedModel.label}</span>
-                        )}
-                        <HugeiconsIcon
-                          icon={ChevronDown}
-                          size={12}
-                          strokeWidth={2}
-                          className={cn("shrink-0 opacity-60 transition-transform duration-150", pickerOpen && "rotate-180")}
-                        />
-                      </Button>
+                        </>
+                      )}
+                      <HugeiconsIcon
+                        icon={ChevronDown}
+                        size={12}
+                        strokeWidth={2}
+                        className={cn("shrink-0 opacity-60 transition-transform duration-150", pickerOpen && "rotate-180")}
+                      />
                     </PopoverTrigger>
 
                     <PopoverContent
                       align="start"
                       side="top"
                       sideOffset={8}
-                      className="w-[420px] p-0 rounded-2xl border border-border/60 shadow-xl overflow-hidden"
-                      onOpenAutoFocus={(e) => e.preventDefault()}
+                      className="w-[480px] p-3 rounded-2xl shadow-xl"
                     >
-                      <div className="max-h-[300px] overflow-y-auto">
-                      {/* Elérhető Modellek */}
-                      <div className="px-4 pt-4 pb-2">
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
-                          Elérhető Modellek
-                        </p>
-                        <div className="flex flex-col gap-0.5">
-                          {premiumModels.map((model) => (
-                            <button
-                              key={model.id}
-                              type="button"
-                              onClick={() => handleModelSelect(model.id)}
-                              className={cn(
-                                "w-full flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm text-left transition-colors cursor-pointer",
-                                selectedModelId === model.id
-                                  ? "bg-foreground text-background"
-                                  : "hover:bg-accent/60 text-foreground"
-                              )}
-                            >
-                              <span className="font-medium truncate">{model.label}</span>
-                              <span className={cn(
-                                "text-[11px] shrink-0 capitalize",
-                                selectedModelId === model.id ? "text-background/60" : "text-muted-foreground"
-                              )}>
-                                {model.provider}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Kísérleti Modellek */}
-                      {experimentalModels.length > 0 && (
-                        <div className="px-4 pb-4 pt-2 border-t border-border/40">
-                          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-2 mt-2">
-                            Kísérleti Modellek
-                          </p>
-                          <div className="grid grid-cols-2 gap-1">
-                            {experimentalModels.map((model) => (
-                              <button
-                                key={model.id}
-                                type="button"
-                                onClick={() => handleModelSelect(model.id)}
-                                className={cn(
-                                  "flex flex-col items-start rounded-xl px-3 py-2 text-left transition-colors cursor-pointer",
-                                  selectedModelId === model.id
-                                    ? "bg-foreground text-background"
-                                    : "hover:bg-accent/60 text-foreground"
-                                )}
-                              >
-                                <span className="text-xs font-medium truncate w-full">{model.label}</span>
-                                <span className={cn(
-                                  "text-[10px] capitalize truncate w-full",
-                                  selectedModelId === model.id ? "text-background/60" : "text-muted-foreground"
-                                )}>
-                                  {model.provider}
-                                </span>
-                              </button>
-                            ))}
+                      <div className="max-h-[400px] overflow-y-auto space-y-2">
+                        {/* Automatikus hero card */}
+                        {automatikus && (
+                          <div className="mb-1">
+                            <ModelCard
+                              model={automatikus}
+                              isSelected={selectedModelId === automatikus.id}
+                              onSelect={() => handleModelSelect(automatikus)}
+                            />
                           </div>
-                        </div>
-                      )}
+                        )}
+
+                        {/* Rest: 2-col grid */}
+                        {restModels.length > 0 && (
+                          <>
+                            <div className="flex items-center gap-2 px-1 pt-1">
+                              <div className="h-px flex-1 bg-border/40" />
+                              <span className="text-[10px] text-muted-foreground/40 font-medium uppercase tracking-wider">
+                                Modellek
+                              </span>
+                              <div className="h-px flex-1 bg-border/40" />
+                            </div>
+                            <div className="grid grid-cols-2 gap-1.5">
+                              {restModels.map((model) => (
+                                <ModelCard
+                                  key={model.id}
+                                  model={model}
+                                  isSelected={selectedModelId === model.id}
+                                  onSelect={() => handleModelSelect(model)}
+                                />
+                              ))}
+                            </div>
+                          </>
+                        )}
                       </div>
                     </PopoverContent>
                   </Popover>
 
-                  {/* Memories button */}
+                  {/* Memories */}
                   <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setMemoriesOpen(true)}
-                        className="h-8 gap-1.5 rounded-lg px-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
-                      >
-                        <HugeiconsIcon icon={BrainIcon} size={14} strokeWidth={2} />
-                        <span>Memória</span>
-                      </Button>
+                    <TooltipTrigger
+                      type="button"
+                      onClick={() => setMemoriesOpen(true)}
+                      className="h-8 gap-1.5 inline-flex items-center rounded-lg px-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                    >
+                      <HugeiconsIcon icon={BrainIcon} size={14} strokeWidth={2} />
+                      <span>Memória</span>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="text-xs">
                       Tekintsd meg és kezeld az emlékeket
                     </TooltipContent>
                   </Tooltip>
 
-                  {/* Attach button */}
+                  {/* Attach */}
                   <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
-                      >
-                        <HugeiconsIcon icon={Paperclip} size={15} strokeWidth={2} />
-                      </Button>
+                    <TooltipTrigger
+                      type="button"
+                      className="h-8 w-8 inline-flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                    >
+                      <HugeiconsIcon icon={Paperclip} size={15} strokeWidth={2} />
                     </TooltipTrigger>
                     <TooltipContent side="top" className="text-xs">
                       File csatolása
@@ -291,7 +344,7 @@ export function ChatInput({
                   </Tooltip>
                 </div>
 
-                {/* Right: submit */}
+                {/* Submit */}
                 <Button
                   type="submit"
                   size="icon"
@@ -309,7 +362,6 @@ export function ChatInput({
             </form>
           </div>
 
-          {/* Hint */}
           <p className="my-2 text-center text-[11px] text-muted-foreground/40 select-none tracking-wide">
             <kbd className="font-mono">Enter</kbd> a küldéshez,{" "}
             <kbd className="font-mono">Shift+Enter</kbd> az új sorhoz

@@ -15,7 +15,6 @@ import { checkAndReserveQuota, recordUsage, QuotaError } from "@/lib/quota";
 import {
   saveMemoryInput,
 } from "@/lib/ai/schema";
-import { getFreeModelIds } from "@/lib/openrouter-free";
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
@@ -38,30 +37,26 @@ export async function POST(req: Request) {
   const userId = session.user.id;
   const systemPrompt = await buildSystemPrompt(userId);
 
-  // Resolve model — validate against user's tier + zero-cost free models, fall back to openrouter/auto
+  // Resolve model — validate against any tier in TierModel, blocklist always wins
   let resolvedModel = "openrouter/auto";
   if (requestedModelId && requestedModelId !== "openrouter/auto") {
-    // Blocklist check first — always has priority
     const blocked = await prisma.modelBlocklist.findUnique({ where: { modelId: requestedModelId } });
     if (!blocked) {
       const sub = await prisma.subscription.findUnique({ where: { userId } });
-      const tier = sub?.tier ?? "FREE";
+      const userTier = sub?.tier ?? "FREE";
+      const tierRank: Record<string, number> = { FREE: 0, PRO: 1, ULTRA: 2 };
+      const userRank = tierRank[userTier] ?? 0;
 
-      // 1. Check if it's an admin-assigned tier model
+      // Allow if model is assigned to any tier the user has access to
       const tierModel = await prisma.tierModel.findFirst({
-        where: { modelId: requestedModelId, tier },
+        where: { modelId: requestedModelId },
+        orderBy: { createdAt: "asc" },
       });
 
-      if (tierModel) {
+      if (tierModel && userRank >= (tierRank[tierModel.tier] ?? 99)) {
         resolvedModel = requestedModelId;
-      } else {
-        // 2. Check if it's a zero-cost model from OpenRouter (auto-included for all users)
-        const freeIds = await getFreeModelIds();
-        if (freeIds.has(requestedModelId)) {
-          resolvedModel = requestedModelId;
-        }
-        // else: not allowed for this tier → stay as openrouter/auto
       }
+      // else: model not in any tier or user doesn't have the required tier → openrouter/auto
     }
   }
 
