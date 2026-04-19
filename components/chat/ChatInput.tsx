@@ -21,6 +21,7 @@ interface ModelOption {
   provider: string;
   requiredTier: "FREE" | "PRO" | "ULTRA";
   accessible: boolean;
+  multiplier: number; // display multiplier; 0 = free/ingyenes
 }
 
 interface ChatInputProps {
@@ -38,6 +39,7 @@ const ALWAYS_FIRST: ModelOption = {
   provider: "Reig Chat",
   requiredTier: "FREE",
   accessible: true,
+  multiplier: 1,
 };
 
 // Provider accent colors & display names
@@ -127,7 +129,24 @@ function ModelCard({
         {model.label} {model.label.includes("Auto") ? <HugeiconsIcon size={16} className="inline ml-1 -translate-y-[2px]" strokeWidth={1} fill="currentColor" icon={Airplane01Icon} /> : ""}
       </p>
 
-      {/* Upgrade hint on hover for inaccessible */}
+      {/* Multiplier + lock row */}
+      <div className="flex items-center justify-between mt-2">
+        <span className={cn(
+          "text-[10px] font-mono font-semibold",
+          isSelected
+            ? "text-background/50"
+            : model.multiplier === 0
+              ? "text-emerald-500/70"
+              : "text-muted-foreground/40"
+        )}>
+          {model.multiplier === 0 ? "ingyenes" : `${model.multiplier}×`}
+        </span>
+        {!model.accessible && (
+          <span className="text-[10px] text-muted-foreground/40 italic hidden group-hover:block">
+            Szükséges: {model.requiredTier}
+          </span>
+        )}
+      </div>
 
     </button>
   );

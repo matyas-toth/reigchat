@@ -280,11 +280,21 @@ function ChatInner({
   };
 
   const THINKING_OPTIONS = [
-    "Pondering", "Vibing", "Cooking", "Brewing", "Marinating", "Scheming",
-    "Manifesting", "Neurons firing", "Brain loading", "Deep diving",
-    "Thought cooking", "Mind mapping", "Touching grass", "Staring vacantly",
-    "Buffering", "Vibing hard", "Not slacking", "Totally focused",
-    "Eyes closed", "Almost there", "Enlightening"
+    "Gondolkodás folyamatban...",
+    "Kávét főzök...",
+    "Épp álmodom egyet...",
+    "Ne zavarj, dolgozom...",
+    "Összerakom a fejemben...",
+    "Szikrázik az agyam...",
+    "Mindjárt, mindjárt...",
+    "Elgondolkoztam...",
+    "Megkeresem a választ...",
+    "Filozofálok egy kicsit...",
+    "Bekukkantok a tudásomba...",
+    "Okoskodom...",
+    "Szürkeállomány aktiválva...",
+    "Ráérek, ne rohanj...",
+    "Hamarosan visszatérek..."
   ];
 
   const [thinkingText, setThinkingText] = useState("Thinking");

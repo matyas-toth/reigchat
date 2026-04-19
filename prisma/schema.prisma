@@ -96,14 +96,11 @@ model Subscription {
   stripeSubscriptionId String?
   stripePriceId        String?
 
-  // Lifetime total (used for Free tier wall)
-  totalOutputTokensUsed Int @default(0)
-  totalInputTokensUsed  Int @default(0)
-
-  // Rolling 8h window (paid tiers only)
-  windowOutputTokensUsed Int       @default(0)
-  windowInputTokensUsed  Int       @default(0)
-  windowResetsAt         DateTime?
+  // Credit-based usage tracking
+  windowCreditsUsed   Int       @default(0) // credits used in current window
+  windowCreditsLimit  Int       @default(120000) // 120k PRO/8h, 125k ULTRA/1h
+  windowResetsAt      DateTime? // when the current window expires
+  lifetimeCreditsUsed Int       @default(0) // FREE tier: cumulative all-time usage
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

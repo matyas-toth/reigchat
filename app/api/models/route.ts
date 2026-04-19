@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { headers } from "next/headers";
+import { getAllModelPrices } from "@/lib/openrouter-prices";
+import { getDisplayMultiplier } from "@/lib/credits";
 
 export interface ModelOption {
   id: string;
@@ -8,11 +10,11 @@ export interface ModelOption {
   provider: string;
   requiredTier: "FREE" | "PRO" | "ULTRA";
   accessible: boolean;
+  multiplier: number; // display multiplier (0 = free / ingyenes)
 }
 
 const TIER_RANK: Record<string, number> = { FREE: 0, PRO: 1, ULTRA: 2 };
 
-// GET /api/models — returns ALL tier-assigned models with accessibility flag for the current user's tier
 export async function GET() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) return new Response("Unauthorized", { status: 401 });
@@ -28,12 +30,10 @@ export async function GET() {
   const blocklist = await prisma.modelBlocklist.findMany({ select: { modelId: true } });
   const blocked = new Set(blocklist.map((b) => b.modelId));
 
-  // Get ALL tier models across all tiers (not just user's tier)
-  const allTierModels = await prisma.tierModel.findMany({
-    orderBy: { createdAt: "asc" },
-  });
+  // Get ALL tier models across all tiers
+  const allTierModels = await prisma.tierModel.findMany({ orderBy: { createdAt: "asc" } });
 
-  // Deduplicate: if a model appears in multiple tiers, keep the lowest (most accessible) tier
+  // Deduplicate: keep the lowest (most accessible) tier entry per model
   const dedupMap = new Map<string, { label: string; tier: "FREE" | "PRO" | "ULTRA" }>();
   for (const m of allTierModels) {
     if (blocked.has(m.modelId)) continue;
@@ -43,19 +43,22 @@ export async function GET() {
     }
   }
 
-  // Build model options
+  // Fetch pricing cache for multiplier calculation
+  const prices = await getAllModelPrices();
+
   const models: ModelOption[] = [];
 
-  // Always first: Automatikus
+  // Always first: Automatikus (1× by definition)
   models.push({
     id: "openrouter/auto",
     label: "Automatikus",
     provider: "Reig Chat",
     requiredTier: "FREE",
     accessible: true,
+    multiplier: 1, // baseline = 1×
   });
 
-  // All tier models, sorted alphabetically by label
+  // Remaining tier models, sorted alphabetically
   const tierEntries = Array.from(dedupMap.entries())
     .filter(([id]) => id !== "openrouter/auto")
     .sort(([, a], [, b]) => {
@@ -67,12 +70,16 @@ export async function GET() {
   for (const [modelId, { label, tier }] of tierEntries) {
     const cleanLabel = (label.includes(":") ? label.split(":")[1] : label)?.replace(" (free)", "").trim() ?? modelId;
     const parts = modelId.split("/");
+    const pricing = prices.get(modelId);
+    const multiplier = pricing ? getDisplayMultiplier(pricing.outputPerM) : 1;
+
     models.push({
       id: modelId,
       label: cleanLabel,
       provider: parts[0]?.replace("openrouter", "Reig Chat") ?? "Unknown",
       requiredTier: tier,
       accessible: userRank >= TIER_RANK[tier],
+      multiplier,
     });
   }
 

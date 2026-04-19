@@ -11,8 +11,6 @@ import { Progress } from "@/components/ui/progress";
 
 interface QuotaStatus {
   tier: Tier;
-  used: number;
-  limit: number;
   percentUsed: number;
   windowResetsAt: string | null;
   isLifetime: boolean;
@@ -28,32 +26,32 @@ const TIER_LABELS: Record<Tier, string> = {
 function formatTimeUntil(dateStr: string | null): string {
   if (!dateStr) return "";
   const diff = new Date(dateStr).getTime() - Date.now();
-  if (diff <= 0) return "shortly";
+  if (diff <= 0) return "hamarosan";
   const h = Math.floor(diff / 3600000);
   const m = Math.floor((diff % 3600000) / 60000);
-  if (h > 0) return `${h}h ${m}m`;
-  return `${m}m`;
+  if (h > 0) return `${h}ó ${m}p`;
+  return `${m}p`;
 }
 
 function UsageMeter({ quota }: { quota: QuotaStatus }) {
   const pct = quota.percentUsed;
   const label = quota.isLifetime
-    ? `${quota.used.toLocaleString()} / ${quota.limit.toLocaleString()} lifetime tokens used`
-    : `${quota.used.toLocaleString()} / ${quota.limit.toLocaleString()} tokens this window`;
+    ? `${pct}% életre szóló kvóta felhasználva`
+    : `${pct}% felhasználva ebben a ciklusban`;
 
   const sublabel = quota.isLifetime
     ? quota.exhausted
-      ? "Lifetime allowance exhausted — upgrade to keep going."
-      : `${100 - pct}% remaining of your one-time free access.`
+      ? "Életre szóló kvóta kimerítve — frissíts előfizetést."
+      : `${100 - pct}% maradt az ingyenes hozzáférésből.`
     : quota.windowResetsAt
-      ? `Resets in ${formatTimeUntil(quota.windowResetsAt)}`
+      ? `Frissül: ${formatTimeUntil(quota.windowResetsAt)}`
       : "";
 
   return (
     <Card>
       <CardContent className="px-4">
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-sm font-medium text-foreground">Your Brain Usage</span>
+          <span className="text-sm font-medium text-foreground">Agy kapacitás</span>
           <span className={cn("text-xs", pct >= 100 ? "text-destructive font-bold" : "text-muted-foreground")}>{pct}%</span>
         </div>
         <Progress value={Math.min(100, pct)} className={cn("h-2 w-full", pct >= 100 && "[&>div]:bg-destructive")} />
@@ -71,19 +69,19 @@ function UsageMeter({ quota }: { quota: QuotaStatus }) {
 const PLANS = [
   {
     tier: "FREE" as Tier,
-    name: "Free",
-    price: "$0",
-    cycle: "forever",
-    tagline: "Good for getting a feel for it.",
+    name: "Ingyenes",
+    price: "0 Ft",
+    cycle: "örökké",
+    tagline: "Kipróbáláshoz tökéletes.",
 
     features: [
-      { text: "1 lifetime access window (50K tokens)", included: true },
-      { text: "All projects & task tracking", included: true },
-      { text: "AI memory vault", included: true },
-      { text: "No refresh — ever", included: false },
-      { text: "Stripe billing portal", included: false },
+      { text: "1 életre szóló kvótaablak", included: true },
+      { text: "Összes projekt és feladat", included: true },
+      { text: "AI memória trezor", included: true },
+      { text: "Soha nem frissül fel", included: false },
+      { text: "Stripe számlázási fiók", included: false },
     ],
-    cta: "Upgrade to get unlimited access",
+    cta: "Váltás korlátlan élményre",
     priceEnvKey: null,
     planName: null,
     highlighted: false,
@@ -92,18 +90,18 @@ const PLANS = [
     tier: "PRO" as Tier,
     name: "Pro",
     price: "$12",
-    cycle: "/month",
-    tagline: "For people who think faster than they can type.",
-    badge: "Most Popular",
+    cycle: "/hó",
+    tagline: "Azoknak, akik gyorsabban gondolkodnak, mint írnak.",
+    badge: "Legnépszerűbb",
     features: [
-      { text: "250,000 output tokens every 8 hours", included: true },
-      { text: "Resets 3× per day automatically", included: true },
-      { text: "~400 AI turns per window", included: true },
-      { text: "Unlimited projects, tasks & ideas", included: true },
-      { text: "Cancel anytime from billing portal", included: true },
+      { text: "120,000 kredit 8 óránként", included: true },
+      { text: "Napi 3× automatikus visszaállítás", included: true },
+      { text: "Példátlan modell választék", included: true },
+      { text: "Korlátlan projektek, ötletek", included: true },
+      { text: "Bármikor lemondható a portálon", included: true },
     ],
-    cta: "Start Pro for $12/mo",
-    subCta: "You'll use it more than you think.",
+    cta: "Pro csomag indítása $12/hó",
+    subCta: "Többet fogod használni, mint hinnéd.",
     priceEnvKey: "STRIPE_PRO_PRICE_ID",
     planName: "pro",
     highlighted: true,
@@ -112,18 +110,18 @@ const PLANS = [
     tier: "ULTRA" as Tier,
     name: "Ultra",
     price: "$100",
-    cycle: "/month",
-    tagline: "When your second brain works harder than your first.",
-    badge: "For power users",
+    cycle: "/hó",
+    tagline: "Amikor a második agyad keményebben dolgozik, mint az első.",
+    badge: "Erőfelhasználóknak",
     features: [
-      { text: "2,500,000 output tokens every 8 hours", included: true },
-      { text: "~4,000 AI turns per window", included: true },
-      { text: "Effectively no limits for any human", included: true },
-      { text: "Everything in Pro", included: true },
-      { text: "Early access to new features", included: true },
+      { text: "125,000 kredit 1 óránként", included: true },
+      { text: "Frissül minden álló órában", included: true },
+      { text: "Gyakorlatilag nincs limit ember számára", included: true },
+      { text: "Minden a Pro csomagból", included: true },
+      { text: "Korai hozzáférés a funkciókhoz", included: true },
     ],
-    cta: "Go Ultra for $100/mo",
-    subCta: "Built for people who actually ship things.",
+    cta: "Ultra választása $100/hó",
+    subCta: "Azoknak építve, akik szállítani akarnak.",
     priceEnvKey: "STRIPE_ULTRA_PRICE_ID",
     planName: "ultra",
     highlighted: false,
@@ -141,7 +139,7 @@ export default function ProfilePage() {
   }, [session, isPending, router]);
 
   const fetchQuota = useCallback(async () => {
-    const res = await fetch("/api/billing/quota");
+    const res = await fetch("/api/usage");
     if (res.ok) setQuota(await res.json());
   }, []);
 
@@ -208,7 +206,7 @@ export default function ProfilePage() {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="m15 18-6-6 6-6" />
           </svg>
-          Back to Dashboard
+          Vissza a Dashboardra
         </button>
       </div>
 
@@ -219,10 +217,10 @@ export default function ProfilePage() {
           <Card className="bg-muted/50 border-border">
             <CardContent className="pt-0">
               <h1 className="text-xl font-semibold tracking-tight text-foreground">
-                You&apos;ve started building your second brain.
+                Elkezdted építeni a második agyad.
               </h1>
               <p className="mt-2 text-sm text-muted-foreground max-w-lg leading-relaxed">
-                Now give it room to grow. Pro gives you 750 AI turns every 8 hours — enough to map out entire projects, process complex decisions, and never lose a thought again.
+                Most adj neki teret a növekedéshez. A Pro hatalmas keretet ad minden 8 órában — elég ahhoz, hogy térképezz komplett projekteket, dolgozz fel komplex döntéseket és soha ne ejts el egy gondolatot sem.
               </p>
               <Button
                 variant="default"
@@ -230,7 +228,7 @@ export default function ProfilePage() {
                 disabled={loading}
                 className="mt-6 font-medium"
               >
-                {loading ? "Loading..." : "Upgrade to Pro — $12/mo"}
+                {loading ? "Betöltés..." : "Frissítés PRO csomagra — $12/hó"}
               </Button>
             </CardContent>
           </Card>
@@ -238,7 +236,7 @@ export default function ProfilePage() {
 
         {/* Account info */}
         <section>
-          <h2 className="mb-4 text-xs font-medium uppercase tracking-widest text-muted-foreground">Account</h2>
+          <h2 className="mb-4 text-xs font-medium uppercase tracking-widest text-muted-foreground">Fiók</h2>
           <Card>
             <CardContent className="px-4 flex items-center gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted text-lg font-semibold text-foreground shrink-0 border border-border">
@@ -260,7 +258,7 @@ export default function ProfilePage() {
                   disabled={loading}
                   className="shrink-0"
                 >
-                  {loading ? "..." : "Manage Billing"}
+                  {loading ? "..." : "Számlázás Kezelése"}
                 </Button>
               )}
             </CardContent>
@@ -270,14 +268,14 @@ export default function ProfilePage() {
         {/* Usage */}
         {quota && (
           <section>
-            <h2 className="mb-4 text-xs font-medium uppercase tracking-widest text-muted-foreground">Usage</h2>
+            <h2 className="mb-4 text-xs font-medium uppercase tracking-widest text-muted-foreground">Felhasználás</h2>
             <UsageMeter quota={quota} />
           </section>
         )}
 
         {/* Pricing */}
         <section>
-          <h2 className="mb-4 text-xs font-medium uppercase tracking-widest text-muted-foreground">Plans</h2>
+          <h2 className="mb-4 text-xs font-medium uppercase tracking-widest text-muted-foreground">Csomagok</h2>
           <div className="grid gap-4 md:grid-cols-3">
             {PLANS.map((plan) => {
               const isCurrentTier = currentTier === plan.tier;
@@ -326,7 +324,7 @@ export default function ProfilePage() {
                   <CardFooter className="flex-col gap-2 border-none">
                     {isCurrentTier ? (
                       <div className="w-full rounded-md border border-border/80 bg-muted/30 py-2.5 text-center text-[13px] font-medium text-muted-foreground">
-                        Current plan
+                        Aktuális csomag
                       </div>
                     ) : plan.planName ? (
                       <div className="w-full">
@@ -336,7 +334,7 @@ export default function ProfilePage() {
                           disabled={loading}
                           onClick={() => handleUpgrade(plan.planName, currentTier)}
                         >
-                          {loading ? "Loading..." : plan.cta}
+                          {loading ? "Betöltés..." : plan.cta}
                         </Button>
                         {"subCta" in plan && plan.subCta && (
                           <p className="mt-2.5 text-center text-[11px] text-muted-foreground/70">{plan.subCta}</p>
@@ -349,7 +347,7 @@ export default function ProfilePage() {
             })}
           </div>
           <p className="mt-6 text-center text-[13px] text-muted-foreground/60">
-            No commitment. Cancel anytime from your billing portal. Your data stays.
+            Nincs hűségidő. Bármikor lemondható az oldalon, az adataid megmaradnak.
           </p>
         </section>
       </div>

@@ -40,8 +40,8 @@ export async function GET(req: NextRequest) {
           select: {
             tier: true,
             status: true,
-            totalInputTokensUsed: true,
-            totalOutputTokensUsed: true,
+            lifetimeCreditsUsed: true,
+            windowCreditsUsed: true,
           },
         },
         _count: { select: { chats: true, memories: true } },

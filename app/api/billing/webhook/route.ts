@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import Stripe from "stripe";
+import { TIER_CREDIT_LIMITS } from "@/lib/credits";
 
 
 const PRICE_TO_TIER: Record<string, "PRO" | "ULTRA"> = {
@@ -61,8 +62,8 @@ export async function POST(req: NextRequest) {
             stripeSubscriptionId: subscriptionId,
             stripePriceId: priceId,
             // Reset window on upgrade
-            windowOutputTokensUsed: 0,
-            windowInputTokensUsed: 0,
+            windowCreditsUsed: 0,
+            windowCreditsLimit: tier === "PRO" ? TIER_CREDIT_LIMITS.PRO.perWindow : TIER_CREDIT_LIMITS.ULTRA.perWindow,
             windowResetsAt: null,
           },
         });
@@ -108,8 +109,8 @@ export async function POST(req: NextRequest) {
             status: "free",
             stripeSubscriptionId: null,
             stripePriceId: null,
-            windowOutputTokensUsed: 0,
-            windowInputTokensUsed: 0,
+            windowCreditsUsed: 0,
+            windowCreditsLimit: TIER_CREDIT_LIMITS.FREE.lifetime,
             windowResetsAt: null,
           },
         });

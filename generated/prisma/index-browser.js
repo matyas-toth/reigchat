@@ -172,11 +172,10 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   stripeCustomerId: 'stripeCustomerId',
   stripeSubscriptionId: 'stripeSubscriptionId',
   stripePriceId: 'stripePriceId',
-  totalOutputTokensUsed: 'totalOutputTokensUsed',
-  totalInputTokensUsed: 'totalInputTokensUsed',
-  windowOutputTokensUsed: 'windowOutputTokensUsed',
-  windowInputTokensUsed: 'windowInputTokensUsed',
+  windowCreditsUsed: 'windowCreditsUsed',
+  windowCreditsLimit: 'windowCreditsLimit',
   windowResetsAt: 'windowResetsAt',
+  lifetimeCreditsUsed: 'lifetimeCreditsUsed',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

@@ -138,10 +138,11 @@ export async function POST(req: Request) {
     },
     stopWhen: stepCountIs(5),
     async onFinish({ text, usage }) {
-      // Record token usage
+      // Record credit usage based on actual model pricing
       if (usage) {
         await recordUsage(
           userId,
+          resolvedModel,
           usage.inputTokens ?? 0,
           usage.outputTokens ?? 0
         );

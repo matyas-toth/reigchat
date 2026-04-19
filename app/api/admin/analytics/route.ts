@@ -28,7 +28,7 @@ export async function GET() {
     prisma.user.findMany({
       orderBy: { createdAt: "desc" },
       take: 7,
-      select: { id: true, name: true, email: true, createdAt: true, role: true, subscription: { select: { tier: true, totalInputTokensUsed: true, totalOutputTokensUsed: true } } }
+      select: { id: true, name: true, email: true, createdAt: true, role: true, subscription: { select: { tier: true, lifetimeCreditsUsed: true, windowCreditsUsed: true } } }
     }),
   ]);
 

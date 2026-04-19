@@ -6314,17 +6314,15 @@ export namespace Prisma {
   }
 
   export type SubscriptionAvgAggregateOutputType = {
-    totalOutputTokensUsed: number | null
-    totalInputTokensUsed: number | null
-    windowOutputTokensUsed: number | null
-    windowInputTokensUsed: number | null
+    windowCreditsUsed: number | null
+    windowCreditsLimit: number | null
+    lifetimeCreditsUsed: number | null
   }
 
   export type SubscriptionSumAggregateOutputType = {
-    totalOutputTokensUsed: number | null
-    totalInputTokensUsed: number | null
-    windowOutputTokensUsed: number | null
-    windowInputTokensUsed: number | null
+    windowCreditsUsed: number | null
+    windowCreditsLimit: number | null
+    lifetimeCreditsUsed: number | null
   }
 
   export type SubscriptionMinAggregateOutputType = {
@@ -6335,11 +6333,10 @@ export namespace Prisma {
     stripeCustomerId: string | null
     stripeSubscriptionId: string | null
     stripePriceId: string | null
-    totalOutputTokensUsed: number | null
-    totalInputTokensUsed: number | null
-    windowOutputTokensUsed: number | null
-    windowInputTokensUsed: number | null
+    windowCreditsUsed: number | null
+    windowCreditsLimit: number | null
     windowResetsAt: Date | null
+    lifetimeCreditsUsed: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6352,11 +6349,10 @@ export namespace Prisma {
     stripeCustomerId: string | null
     stripeSubscriptionId: string | null
     stripePriceId: string | null
-    totalOutputTokensUsed: number | null
-    totalInputTokensUsed: number | null
-    windowOutputTokensUsed: number | null
-    windowInputTokensUsed: number | null
+    windowCreditsUsed: number | null
+    windowCreditsLimit: number | null
     windowResetsAt: Date | null
+    lifetimeCreditsUsed: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -6369,11 +6365,10 @@ export namespace Prisma {
     stripeCustomerId: number
     stripeSubscriptionId: number
     stripePriceId: number
-    totalOutputTokensUsed: number
-    totalInputTokensUsed: number
-    windowOutputTokensUsed: number
-    windowInputTokensUsed: number
+    windowCreditsUsed: number
+    windowCreditsLimit: number
     windowResetsAt: number
+    lifetimeCreditsUsed: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6381,17 +6376,15 @@ export namespace Prisma {
 
 
   export type SubscriptionAvgAggregateInputType = {
-    totalOutputTokensUsed?: true
-    totalInputTokensUsed?: true
-    windowOutputTokensUsed?: true
-    windowInputTokensUsed?: true
+    windowCreditsUsed?: true
+    windowCreditsLimit?: true
+    lifetimeCreditsUsed?: true
   }
 
   export type SubscriptionSumAggregateInputType = {
-    totalOutputTokensUsed?: true
-    totalInputTokensUsed?: true
-    windowOutputTokensUsed?: true
-    windowInputTokensUsed?: true
+    windowCreditsUsed?: true
+    windowCreditsLimit?: true
+    lifetimeCreditsUsed?: true
   }
 
   export type SubscriptionMinAggregateInputType = {
@@ -6402,11 +6395,10 @@ export namespace Prisma {
     stripeCustomerId?: true
     stripeSubscriptionId?: true
     stripePriceId?: true
-    totalOutputTokensUsed?: true
-    totalInputTokensUsed?: true
-    windowOutputTokensUsed?: true
-    windowInputTokensUsed?: true
+    windowCreditsUsed?: true
+    windowCreditsLimit?: true
     windowResetsAt?: true
+    lifetimeCreditsUsed?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6419,11 +6411,10 @@ export namespace Prisma {
     stripeCustomerId?: true
     stripeSubscriptionId?: true
     stripePriceId?: true
-    totalOutputTokensUsed?: true
-    totalInputTokensUsed?: true
-    windowOutputTokensUsed?: true
-    windowInputTokensUsed?: true
+    windowCreditsUsed?: true
+    windowCreditsLimit?: true
     windowResetsAt?: true
+    lifetimeCreditsUsed?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -6436,11 +6427,10 @@ export namespace Prisma {
     stripeCustomerId?: true
     stripeSubscriptionId?: true
     stripePriceId?: true
-    totalOutputTokensUsed?: true
-    totalInputTokensUsed?: true
-    windowOutputTokensUsed?: true
-    windowInputTokensUsed?: true
+    windowCreditsUsed?: true
+    windowCreditsLimit?: true
     windowResetsAt?: true
+    lifetimeCreditsUsed?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6540,11 +6530,10 @@ export namespace Prisma {
     stripeCustomerId: string | null
     stripeSubscriptionId: string | null
     stripePriceId: string | null
-    totalOutputTokensUsed: number
-    totalInputTokensUsed: number
-    windowOutputTokensUsed: number
-    windowInputTokensUsed: number
+    windowCreditsUsed: number
+    windowCreditsLimit: number
     windowResetsAt: Date | null
+    lifetimeCreditsUsed: number
     createdAt: Date
     updatedAt: Date
     _count: SubscriptionCountAggregateOutputType | null
@@ -6576,11 +6565,10 @@ export namespace Prisma {
     stripeCustomerId?: boolean
     stripeSubscriptionId?: boolean
     stripePriceId?: boolean
-    totalOutputTokensUsed?: boolean
-    totalInputTokensUsed?: boolean
-    windowOutputTokensUsed?: boolean
-    windowInputTokensUsed?: boolean
+    windowCreditsUsed?: boolean
+    windowCreditsLimit?: boolean
     windowResetsAt?: boolean
+    lifetimeCreditsUsed?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6594,11 +6582,10 @@ export namespace Prisma {
     stripeCustomerId?: boolean
     stripeSubscriptionId?: boolean
     stripePriceId?: boolean
-    totalOutputTokensUsed?: boolean
-    totalInputTokensUsed?: boolean
-    windowOutputTokensUsed?: boolean
-    windowInputTokensUsed?: boolean
+    windowCreditsUsed?: boolean
+    windowCreditsLimit?: boolean
     windowResetsAt?: boolean
+    lifetimeCreditsUsed?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6612,11 +6599,10 @@ export namespace Prisma {
     stripeCustomerId?: boolean
     stripeSubscriptionId?: boolean
     stripePriceId?: boolean
-    totalOutputTokensUsed?: boolean
-    totalInputTokensUsed?: boolean
-    windowOutputTokensUsed?: boolean
-    windowInputTokensUsed?: boolean
+    windowCreditsUsed?: boolean
+    windowCreditsLimit?: boolean
     windowResetsAt?: boolean
+    lifetimeCreditsUsed?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6630,16 +6616,15 @@ export namespace Prisma {
     stripeCustomerId?: boolean
     stripeSubscriptionId?: boolean
     stripePriceId?: boolean
-    totalOutputTokensUsed?: boolean
-    totalInputTokensUsed?: boolean
-    windowOutputTokensUsed?: boolean
-    windowInputTokensUsed?: boolean
+    windowCreditsUsed?: boolean
+    windowCreditsLimit?: boolean
     windowResetsAt?: boolean
+    lifetimeCreditsUsed?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "tier" | "status" | "stripeCustomerId" | "stripeSubscriptionId" | "stripePriceId" | "totalOutputTokensUsed" | "totalInputTokensUsed" | "windowOutputTokensUsed" | "windowInputTokensUsed" | "windowResetsAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
+  export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "tier" | "status" | "stripeCustomerId" | "stripeSubscriptionId" | "stripePriceId" | "windowCreditsUsed" | "windowCreditsLimit" | "windowResetsAt" | "lifetimeCreditsUsed" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
   export type SubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6663,11 +6648,10 @@ export namespace Prisma {
       stripeCustomerId: string | null
       stripeSubscriptionId: string | null
       stripePriceId: string | null
-      totalOutputTokensUsed: number
-      totalInputTokensUsed: number
-      windowOutputTokensUsed: number
-      windowInputTokensUsed: number
+      windowCreditsUsed: number
+      windowCreditsLimit: number
       windowResetsAt: Date | null
+      lifetimeCreditsUsed: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["subscription"]>
@@ -7101,11 +7085,10 @@ export namespace Prisma {
     readonly stripeCustomerId: FieldRef<"Subscription", 'String'>
     readonly stripeSubscriptionId: FieldRef<"Subscription", 'String'>
     readonly stripePriceId: FieldRef<"Subscription", 'String'>
-    readonly totalOutputTokensUsed: FieldRef<"Subscription", 'Int'>
-    readonly totalInputTokensUsed: FieldRef<"Subscription", 'Int'>
-    readonly windowOutputTokensUsed: FieldRef<"Subscription", 'Int'>
-    readonly windowInputTokensUsed: FieldRef<"Subscription", 'Int'>
+    readonly windowCreditsUsed: FieldRef<"Subscription", 'Int'>
+    readonly windowCreditsLimit: FieldRef<"Subscription", 'Int'>
     readonly windowResetsAt: FieldRef<"Subscription", 'DateTime'>
+    readonly lifetimeCreditsUsed: FieldRef<"Subscription", 'Int'>
     readonly createdAt: FieldRef<"Subscription", 'DateTime'>
     readonly updatedAt: FieldRef<"Subscription", 'DateTime'>
   }
@@ -12784,11 +12767,10 @@ export namespace Prisma {
     stripeCustomerId: 'stripeCustomerId',
     stripeSubscriptionId: 'stripeSubscriptionId',
     stripePriceId: 'stripePriceId',
-    totalOutputTokensUsed: 'totalOutputTokensUsed',
-    totalInputTokensUsed: 'totalInputTokensUsed',
-    windowOutputTokensUsed: 'windowOutputTokensUsed',
-    windowInputTokensUsed: 'windowInputTokensUsed',
+    windowCreditsUsed: 'windowCreditsUsed',
+    windowCreditsLimit: 'windowCreditsLimit',
     windowResetsAt: 'windowResetsAt',
+    lifetimeCreditsUsed: 'lifetimeCreditsUsed',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -13302,11 +13284,10 @@ export namespace Prisma {
     stripeCustomerId?: StringNullableFilter<"Subscription"> | string | null
     stripeSubscriptionId?: StringNullableFilter<"Subscription"> | string | null
     stripePriceId?: StringNullableFilter<"Subscription"> | string | null
-    totalOutputTokensUsed?: IntFilter<"Subscription"> | number
-    totalInputTokensUsed?: IntFilter<"Subscription"> | number
-    windowOutputTokensUsed?: IntFilter<"Subscription"> | number
-    windowInputTokensUsed?: IntFilter<"Subscription"> | number
+    windowCreditsUsed?: IntFilter<"Subscription"> | number
+    windowCreditsLimit?: IntFilter<"Subscription"> | number
     windowResetsAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    lifetimeCreditsUsed?: IntFilter<"Subscription"> | number
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -13320,11 +13301,10 @@ export namespace Prisma {
     stripeCustomerId?: SortOrderInput | SortOrder
     stripeSubscriptionId?: SortOrderInput | SortOrder
     stripePriceId?: SortOrderInput | SortOrder
-    totalOutputTokensUsed?: SortOrder
-    totalInputTokensUsed?: SortOrder
-    windowOutputTokensUsed?: SortOrder
-    windowInputTokensUsed?: SortOrder
+    windowCreditsUsed?: SortOrder
+    windowCreditsLimit?: SortOrder
     windowResetsAt?: SortOrderInput | SortOrder
+    lifetimeCreditsUsed?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -13341,11 +13321,10 @@ export namespace Prisma {
     stripeCustomerId?: StringNullableFilter<"Subscription"> | string | null
     stripeSubscriptionId?: StringNullableFilter<"Subscription"> | string | null
     stripePriceId?: StringNullableFilter<"Subscription"> | string | null
-    totalOutputTokensUsed?: IntFilter<"Subscription"> | number
-    totalInputTokensUsed?: IntFilter<"Subscription"> | number
-    windowOutputTokensUsed?: IntFilter<"Subscription"> | number
-    windowInputTokensUsed?: IntFilter<"Subscription"> | number
+    windowCreditsUsed?: IntFilter<"Subscription"> | number
+    windowCreditsLimit?: IntFilter<"Subscription"> | number
     windowResetsAt?: DateTimeNullableFilter<"Subscription"> | Date | string | null
+    lifetimeCreditsUsed?: IntFilter<"Subscription"> | number
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -13359,11 +13338,10 @@ export namespace Prisma {
     stripeCustomerId?: SortOrderInput | SortOrder
     stripeSubscriptionId?: SortOrderInput | SortOrder
     stripePriceId?: SortOrderInput | SortOrder
-    totalOutputTokensUsed?: SortOrder
-    totalInputTokensUsed?: SortOrder
-    windowOutputTokensUsed?: SortOrder
-    windowInputTokensUsed?: SortOrder
+    windowCreditsUsed?: SortOrder
+    windowCreditsLimit?: SortOrder
     windowResetsAt?: SortOrderInput | SortOrder
+    lifetimeCreditsUsed?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SubscriptionCountOrderByAggregateInput
@@ -13384,11 +13362,10 @@ export namespace Prisma {
     stripeCustomerId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
     stripeSubscriptionId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
     stripePriceId?: StringNullableWithAggregatesFilter<"Subscription"> | string | null
-    totalOutputTokensUsed?: IntWithAggregatesFilter<"Subscription"> | number
-    totalInputTokensUsed?: IntWithAggregatesFilter<"Subscription"> | number
-    windowOutputTokensUsed?: IntWithAggregatesFilter<"Subscription"> | number
-    windowInputTokensUsed?: IntWithAggregatesFilter<"Subscription"> | number
+    windowCreditsUsed?: IntWithAggregatesFilter<"Subscription"> | number
+    windowCreditsLimit?: IntWithAggregatesFilter<"Subscription"> | number
     windowResetsAt?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
+    lifetimeCreditsUsed?: IntWithAggregatesFilter<"Subscription"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
   }
@@ -14015,11 +13992,10 @@ export namespace Prisma {
     stripeCustomerId?: string | null
     stripeSubscriptionId?: string | null
     stripePriceId?: string | null
-    totalOutputTokensUsed?: number
-    totalInputTokensUsed?: number
-    windowOutputTokensUsed?: number
-    windowInputTokensUsed?: number
+    windowCreditsUsed?: number
+    windowCreditsLimit?: number
     windowResetsAt?: Date | string | null
+    lifetimeCreditsUsed?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubscriptionInput
@@ -14033,11 +14009,10 @@ export namespace Prisma {
     stripeCustomerId?: string | null
     stripeSubscriptionId?: string | null
     stripePriceId?: string | null
-    totalOutputTokensUsed?: number
-    totalInputTokensUsed?: number
-    windowOutputTokensUsed?: number
-    windowInputTokensUsed?: number
+    windowCreditsUsed?: number
+    windowCreditsLimit?: number
     windowResetsAt?: Date | string | null
+    lifetimeCreditsUsed?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14049,11 +14024,10 @@ export namespace Prisma {
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
-    totalOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    totalInputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowInputTokensUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsLimit?: IntFieldUpdateOperationsInput | number
     windowResetsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lifetimeCreditsUsed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubscriptionNestedInput
@@ -14067,11 +14041,10 @@ export namespace Prisma {
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
-    totalOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    totalInputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowInputTokensUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsLimit?: IntFieldUpdateOperationsInput | number
     windowResetsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lifetimeCreditsUsed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14084,11 +14057,10 @@ export namespace Prisma {
     stripeCustomerId?: string | null
     stripeSubscriptionId?: string | null
     stripePriceId?: string | null
-    totalOutputTokensUsed?: number
-    totalInputTokensUsed?: number
-    windowOutputTokensUsed?: number
-    windowInputTokensUsed?: number
+    windowCreditsUsed?: number
+    windowCreditsLimit?: number
     windowResetsAt?: Date | string | null
+    lifetimeCreditsUsed?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14100,11 +14072,10 @@ export namespace Prisma {
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
-    totalOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    totalInputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowInputTokensUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsLimit?: IntFieldUpdateOperationsInput | number
     windowResetsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lifetimeCreditsUsed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14117,11 +14088,10 @@ export namespace Prisma {
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
-    totalOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    totalInputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowInputTokensUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsLimit?: IntFieldUpdateOperationsInput | number
     windowResetsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lifetimeCreditsUsed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14768,20 +14738,18 @@ export namespace Prisma {
     stripeCustomerId?: SortOrder
     stripeSubscriptionId?: SortOrder
     stripePriceId?: SortOrder
-    totalOutputTokensUsed?: SortOrder
-    totalInputTokensUsed?: SortOrder
-    windowOutputTokensUsed?: SortOrder
-    windowInputTokensUsed?: SortOrder
+    windowCreditsUsed?: SortOrder
+    windowCreditsLimit?: SortOrder
     windowResetsAt?: SortOrder
+    lifetimeCreditsUsed?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type SubscriptionAvgOrderByAggregateInput = {
-    totalOutputTokensUsed?: SortOrder
-    totalInputTokensUsed?: SortOrder
-    windowOutputTokensUsed?: SortOrder
-    windowInputTokensUsed?: SortOrder
+    windowCreditsUsed?: SortOrder
+    windowCreditsLimit?: SortOrder
+    lifetimeCreditsUsed?: SortOrder
   }
 
   export type SubscriptionMaxOrderByAggregateInput = {
@@ -14792,11 +14760,10 @@ export namespace Prisma {
     stripeCustomerId?: SortOrder
     stripeSubscriptionId?: SortOrder
     stripePriceId?: SortOrder
-    totalOutputTokensUsed?: SortOrder
-    totalInputTokensUsed?: SortOrder
-    windowOutputTokensUsed?: SortOrder
-    windowInputTokensUsed?: SortOrder
+    windowCreditsUsed?: SortOrder
+    windowCreditsLimit?: SortOrder
     windowResetsAt?: SortOrder
+    lifetimeCreditsUsed?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14809,20 +14776,18 @@ export namespace Prisma {
     stripeCustomerId?: SortOrder
     stripeSubscriptionId?: SortOrder
     stripePriceId?: SortOrder
-    totalOutputTokensUsed?: SortOrder
-    totalInputTokensUsed?: SortOrder
-    windowOutputTokensUsed?: SortOrder
-    windowInputTokensUsed?: SortOrder
+    windowCreditsUsed?: SortOrder
+    windowCreditsLimit?: SortOrder
     windowResetsAt?: SortOrder
+    lifetimeCreditsUsed?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
   export type SubscriptionSumOrderByAggregateInput = {
-    totalOutputTokensUsed?: SortOrder
-    totalInputTokensUsed?: SortOrder
-    windowOutputTokensUsed?: SortOrder
-    windowInputTokensUsed?: SortOrder
+    windowCreditsUsed?: SortOrder
+    windowCreditsLimit?: SortOrder
+    lifetimeCreditsUsed?: SortOrder
   }
 
   export type EnumTierWithAggregatesFilter<$PrismaModel = never> = {
@@ -15723,11 +15688,10 @@ export namespace Prisma {
     stripeCustomerId?: string | null
     stripeSubscriptionId?: string | null
     stripePriceId?: string | null
-    totalOutputTokensUsed?: number
-    totalInputTokensUsed?: number
-    windowOutputTokensUsed?: number
-    windowInputTokensUsed?: number
+    windowCreditsUsed?: number
+    windowCreditsLimit?: number
     windowResetsAt?: Date | string | null
+    lifetimeCreditsUsed?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15739,11 +15703,10 @@ export namespace Prisma {
     stripeCustomerId?: string | null
     stripeSubscriptionId?: string | null
     stripePriceId?: string | null
-    totalOutputTokensUsed?: number
-    totalInputTokensUsed?: number
-    windowOutputTokensUsed?: number
-    windowInputTokensUsed?: number
+    windowCreditsUsed?: number
+    windowCreditsLimit?: number
     windowResetsAt?: Date | string | null
+    lifetimeCreditsUsed?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15890,11 +15853,10 @@ export namespace Prisma {
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
-    totalOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    totalInputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowInputTokensUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsLimit?: IntFieldUpdateOperationsInput | number
     windowResetsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lifetimeCreditsUsed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15906,11 +15868,10 @@ export namespace Prisma {
     stripeCustomerId?: NullableStringFieldUpdateOperationsInput | string | null
     stripeSubscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
     stripePriceId?: NullableStringFieldUpdateOperationsInput | string | null
-    totalOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    totalInputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowOutputTokensUsed?: IntFieldUpdateOperationsInput | number
-    windowInputTokensUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsUsed?: IntFieldUpdateOperationsInput | number
+    windowCreditsLimit?: IntFieldUpdateOperationsInput | number
     windowResetsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lifetimeCreditsUsed?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

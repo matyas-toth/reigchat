@@ -51,11 +51,11 @@ export function ChatSidebar({
   const [mounted, setMounted] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
-  const [quota, setQuota] = useState<{ percentUsed: number; tier: string; exhausted: boolean; isLifetime: boolean } | null>(null);
+  const [quota, setQuota] = useState<{ percentUsed: number; tier: string; exhausted: boolean; isLifetime: boolean; windowResetsAt: string | null } | null>(null);
 
   useEffect(() => {
     setMounted(true);
-    fetch("/api/billing/quota").then(r => r.ok ? r.json() : null).then(d => { if (d) setQuota(d); });
+    fetch("/api/usage").then(r => r.ok ? r.json() : null).then(d => { if (d) setQuota(d); });
   }, []);
 
   const handleSignOut = async () => {
@@ -207,7 +207,7 @@ export function ChatSidebar({
               <button
                 onClick={() => router.push("/profile")}
                 className="w-full text-left group cursor-pointer"
-                title="View plan & usage"
+                title="Részletek és előfizetés"
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className={cn(
@@ -215,8 +215,8 @@ export function ChatSidebar({
                     quota.exhausted ? "text-destructive" : "text-muted-foreground/70"
                   )}>
                     {quota.exhausted
-                      ? quota.tier === "FREE" ? "Ingyenes hozzáférés elfogyott →" : "Kvóta elfogyott"
-                      : quota.tier === "FREE" ? `${quota.percentUsed}% felhasználva` : `${quota.percentUsed}% felhasználva`
+                      ? quota.isLifetime ? "Korlát elérve →" : "Kvóta elfogyott"
+                      : `${quota.percentUsed}% felhasználva`
                     }
                   </span>
                   <span className="text-[10px] text-muted-foreground/40 group-hover:text-muted-foreground transition-colors">
@@ -224,6 +224,13 @@ export function ChatSidebar({
                   </span>
                 </div>
                 <Progress value={Math.min(100, quota.percentUsed)} className="h-1 shadow-none" />
+                
+                {/* Reset time hint for paid tiers */}
+                {!quota.isLifetime && quota.windowResetsAt && !quota.exhausted && (
+                  <div className="mt-1.5 text-[9px] text-muted-foreground/40 text-right">
+                    Frissül: {new Intl.DateTimeFormat('hu-HU', { hour: '2-digit', minute: '2-digit' }).format(new Date(quota.windowResetsAt))}
+                  </div>
+                )}
               </button>
             )}
 
@@ -235,7 +242,7 @@ export function ChatSidebar({
                 onClick={() => router.push("/profile")}
                 className="w-full h-8 text-xs font-medium"
               >
-                Upgrade to Pro
+                Váltás PRO csomagra
               </Button>
             )}
 
