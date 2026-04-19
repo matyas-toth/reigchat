@@ -37,10 +37,20 @@ export default function DashboardPage() {
     }
   }, [session, isPending]);
 
-  // Default sidebar open on desktop, closed on mobile
   useEffect(() => {
-    setSidebarOpen(!isMobile);
+    const saved = localStorage.getItem("sidebar_open");
+    if (saved !== null) {
+      setSidebarOpen(saved === "true");
+    } else {
+      setSidebarOpen(!isMobile);
+    }
   }, [isMobile]);
+
+  const toggleSidebar = () => {
+    const newState = !sidebarOpen;
+    setSidebarOpen(newState);
+    localStorage.setItem("sidebar_open", String(newState));
+  };
 
   // Auto-open the latest chat with nothing selected
   useEffect(() => {
@@ -104,6 +114,18 @@ export default function DashboardPage() {
         />
       )}
 
+      {/* Floating sidebar button */}
+      {!sidebarOpen && (
+        <button
+          onClick={toggleSidebar}
+          className="fixed top-2.5 cursor-pointer left-3 z-40 flex h-10 w-10 items-center justify-center rounded-full border border-border/50 bg-background/80 shadow-md backdrop-blur-md text-foreground transition-colors hover:bg-accent/80 active:scale-95 focus:outline-none"
+        >
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M2 4h12M2 8h12M2 12h12" />
+          </svg>
+        </button>
+      )}
+
       <ChatSidebar
         chats={chats}
         activeChat={activeChat}
@@ -111,7 +133,7 @@ export default function DashboardPage() {
         onNewChat={createChat}
         onDeleteChat={deleteChat}
         isOpen={sidebarOpen}
-        onToggle={() => setSidebarOpen(!sidebarOpen)}
+        onToggle={toggleSidebar}
         isMobile={isMobile}
       />
 
@@ -122,7 +144,7 @@ export default function DashboardPage() {
           onNewChat={createChat}
           onChatUpdated={onChatUpdated}
           sidebarOpen={sidebarOpen}
-          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          onToggleSidebar={toggleSidebar}
         />
       </main>
     </div>

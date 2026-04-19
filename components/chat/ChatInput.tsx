@@ -204,7 +204,7 @@ export function ChatInput({
           </div>
 
           {/* Hint */}
-          <p className="mt-2 text-center text-[11px] text-muted-foreground/40 select-none tracking-wide">
+          <p className="my-2 text-center text-[11px] text-muted-foreground/40 select-none tracking-wide">
             <kbd className="font-mono">Enter</kbd> a küldéshez, <kbd className="font-mono">Shift+Enter</kbd> az új sorhoz
           </p>
         </div>

@@ -113,18 +113,17 @@ export function ChatSidebar({
             </TooltipTrigger>
             <TooltipContent side="right">Új Chat</TooltipContent>
           </Tooltip>
-          {isMobile && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-7 w-7 text-muted-foreground hover:text-foreground"
-              onClick={onToggle}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M4.5 4.5l7 7M11.5 4.5l-7 7" />
-              </svg>
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-7 w-7 text-muted-foreground hover:text-foreground"
+            onClick={onToggle}
+            title="Oldalsáv bezárása"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+              <path d="M4.5 4.5l7 7M11.5 4.5l-7 7" />
+            </svg>
+          </Button>
         </div>
       </div>
 
