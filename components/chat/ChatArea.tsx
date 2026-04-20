@@ -10,12 +10,13 @@ import { cn } from "@/lib/utils";
 import ChatSpinner from "./ChatSpinner";
 import { AnimatePresence, motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ChatSpark01Icon } from "@hugeicons/core-free-icons";
+import { ChatSpark01Icon, ArrowDown01Icon } from "@hugeicons/core-free-icons";
 import { MemoizedMarkdown } from "../memoized-markdown";
 import { useSession } from "@/lib/auth-client";
 
 interface ChatAreaProps {
   chatId: string | null;
+  chatTitle?: string;
   onNewChat: () => void;
   onChatUpdated: () => void;
   sidebarOpen: boolean;
@@ -95,6 +96,7 @@ function extractToolParts(message: UIMessage): ToolPart[] {
 
 export function ChatArea({
   chatId,
+  chatTitle = "Beszélgetés",
   onNewChat,
   onChatUpdated,
   sidebarOpen,
@@ -144,6 +146,7 @@ export function ChatArea({
   return (
     <ChatInner
       chatId={chatId}
+      chatTitle={chatTitle}
       initialMessages={historyMessages}
       onChatUpdated={onChatUpdated}
       sidebarOpen={sidebarOpen}
@@ -203,12 +206,14 @@ function ToolCallStack({
 
 function ChatInner({
   chatId,
+  chatTitle,
   initialMessages,
   onChatUpdated,
   sidebarOpen,
   onToggleSidebar,
 }: {
   chatId: string;
+  chatTitle: string;
   initialMessages: UIMessage[];
   onChatUpdated: () => void;
   sidebarOpen: boolean;
@@ -316,9 +321,16 @@ function ChatInner({
     <div className="flex w-full h-full overflow-hidden">
       <div className="flex h-full flex-1 flex-col min-w-[300px]">
         {/* Header */}
-
-
-        {/* Dynamic Area */}
+        <div className="flex h-14 items-center justify-between px-6 pt-2 select-none">
+          <div className="flex items-center text-sm font-medium">
+            <span className="text-muted-foreground/70">Projects</span>
+            <span className="text-muted-foreground/40 mx-2">/</span>
+            <span className="text-foreground flex items-center cursor-pointer hover:text-foreground/80 transition-colors">
+              {chatTitle}
+              <HugeiconsIcon icon={ArrowDown01Icon} size={16} strokeWidth={2} className="ml-1 text-muted-foreground/60" />
+            </span>
+          </div>
+        </div>        {/* Dynamic Area */}
         <div className="flex-1 flex flex-col relative overflow-hidden">
           {/* Messages Wrapper */}
           {(messages.length > 0 || isThinking) && (

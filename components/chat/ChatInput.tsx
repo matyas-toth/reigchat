@@ -47,12 +47,13 @@ const PROVIDER_META: Record<string, { color: string; dot: string; name: string }
   anthropic: { color: "text-amber-500/80", dot: "bg-amber-500/70", name: "Anthropic" },
   openai: { color: "text-emerald-500/80", dot: "bg-emerald-500/70", name: "OpenAI" },
   google: { color: "text-blue-400/80", dot: "bg-blue-400/70", name: "Google" },
-  mistralai: { color: "text-orange-400/80", dot: "bg-orange-400/70", name: "Mistral AI" },
+  mistralai: { color: "text-orange-600/80", dot: "bg-orange-600/70", name: "Mistral AI" },
   deepseek: { color: "text-cyan-400/80", dot: "bg-cyan-400/70", name: "DeepSeek" },
   qwen: { color: "text-violet-400/80", dot: "bg-violet-400/70", name: "Qwen" },
   "reig chat": { color: "text-foreground/60", dot: "bg-foreground/40", name: "Reig Chat" },
   codestral: { color: "text-orange-400/80", dot: "bg-orange-400/70", name: "Codestral" },
   devstral: { color: "text-orange-400/80", dot: "bg-orange-400/70", name: "Mistral AI" },
+
 };
 
 function getProviderMeta(provider: string) {
@@ -114,7 +115,7 @@ function ModelCard({
       <div className="flex items-center gap-1.5 mb-1.5">
         <div className={cn("h-1.5 w-1.5 rounded-full shrink-0", isSelected ? "bg-background/50" : meta.dot)} />
         <span className={cn(
-          "text-[10px] font-medium tracking-wide uppercase",
+          "text-[10px] font-medium tracking-widest uppercase",
           isSelected ? "text-background/60" : meta.color
         )}>
           {meta.name}
@@ -123,7 +124,7 @@ function ModelCard({
 
       {/* Model name */}
       <p className={cn(
-        "text-[13px] font-medium leading-snug pr-6",
+        "text-[16px] font-medium leading-snug pr-6",
         isSelected ? "text-background" : "text-foreground/90"
       )}>
         {model.label} {model.label.includes("Auto") ? <HugeiconsIcon size={16} className="inline ml-1 -translate-y-[2px]" strokeWidth={1} fill="currentColor" icon={Airplane01Icon} /> : ""}
@@ -311,10 +312,10 @@ export function ChatInput({
                         {/* Rest: 2-col grid */}
                         {restModels.length > 0 && (
                           <>
-                            <div className="flex items-center gap-2 px-1 pt-1">
+                            <div className="flex items-center gap-4 px-1 py-2">
                               <div className="h-px flex-1 bg-border/40" />
-                              <span className="text-[10px] text-muted-foreground/40 font-medium uppercase tracking-wider">
-                                Modellek
+                              <span className="text-[12px] text-muted-foreground/40 font-medium uppercase tracking-widest">
+                                Prémium Modellek
                               </span>
                               <div className="h-px flex-1 bg-border/40" />
                             </div>

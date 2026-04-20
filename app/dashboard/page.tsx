@@ -105,7 +105,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="relative flex h-dvh w-full overflow-hidden bg-background">
+    <div className="relative flex h-dvh w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950 text-foreground transition-colors overflow-hidden">
       {/* Mobile overlay backdrop */}
       {isMobile && sidebarOpen && (
         <div
@@ -118,7 +118,7 @@ export default function DashboardPage() {
       {!sidebarOpen && (
         <button
           onClick={toggleSidebar}
-          className="fixed top-2.5 cursor-pointer left-3 z-40 flex h-10 w-10 items-center justify-center rounded-full border border-border/50 bg-background/80 shadow-md backdrop-blur-md text-foreground transition-colors hover:bg-accent/80 active:scale-95 focus:outline-none"
+          className="fixed top-3 cursor-pointer left-4 z-40 flex h-8 w-8 items-center justify-center rounded-md border border-border/50 bg-background/80 shadow-md backdrop-blur-md text-foreground transition-colors hover:bg-accent/80 active:scale-95 focus:outline-none"
         >
           <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
             <path d="M2 4h12M2 8h12M2 12h12" />
@@ -137,10 +137,11 @@ export default function DashboardPage() {
         isMobile={isMobile}
       />
 
-      <main className="relative flex flex-1 flex-col overflow-hidden">
+      <main className="relative flex flex-1 flex-col overflow-hidden bg-background rounded-tl-[20px] border-l border-t border-border/40 transition-colors">
         <ChatArea
           key={activeChat ?? "empty"}
           chatId={activeChat}
+          chatTitle={chats.find((c) => c.id === activeChat)?.title || "Új beszélgetés"}
           onNewChat={createChat}
           onChatUpdated={onChatUpdated}
           sidebarOpen={sidebarOpen}
