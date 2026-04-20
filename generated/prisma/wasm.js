@@ -185,7 +185,8 @@ exports.Prisma.ChatScalarFieldEnum = {
   title: 'title',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  userId: 'userId'
+  userId: 'userId',
+  projectId: 'projectId'
 };
 
 exports.Prisma.MessageScalarFieldEnum = {
@@ -202,6 +203,22 @@ exports.Prisma.MemoryScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   userId: 'userId'
+};
+
+exports.Prisma.ProjectScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  emoji: 'emoji',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PinnedChatScalarFieldEnum = {
+  id: 'id',
+  chatId: 'chatId',
+  userId: 'userId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.TierModelScalarFieldEnum = {
@@ -258,6 +275,8 @@ exports.Prisma.ModelName = {
   Chat: 'Chat',
   Message: 'Message',
   Memory: 'Memory',
+  Project: 'Project',
+  PinnedChat: 'PinnedChat',
   TierModel: 'TierModel',
   ModelBlocklist: 'ModelBlocklist'
 };

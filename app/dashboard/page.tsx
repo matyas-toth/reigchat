@@ -1,17 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { ChatSidebar } from "@/components/chat/ChatSidebar";
+import { ChatSidebar, Chat } from "@/components/chat/ChatSidebar";
 import { ChatArea } from "@/components/chat/ChatArea";
 import { useSession } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
-
-interface Chat {
-  id: string;
-  title: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import { Project } from "@/components/chat/MoveToProjectPicker";
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -27,52 +21,58 @@ function useIsMobile() {
 export default function DashboardPage() {
   const { data: session, isPending } = useSession();
   const [chats, setChats] = useState<Chat[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [activeChat, setActiveChat] = useState<string | null>(null);
   const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    if (!isPending && !session) {
-      redirect("/login");
-    }
+    if (!isPending && !session) redirect("/login");
   }, [session, isPending]);
 
   useEffect(() => {
     const saved = localStorage.getItem("sidebar_open");
-    if (saved !== null) {
-      setSidebarOpen(saved === "true");
-    } else {
-      setSidebarOpen(!isMobile);
-    }
+    setSidebarOpen(saved !== null ? saved === "true" : !isMobile);
   }, [isMobile]);
 
   const toggleSidebar = () => {
-    const newState = !sidebarOpen;
-    setSidebarOpen(newState);
-    localStorage.setItem("sidebar_open", String(newState));
+    const next = !sidebarOpen;
+    setSidebarOpen(next);
+    localStorage.setItem("sidebar_open", String(next));
   };
 
-  // Auto-open the latest chat with nothing selected
+  // Auto-select latest chat
   useEffect(() => {
-    if (!activeChat && chats.length > 0) {
-      setActiveChat(chats[0].id);
-    }
+    if (!activeChat && chats.length > 0) setActiveChat(chats[0].id);
   }, [activeChat, chats]);
 
+  // ── Fetchers ─────────────────────────────────────────────
   const fetchChats = useCallback(async () => {
     const res = await fetch("/api/chats");
     const data = await res.json();
     setChats(data);
   }, []);
 
+  const fetchProjects = useCallback(async () => {
+    const res = await fetch("/api/projects");
+    const data = await res.json();
+    setProjects(data);
+  }, []);
+
   useEffect(() => {
     if (session) {
       fetchChats();
+      fetchProjects();
     }
-  }, [fetchChats, session]);
+  }, [fetchChats, fetchProjects, session]);
 
-  const createChat = async () => {
-    const res = await fetch("/api/chats", { method: "POST" });
+  // ── Chat handlers ─────────────────────────────────────────
+  const createChat = async (projectId?: string) => {
+    const res = await fetch("/api/chats", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(projectId ? { projectId } : {}),
+    });
     const chat = await res.json();
     setChats((prev) => [chat, ...prev]);
     setActiveChat(chat.id);
@@ -83,18 +83,75 @@ export default function DashboardPage() {
     await fetch(`/api/chats/${id}`, { method: "DELETE" });
     setChats((prev) => prev.filter((c) => c.id !== id));
     if (activeChat === id) {
-      setActiveChat(chats.length > 1 ? chats.find((c) => c.id !== id)?.id ?? null : null);
+      setActiveChat(chats.find((c) => c.id !== id)?.id ?? null);
     }
   };
 
-  const onChatUpdated = () => {
-    fetchChats();
+  const renameChat = async (id: string, title: string) => {
+    // Optimistic
+    setChats((prev) => prev.map((c) => (c.id === id ? { ...c, title } : c)));
+    await fetch(`/api/chats/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title }),
+    });
+  };
+
+  const pinChat = async (id: string, pinned: boolean) => {
+    // Optimistic
+    setChats((prev) => prev.map((c) => (c.id === id ? { ...c, pinned } : c)));
+    if (pinned) {
+      await fetch(`/api/chats/${id}/pin`, { method: "POST" });
+    } else {
+      await fetch(`/api/chats/${id}/pin`, { method: "DELETE" });
+    }
+  };
+
+  const moveChat = async (id: string, projectId: string | null) => {
+    // Optimistic
+    setChats((prev) => prev.map((c) => (c.id === id ? { ...c, projectId } : c)));
+    await fetch(`/api/chats/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ projectId }),
+    });
+  };
+
+  // ── Project handlers ──────────────────────────────────────
+  const createProject = async (name: string, emoji: string): Promise<Project> => {
+    const res = await fetch("/api/projects", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, emoji }),
+    });
+    const project = await res.json();
+    setProjects((prev) => [...prev, project]);
+    return project;
+  };
+
+  const renameProject = async (id: string, name: string) => {
+    setProjects((prev) => prev.map((p) => (p.id === id ? { ...p, name } : p)));
+    await fetch(`/api/projects/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name }),
+    });
+  };
+
+  const deleteProject = async (id: string) => {
+    setProjects((prev) => prev.filter((p) => p.id !== id));
+    // Detach chats optimistically
+    setChats((prev) => prev.map((c) => (c.projectId === id ? { ...c, projectId: null } : c)));
+    await fetch(`/api/projects/${id}`, { method: "DELETE" });
   };
 
   const handleSelectChat = (id: string) => {
     setActiveChat(id);
     if (isMobile) setSidebarOpen(false);
   };
+
+  const activeProjectId = chats.find((c) => c.id === activeChat)?.projectId ?? null;
+  const activeProjectName = projects.find((p) => p.id === activeProjectId)?.name;
 
   if (isPending || !session) {
     return (
@@ -105,16 +162,13 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="relative flex h-dvh w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950 text-foreground transition-colors overflow-hidden">
-      {/* Mobile overlay backdrop */}
+    <div className="relative flex h-dvh w-full overflow-hidden bg-zinc-100 dark:bg-zinc-950 text-foreground transition-colors">
+      {/* Mobile overlay */}
       {isMobile && sidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/40"
-          onClick={() => setSidebarOpen(false)}
-        />
+        <div className="fixed inset-0 z-30 bg-black/40" onClick={() => setSidebarOpen(false)} />
       )}
 
-      {/* Floating sidebar button */}
+      {/* Floating toggle when sidebar closed */}
       {!sidebarOpen && (
         <button
           onClick={toggleSidebar}
@@ -128,10 +182,17 @@ export default function DashboardPage() {
 
       <ChatSidebar
         chats={chats}
+        projects={projects}
         activeChat={activeChat}
         onSelectChat={handleSelectChat}
         onNewChat={createChat}
         onDeleteChat={deleteChat}
+        onRenameChat={renameChat}
+        onPinChat={pinChat}
+        onMoveChat={moveChat}
+        onCreateProject={createProject}
+        onRenameProject={renameProject}
+        onDeleteProject={deleteProject}
         isOpen={sidebarOpen}
         onToggle={toggleSidebar}
         isMobile={isMobile}
@@ -142,8 +203,16 @@ export default function DashboardPage() {
           key={activeChat ?? "empty"}
           chatId={activeChat}
           chatTitle={chats.find((c) => c.id === activeChat)?.title || "Új beszélgetés"}
+          chatProjectName={activeProjectName}
+          chatProjectId={activeProjectId}
+          projects={projects}
           onNewChat={createChat}
-          onChatUpdated={onChatUpdated}
+          onChatUpdated={fetchChats}
+          onRenameChat={(title) => activeChat && renameChat(activeChat, title)}
+          onPinChat={(pinned) => activeChat && pinChat(activeChat, pinned)}
+          onMoveChat={(projectId) => activeChat && moveChat(activeChat, projectId)}
+          onDeleteChat={() => activeChat && deleteChat(activeChat)}
+          onCreateProject={createProject}
           sidebarOpen={sidebarOpen}
           onToggleSidebar={toggleSidebar}
         />

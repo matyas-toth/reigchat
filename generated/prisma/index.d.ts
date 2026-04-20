@@ -54,6 +54,16 @@ export type Message = $Result.DefaultSelection<Prisma.$MessagePayload>
  */
 export type Memory = $Result.DefaultSelection<Prisma.$MemoryPayload>
 /**
+ * Model Project
+ * 
+ */
+export type Project = $Result.DefaultSelection<Prisma.$ProjectPayload>
+/**
+ * Model PinnedChat
+ * 
+ */
+export type PinnedChat = $Result.DefaultSelection<Prisma.$PinnedChatPayload>
+/**
  * Model TierModel
  * 
  */
@@ -310,6 +320,26 @@ export class PrismaClient<
     * ```
     */
   get memory(): Prisma.MemoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.project`: Exposes CRUD operations for the **Project** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Projects
+    * const projects = await prisma.project.findMany()
+    * ```
+    */
+  get project(): Prisma.ProjectDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pinnedChat`: Exposes CRUD operations for the **PinnedChat** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PinnedChats
+    * const pinnedChats = await prisma.pinnedChat.findMany()
+    * ```
+    */
+  get pinnedChat(): Prisma.PinnedChatDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.tierModel`: Exposes CRUD operations for the **TierModel** model.
@@ -778,6 +808,8 @@ export namespace Prisma {
     Chat: 'Chat',
     Message: 'Message',
     Memory: 'Memory',
+    Project: 'Project',
+    PinnedChat: 'PinnedChat',
     TierModel: 'TierModel',
     ModelBlocklist: 'ModelBlocklist'
   };
@@ -798,7 +830,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "chat" | "message" | "memory" | "tierModel" | "modelBlocklist"
+      modelProps: "user" | "session" | "account" | "verification" | "subscription" | "chat" | "message" | "memory" | "project" | "pinnedChat" | "tierModel" | "modelBlocklist"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1394,6 +1426,154 @@ export namespace Prisma {
           }
         }
       }
+      Project: {
+        payload: Prisma.$ProjectPayload<ExtArgs>
+        fields: Prisma.ProjectFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProjectFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProjectFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
+          }
+          findFirst: {
+            args: Prisma.ProjectFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProjectFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
+          }
+          findMany: {
+            args: Prisma.ProjectFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>[]
+          }
+          create: {
+            args: Prisma.ProjectCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
+          }
+          createMany: {
+            args: Prisma.ProjectCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProjectCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>[]
+          }
+          delete: {
+            args: Prisma.ProjectDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
+          }
+          update: {
+            args: Prisma.ProjectUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProjectDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProjectUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProjectUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProjectUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProjectPayload>
+          }
+          aggregate: {
+            args: Prisma.ProjectAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProject>
+          }
+          groupBy: {
+            args: Prisma.ProjectGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProjectGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProjectCountArgs<ExtArgs>
+            result: $Utils.Optional<ProjectCountAggregateOutputType> | number
+          }
+        }
+      }
+      PinnedChat: {
+        payload: Prisma.$PinnedChatPayload<ExtArgs>
+        fields: Prisma.PinnedChatFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PinnedChatFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PinnedChatFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload>
+          }
+          findFirst: {
+            args: Prisma.PinnedChatFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PinnedChatFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload>
+          }
+          findMany: {
+            args: Prisma.PinnedChatFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload>[]
+          }
+          create: {
+            args: Prisma.PinnedChatCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload>
+          }
+          createMany: {
+            args: Prisma.PinnedChatCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PinnedChatCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload>[]
+          }
+          delete: {
+            args: Prisma.PinnedChatDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload>
+          }
+          update: {
+            args: Prisma.PinnedChatUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload>
+          }
+          deleteMany: {
+            args: Prisma.PinnedChatDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PinnedChatUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PinnedChatUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload>[]
+          }
+          upsert: {
+            args: Prisma.PinnedChatUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PinnedChatPayload>
+          }
+          aggregate: {
+            args: Prisma.PinnedChatAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePinnedChat>
+          }
+          groupBy: {
+            args: Prisma.PinnedChatGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PinnedChatGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PinnedChatCountArgs<ExtArgs>
+            result: $Utils.Optional<PinnedChatCountAggregateOutputType> | number
+          }
+        }
+      }
       TierModel: {
         payload: Prisma.$TierModelPayload<ExtArgs>
         fields: Prisma.TierModelFieldRefs
@@ -1634,6 +1814,8 @@ export namespace Prisma {
     chat?: ChatOmit
     message?: MessageOmit
     memory?: MemoryOmit
+    project?: ProjectOmit
+    pinnedChat?: PinnedChatOmit
     tierModel?: TierModelOmit
     modelBlocklist?: ModelBlocklistOmit
   }
@@ -1734,6 +1916,8 @@ export namespace Prisma {
     accounts: number
     chats: number
     memories: number
+    projects: number
+    pinnedChats: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1741,6 +1925,8 @@ export namespace Prisma {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     chats?: boolean | UserCountOutputTypeCountChatsArgs
     memories?: boolean | UserCountOutputTypeCountMemoriesArgs
+    projects?: boolean | UserCountOutputTypeCountProjectsArgs
+    pinnedChats?: boolean | UserCountOutputTypeCountPinnedChatsArgs
   }
 
   // Custom InputTypes
@@ -1782,6 +1968,20 @@ export namespace Prisma {
     where?: MemoryWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProjectWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPinnedChatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PinnedChatWhereInput
+  }
+
 
   /**
    * Count Type ChatCountOutputType
@@ -1789,10 +1989,12 @@ export namespace Prisma {
 
   export type ChatCountOutputType = {
     messages: number
+    pinnedBy: number
   }
 
   export type ChatCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     messages?: boolean | ChatCountOutputTypeCountMessagesArgs
+    pinnedBy?: boolean | ChatCountOutputTypeCountPinnedByArgs
   }
 
   // Custom InputTypes
@@ -1811,6 +2013,44 @@ export namespace Prisma {
    */
   export type ChatCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MessageWhereInput
+  }
+
+  /**
+   * ChatCountOutputType without action
+   */
+  export type ChatCountOutputTypeCountPinnedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PinnedChatWhereInput
+  }
+
+
+  /**
+   * Count Type ProjectCountOutputType
+   */
+
+  export type ProjectCountOutputType = {
+    chats: number
+  }
+
+  export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    chats?: boolean | ProjectCountOutputTypeCountChatsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProjectCountOutputType
+     */
+    select?: ProjectCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountChatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatWhereInput
   }
 
 
@@ -2011,6 +2251,8 @@ export namespace Prisma {
     chats?: boolean | User$chatsArgs<ExtArgs>
     memories?: boolean | User$memoriesArgs<ExtArgs>
     subscription?: boolean | User$subscriptionArgs<ExtArgs>
+    projects?: boolean | User$projectsArgs<ExtArgs>
+    pinnedChats?: boolean | User$pinnedChatsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2054,6 +2296,8 @@ export namespace Prisma {
     chats?: boolean | User$chatsArgs<ExtArgs>
     memories?: boolean | User$memoriesArgs<ExtArgs>
     subscription?: boolean | User$subscriptionArgs<ExtArgs>
+    projects?: boolean | User$projectsArgs<ExtArgs>
+    pinnedChats?: boolean | User$pinnedChatsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2067,6 +2311,8 @@ export namespace Prisma {
       chats: Prisma.$ChatPayload<ExtArgs>[]
       memories: Prisma.$MemoryPayload<ExtArgs>[]
       subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
+      projects: Prisma.$ProjectPayload<ExtArgs>[]
+      pinnedChats: Prisma.$PinnedChatPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2476,6 +2722,8 @@ export namespace Prisma {
     chats<T extends User$chatsArgs<ExtArgs> = {}>(args?: Subset<T, User$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     memories<T extends User$memoriesArgs<ExtArgs> = {}>(args?: Subset<T, User$memoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MemoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscription<T extends User$subscriptionArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    projects<T extends User$projectsArgs<ExtArgs> = {}>(args?: Subset<T, User$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pinnedChats<T extends User$pinnedChatsArgs<ExtArgs> = {}>(args?: Subset<T, User$pinnedChatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3013,6 +3261,54 @@ export namespace Prisma {
      */
     include?: SubscriptionInclude<ExtArgs> | null
     where?: SubscriptionWhereInput
+  }
+
+  /**
+   * User.projects
+   */
+  export type User$projectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    where?: ProjectWhereInput
+    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
+    cursor?: ProjectWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
+  }
+
+  /**
+   * User.pinnedChats
+   */
+  export type User$pinnedChatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    where?: PinnedChatWhereInput
+    orderBy?: PinnedChatOrderByWithRelationInput | PinnedChatOrderByWithRelationInput[]
+    cursor?: PinnedChatWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PinnedChatScalarFieldEnum | PinnedChatScalarFieldEnum[]
   }
 
   /**
@@ -7521,6 +7817,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    projectId: string | null
   }
 
   export type ChatMaxAggregateOutputType = {
@@ -7529,6 +7826,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     userId: string | null
+    projectId: string | null
   }
 
   export type ChatCountAggregateOutputType = {
@@ -7537,6 +7835,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     userId: number
+    projectId: number
     _all: number
   }
 
@@ -7547,6 +7846,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    projectId?: true
   }
 
   export type ChatMaxAggregateInputType = {
@@ -7555,6 +7855,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    projectId?: true
   }
 
   export type ChatCountAggregateInputType = {
@@ -7563,6 +7864,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     userId?: true
+    projectId?: true
     _all?: true
   }
 
@@ -7644,6 +7946,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     userId: string
+    projectId: string | null
     _count: ChatCountAggregateOutputType | null
     _min: ChatMinAggregateOutputType | null
     _max: ChatMaxAggregateOutputType | null
@@ -7669,8 +7972,11 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    projectId?: boolean
     messages?: boolean | Chat$messagesArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    project?: boolean | Chat$projectArgs<ExtArgs>
+    pinnedBy?: boolean | Chat$pinnedByArgs<ExtArgs>
     _count?: boolean | ChatCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["chat"]>
 
@@ -7680,7 +7986,9 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    projectId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    project?: boolean | Chat$projectArgs<ExtArgs>
   }, ExtArgs["result"]["chat"]>
 
   export type ChatSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7689,7 +7997,9 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    projectId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    project?: boolean | Chat$projectArgs<ExtArgs>
   }, ExtArgs["result"]["chat"]>
 
   export type ChatSelectScalar = {
@@ -7698,19 +8008,24 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     userId?: boolean
+    projectId?: boolean
   }
 
-  export type ChatOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["chat"]>
+  export type ChatOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "createdAt" | "updatedAt" | "userId" | "projectId", ExtArgs["result"]["chat"]>
   export type ChatInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     messages?: boolean | Chat$messagesArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
+    project?: boolean | Chat$projectArgs<ExtArgs>
+    pinnedBy?: boolean | Chat$pinnedByArgs<ExtArgs>
     _count?: boolean | ChatCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ChatIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    project?: boolean | Chat$projectArgs<ExtArgs>
   }
   export type ChatIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    project?: boolean | Chat$projectArgs<ExtArgs>
   }
 
   export type $ChatPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7718,6 +8033,8 @@ export namespace Prisma {
     objects: {
       messages: Prisma.$MessagePayload<ExtArgs>[]
       user: Prisma.$UserPayload<ExtArgs>
+      project: Prisma.$ProjectPayload<ExtArgs> | null
+      pinnedBy: Prisma.$PinnedChatPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7725,6 +8042,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       userId: string
+      projectId: string | null
     }, ExtArgs["result"]["chat"]>
     composites: {}
   }
@@ -8121,6 +8439,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     messages<T extends Chat$messagesArgs<ExtArgs> = {}>(args?: Subset<T, Chat$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    project<T extends Chat$projectArgs<ExtArgs> = {}>(args?: Subset<T, Chat$projectArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    pinnedBy<T extends Chat$pinnedByArgs<ExtArgs> = {}>(args?: Subset<T, Chat$pinnedByArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8155,6 +8475,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Chat", 'DateTime'>
     readonly updatedAt: FieldRef<"Chat", 'DateTime'>
     readonly userId: FieldRef<"Chat", 'String'>
+    readonly projectId: FieldRef<"Chat", 'String'>
   }
     
 
@@ -8572,6 +8893,49 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MessageScalarFieldEnum | MessageScalarFieldEnum[]
+  }
+
+  /**
+   * Chat.project
+   */
+  export type Chat$projectArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    where?: ProjectWhereInput
+  }
+
+  /**
+   * Chat.pinnedBy
+   */
+  export type Chat$pinnedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    where?: PinnedChatWhereInput
+    orderBy?: PinnedChatOrderByWithRelationInput | PinnedChatOrderByWithRelationInput[]
+    cursor?: PinnedChatWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PinnedChatScalarFieldEnum | PinnedChatScalarFieldEnum[]
   }
 
   /**
@@ -10710,6 +11074,2160 @@ export namespace Prisma {
 
 
   /**
+   * Model Project
+   */
+
+  export type AggregateProject = {
+    _count: ProjectCountAggregateOutputType | null
+    _min: ProjectMinAggregateOutputType | null
+    _max: ProjectMaxAggregateOutputType | null
+  }
+
+  export type ProjectMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    emoji: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProjectMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    emoji: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ProjectCountAggregateOutputType = {
+    id: number
+    name: number
+    emoji: number
+    userId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProjectMinAggregateInputType = {
+    id?: true
+    name?: true
+    emoji?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProjectMaxAggregateInputType = {
+    id?: true
+    name?: true
+    emoji?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ProjectCountAggregateInputType = {
+    id?: true
+    name?: true
+    emoji?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProjectAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Project to aggregate.
+     */
+    where?: ProjectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Projects to fetch.
+     */
+    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProjectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Projects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Projects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Projects
+    **/
+    _count?: true | ProjectCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProjectMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProjectMaxAggregateInputType
+  }
+
+  export type GetProjectAggregateType<T extends ProjectAggregateArgs> = {
+        [P in keyof T & keyof AggregateProject]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProject[P]>
+      : GetScalarType<T[P], AggregateProject[P]>
+  }
+
+
+
+
+  export type ProjectGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProjectWhereInput
+    orderBy?: ProjectOrderByWithAggregationInput | ProjectOrderByWithAggregationInput[]
+    by: ProjectScalarFieldEnum[] | ProjectScalarFieldEnum
+    having?: ProjectScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProjectCountAggregateInputType | true
+    _min?: ProjectMinAggregateInputType
+    _max?: ProjectMaxAggregateInputType
+  }
+
+  export type ProjectGroupByOutputType = {
+    id: string
+    name: string
+    emoji: string
+    userId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ProjectCountAggregateOutputType | null
+    _min: ProjectMinAggregateOutputType | null
+    _max: ProjectMaxAggregateOutputType | null
+  }
+
+  type GetProjectGroupByPayload<T extends ProjectGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProjectGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProjectGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProjectGroupByOutputType[P]>
+            : GetScalarType<T[P], ProjectGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProjectSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    emoji?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    chats?: boolean | Project$chatsArgs<ExtArgs>
+    _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["project"]>
+
+  export type ProjectSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    emoji?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["project"]>
+
+  export type ProjectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    emoji?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["project"]>
+
+  export type ProjectSelectScalar = {
+    id?: boolean
+    name?: boolean
+    emoji?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "emoji" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["project"]>
+  export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    chats?: boolean | Project$chatsArgs<ExtArgs>
+    _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ProjectIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ProjectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Project"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      chats: Prisma.$ChatPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      emoji: string
+      userId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["project"]>
+    composites: {}
+  }
+
+  type ProjectGetPayload<S extends boolean | null | undefined | ProjectDefaultArgs> = $Result.GetResult<Prisma.$ProjectPayload, S>
+
+  type ProjectCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProjectFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProjectCountAggregateInputType | true
+    }
+
+  export interface ProjectDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Project'], meta: { name: 'Project' } }
+    /**
+     * Find zero or one Project that matches the filter.
+     * @param {ProjectFindUniqueArgs} args - Arguments to find a Project
+     * @example
+     * // Get one Project
+     * const project = await prisma.project.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProjectFindUniqueArgs>(args: SelectSubset<T, ProjectFindUniqueArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Project that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProjectFindUniqueOrThrowArgs} args - Arguments to find a Project
+     * @example
+     * // Get one Project
+     * const project = await prisma.project.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProjectFindUniqueOrThrowArgs>(args: SelectSubset<T, ProjectFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Project that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectFindFirstArgs} args - Arguments to find a Project
+     * @example
+     * // Get one Project
+     * const project = await prisma.project.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProjectFindFirstArgs>(args?: SelectSubset<T, ProjectFindFirstArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Project that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectFindFirstOrThrowArgs} args - Arguments to find a Project
+     * @example
+     * // Get one Project
+     * const project = await prisma.project.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProjectFindFirstOrThrowArgs>(args?: SelectSubset<T, ProjectFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Projects that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Projects
+     * const projects = await prisma.project.findMany()
+     * 
+     * // Get first 10 Projects
+     * const projects = await prisma.project.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const projectWithIdOnly = await prisma.project.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProjectFindManyArgs>(args?: SelectSubset<T, ProjectFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Project.
+     * @param {ProjectCreateArgs} args - Arguments to create a Project.
+     * @example
+     * // Create one Project
+     * const Project = await prisma.project.create({
+     *   data: {
+     *     // ... data to create a Project
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProjectCreateArgs>(args: SelectSubset<T, ProjectCreateArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Projects.
+     * @param {ProjectCreateManyArgs} args - Arguments to create many Projects.
+     * @example
+     * // Create many Projects
+     * const project = await prisma.project.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProjectCreateManyArgs>(args?: SelectSubset<T, ProjectCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Projects and returns the data saved in the database.
+     * @param {ProjectCreateManyAndReturnArgs} args - Arguments to create many Projects.
+     * @example
+     * // Create many Projects
+     * const project = await prisma.project.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Projects and only return the `id`
+     * const projectWithIdOnly = await prisma.project.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProjectCreateManyAndReturnArgs>(args?: SelectSubset<T, ProjectCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Project.
+     * @param {ProjectDeleteArgs} args - Arguments to delete one Project.
+     * @example
+     * // Delete one Project
+     * const Project = await prisma.project.delete({
+     *   where: {
+     *     // ... filter to delete one Project
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProjectDeleteArgs>(args: SelectSubset<T, ProjectDeleteArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Project.
+     * @param {ProjectUpdateArgs} args - Arguments to update one Project.
+     * @example
+     * // Update one Project
+     * const project = await prisma.project.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProjectUpdateArgs>(args: SelectSubset<T, ProjectUpdateArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Projects.
+     * @param {ProjectDeleteManyArgs} args - Arguments to filter Projects to delete.
+     * @example
+     * // Delete a few Projects
+     * const { count } = await prisma.project.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProjectDeleteManyArgs>(args?: SelectSubset<T, ProjectDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Projects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Projects
+     * const project = await prisma.project.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProjectUpdateManyArgs>(args: SelectSubset<T, ProjectUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Projects and returns the data updated in the database.
+     * @param {ProjectUpdateManyAndReturnArgs} args - Arguments to update many Projects.
+     * @example
+     * // Update many Projects
+     * const project = await prisma.project.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Projects and only return the `id`
+     * const projectWithIdOnly = await prisma.project.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProjectUpdateManyAndReturnArgs>(args: SelectSubset<T, ProjectUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Project.
+     * @param {ProjectUpsertArgs} args - Arguments to update or create a Project.
+     * @example
+     * // Update or create a Project
+     * const project = await prisma.project.upsert({
+     *   create: {
+     *     // ... data to create a Project
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Project we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProjectUpsertArgs>(args: SelectSubset<T, ProjectUpsertArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Projects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectCountArgs} args - Arguments to filter Projects to count.
+     * @example
+     * // Count the number of Projects
+     * const count = await prisma.project.count({
+     *   where: {
+     *     // ... the filter for the Projects we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProjectCountArgs>(
+      args?: Subset<T, ProjectCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProjectCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Project.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProjectAggregateArgs>(args: Subset<T, ProjectAggregateArgs>): Prisma.PrismaPromise<GetProjectAggregateType<T>>
+
+    /**
+     * Group by Project.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProjectGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProjectGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProjectGroupByArgs['orderBy'] }
+        : { orderBy?: ProjectGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProjectGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProjectGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Project model
+   */
+  readonly fields: ProjectFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Project.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    chats<T extends Project$chatsArgs<ExtArgs> = {}>(args?: Subset<T, Project$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Project model
+   */
+  interface ProjectFieldRefs {
+    readonly id: FieldRef<"Project", 'String'>
+    readonly name: FieldRef<"Project", 'String'>
+    readonly emoji: FieldRef<"Project", 'String'>
+    readonly userId: FieldRef<"Project", 'String'>
+    readonly createdAt: FieldRef<"Project", 'DateTime'>
+    readonly updatedAt: FieldRef<"Project", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Project findUnique
+   */
+  export type ProjectFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which Project to fetch.
+     */
+    where: ProjectWhereUniqueInput
+  }
+
+  /**
+   * Project findUniqueOrThrow
+   */
+  export type ProjectFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which Project to fetch.
+     */
+    where: ProjectWhereUniqueInput
+  }
+
+  /**
+   * Project findFirst
+   */
+  export type ProjectFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which Project to fetch.
+     */
+    where?: ProjectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Projects to fetch.
+     */
+    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Projects.
+     */
+    cursor?: ProjectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Projects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Projects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Projects.
+     */
+    distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
+  }
+
+  /**
+   * Project findFirstOrThrow
+   */
+  export type ProjectFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which Project to fetch.
+     */
+    where?: ProjectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Projects to fetch.
+     */
+    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Projects.
+     */
+    cursor?: ProjectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Projects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Projects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Projects.
+     */
+    distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
+  }
+
+  /**
+   * Project findMany
+   */
+  export type ProjectFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter, which Projects to fetch.
+     */
+    where?: ProjectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Projects to fetch.
+     */
+    orderBy?: ProjectOrderByWithRelationInput | ProjectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Projects.
+     */
+    cursor?: ProjectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Projects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Projects.
+     */
+    skip?: number
+    distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
+  }
+
+  /**
+   * Project create
+   */
+  export type ProjectCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Project.
+     */
+    data: XOR<ProjectCreateInput, ProjectUncheckedCreateInput>
+  }
+
+  /**
+   * Project createMany
+   */
+  export type ProjectCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Projects.
+     */
+    data: ProjectCreateManyInput | ProjectCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Project createManyAndReturn
+   */
+  export type ProjectCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * The data used to create many Projects.
+     */
+    data: ProjectCreateManyInput | ProjectCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Project update
+   */
+  export type ProjectUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Project.
+     */
+    data: XOR<ProjectUpdateInput, ProjectUncheckedUpdateInput>
+    /**
+     * Choose, which Project to update.
+     */
+    where: ProjectWhereUniqueInput
+  }
+
+  /**
+   * Project updateMany
+   */
+  export type ProjectUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Projects.
+     */
+    data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyInput>
+    /**
+     * Filter which Projects to update
+     */
+    where?: ProjectWhereInput
+    /**
+     * Limit how many Projects to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Project updateManyAndReturn
+   */
+  export type ProjectUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * The data used to update Projects.
+     */
+    data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyInput>
+    /**
+     * Filter which Projects to update
+     */
+    where?: ProjectWhereInput
+    /**
+     * Limit how many Projects to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Project upsert
+   */
+  export type ProjectUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Project to update in case it exists.
+     */
+    where: ProjectWhereUniqueInput
+    /**
+     * In case the Project found by the `where` argument doesn't exist, create a new Project with this data.
+     */
+    create: XOR<ProjectCreateInput, ProjectUncheckedCreateInput>
+    /**
+     * In case the Project was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProjectUpdateInput, ProjectUncheckedUpdateInput>
+  }
+
+  /**
+   * Project delete
+   */
+  export type ProjectDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+    /**
+     * Filter which Project to delete.
+     */
+    where: ProjectWhereUniqueInput
+  }
+
+  /**
+   * Project deleteMany
+   */
+  export type ProjectDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Projects to delete
+     */
+    where?: ProjectWhereInput
+    /**
+     * Limit how many Projects to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Project.chats
+   */
+  export type Project$chatsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Chat
+     */
+    select?: ChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Chat
+     */
+    omit?: ChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatInclude<ExtArgs> | null
+    where?: ChatWhereInput
+    orderBy?: ChatOrderByWithRelationInput | ChatOrderByWithRelationInput[]
+    cursor?: ChatWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatScalarFieldEnum | ChatScalarFieldEnum[]
+  }
+
+  /**
+   * Project without action
+   */
+  export type ProjectDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Project
+     */
+    select?: ProjectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Project
+     */
+    omit?: ProjectOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProjectInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PinnedChat
+   */
+
+  export type AggregatePinnedChat = {
+    _count: PinnedChatCountAggregateOutputType | null
+    _min: PinnedChatMinAggregateOutputType | null
+    _max: PinnedChatMaxAggregateOutputType | null
+  }
+
+  export type PinnedChatMinAggregateOutputType = {
+    id: string | null
+    chatId: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type PinnedChatMaxAggregateOutputType = {
+    id: string | null
+    chatId: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type PinnedChatCountAggregateOutputType = {
+    id: number
+    chatId: number
+    userId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PinnedChatMinAggregateInputType = {
+    id?: true
+    chatId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type PinnedChatMaxAggregateInputType = {
+    id?: true
+    chatId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type PinnedChatCountAggregateInputType = {
+    id?: true
+    chatId?: true
+    userId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PinnedChatAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PinnedChat to aggregate.
+     */
+    where?: PinnedChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PinnedChats to fetch.
+     */
+    orderBy?: PinnedChatOrderByWithRelationInput | PinnedChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PinnedChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PinnedChats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PinnedChats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PinnedChats
+    **/
+    _count?: true | PinnedChatCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PinnedChatMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PinnedChatMaxAggregateInputType
+  }
+
+  export type GetPinnedChatAggregateType<T extends PinnedChatAggregateArgs> = {
+        [P in keyof T & keyof AggregatePinnedChat]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePinnedChat[P]>
+      : GetScalarType<T[P], AggregatePinnedChat[P]>
+  }
+
+
+
+
+  export type PinnedChatGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PinnedChatWhereInput
+    orderBy?: PinnedChatOrderByWithAggregationInput | PinnedChatOrderByWithAggregationInput[]
+    by: PinnedChatScalarFieldEnum[] | PinnedChatScalarFieldEnum
+    having?: PinnedChatScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PinnedChatCountAggregateInputType | true
+    _min?: PinnedChatMinAggregateInputType
+    _max?: PinnedChatMaxAggregateInputType
+  }
+
+  export type PinnedChatGroupByOutputType = {
+    id: string
+    chatId: string
+    userId: string
+    createdAt: Date
+    _count: PinnedChatCountAggregateOutputType | null
+    _min: PinnedChatMinAggregateOutputType | null
+    _max: PinnedChatMaxAggregateOutputType | null
+  }
+
+  type GetPinnedChatGroupByPayload<T extends PinnedChatGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PinnedChatGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PinnedChatGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PinnedChatGroupByOutputType[P]>
+            : GetScalarType<T[P], PinnedChatGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PinnedChatSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chatId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    chat?: boolean | ChatDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pinnedChat"]>
+
+  export type PinnedChatSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chatId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    chat?: boolean | ChatDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pinnedChat"]>
+
+  export type PinnedChatSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chatId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    chat?: boolean | ChatDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pinnedChat"]>
+
+  export type PinnedChatSelectScalar = {
+    id?: boolean
+    chatId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+  }
+
+  export type PinnedChatOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "chatId" | "userId" | "createdAt", ExtArgs["result"]["pinnedChat"]>
+  export type PinnedChatInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    chat?: boolean | ChatDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PinnedChatIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    chat?: boolean | ChatDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PinnedChatIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    chat?: boolean | ChatDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PinnedChatPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PinnedChat"
+    objects: {
+      chat: Prisma.$ChatPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      chatId: string
+      userId: string
+      createdAt: Date
+    }, ExtArgs["result"]["pinnedChat"]>
+    composites: {}
+  }
+
+  type PinnedChatGetPayload<S extends boolean | null | undefined | PinnedChatDefaultArgs> = $Result.GetResult<Prisma.$PinnedChatPayload, S>
+
+  type PinnedChatCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PinnedChatFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PinnedChatCountAggregateInputType | true
+    }
+
+  export interface PinnedChatDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PinnedChat'], meta: { name: 'PinnedChat' } }
+    /**
+     * Find zero or one PinnedChat that matches the filter.
+     * @param {PinnedChatFindUniqueArgs} args - Arguments to find a PinnedChat
+     * @example
+     * // Get one PinnedChat
+     * const pinnedChat = await prisma.pinnedChat.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PinnedChatFindUniqueArgs>(args: SelectSubset<T, PinnedChatFindUniqueArgs<ExtArgs>>): Prisma__PinnedChatClient<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PinnedChat that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PinnedChatFindUniqueOrThrowArgs} args - Arguments to find a PinnedChat
+     * @example
+     * // Get one PinnedChat
+     * const pinnedChat = await prisma.pinnedChat.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PinnedChatFindUniqueOrThrowArgs>(args: SelectSubset<T, PinnedChatFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PinnedChatClient<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PinnedChat that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PinnedChatFindFirstArgs} args - Arguments to find a PinnedChat
+     * @example
+     * // Get one PinnedChat
+     * const pinnedChat = await prisma.pinnedChat.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PinnedChatFindFirstArgs>(args?: SelectSubset<T, PinnedChatFindFirstArgs<ExtArgs>>): Prisma__PinnedChatClient<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PinnedChat that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PinnedChatFindFirstOrThrowArgs} args - Arguments to find a PinnedChat
+     * @example
+     * // Get one PinnedChat
+     * const pinnedChat = await prisma.pinnedChat.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PinnedChatFindFirstOrThrowArgs>(args?: SelectSubset<T, PinnedChatFindFirstOrThrowArgs<ExtArgs>>): Prisma__PinnedChatClient<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PinnedChats that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PinnedChatFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PinnedChats
+     * const pinnedChats = await prisma.pinnedChat.findMany()
+     * 
+     * // Get first 10 PinnedChats
+     * const pinnedChats = await prisma.pinnedChat.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pinnedChatWithIdOnly = await prisma.pinnedChat.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PinnedChatFindManyArgs>(args?: SelectSubset<T, PinnedChatFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PinnedChat.
+     * @param {PinnedChatCreateArgs} args - Arguments to create a PinnedChat.
+     * @example
+     * // Create one PinnedChat
+     * const PinnedChat = await prisma.pinnedChat.create({
+     *   data: {
+     *     // ... data to create a PinnedChat
+     *   }
+     * })
+     * 
+     */
+    create<T extends PinnedChatCreateArgs>(args: SelectSubset<T, PinnedChatCreateArgs<ExtArgs>>): Prisma__PinnedChatClient<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PinnedChats.
+     * @param {PinnedChatCreateManyArgs} args - Arguments to create many PinnedChats.
+     * @example
+     * // Create many PinnedChats
+     * const pinnedChat = await prisma.pinnedChat.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PinnedChatCreateManyArgs>(args?: SelectSubset<T, PinnedChatCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PinnedChats and returns the data saved in the database.
+     * @param {PinnedChatCreateManyAndReturnArgs} args - Arguments to create many PinnedChats.
+     * @example
+     * // Create many PinnedChats
+     * const pinnedChat = await prisma.pinnedChat.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PinnedChats and only return the `id`
+     * const pinnedChatWithIdOnly = await prisma.pinnedChat.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PinnedChatCreateManyAndReturnArgs>(args?: SelectSubset<T, PinnedChatCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PinnedChat.
+     * @param {PinnedChatDeleteArgs} args - Arguments to delete one PinnedChat.
+     * @example
+     * // Delete one PinnedChat
+     * const PinnedChat = await prisma.pinnedChat.delete({
+     *   where: {
+     *     // ... filter to delete one PinnedChat
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PinnedChatDeleteArgs>(args: SelectSubset<T, PinnedChatDeleteArgs<ExtArgs>>): Prisma__PinnedChatClient<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PinnedChat.
+     * @param {PinnedChatUpdateArgs} args - Arguments to update one PinnedChat.
+     * @example
+     * // Update one PinnedChat
+     * const pinnedChat = await prisma.pinnedChat.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PinnedChatUpdateArgs>(args: SelectSubset<T, PinnedChatUpdateArgs<ExtArgs>>): Prisma__PinnedChatClient<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PinnedChats.
+     * @param {PinnedChatDeleteManyArgs} args - Arguments to filter PinnedChats to delete.
+     * @example
+     * // Delete a few PinnedChats
+     * const { count } = await prisma.pinnedChat.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PinnedChatDeleteManyArgs>(args?: SelectSubset<T, PinnedChatDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PinnedChats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PinnedChatUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PinnedChats
+     * const pinnedChat = await prisma.pinnedChat.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PinnedChatUpdateManyArgs>(args: SelectSubset<T, PinnedChatUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PinnedChats and returns the data updated in the database.
+     * @param {PinnedChatUpdateManyAndReturnArgs} args - Arguments to update many PinnedChats.
+     * @example
+     * // Update many PinnedChats
+     * const pinnedChat = await prisma.pinnedChat.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PinnedChats and only return the `id`
+     * const pinnedChatWithIdOnly = await prisma.pinnedChat.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PinnedChatUpdateManyAndReturnArgs>(args: SelectSubset<T, PinnedChatUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PinnedChat.
+     * @param {PinnedChatUpsertArgs} args - Arguments to update or create a PinnedChat.
+     * @example
+     * // Update or create a PinnedChat
+     * const pinnedChat = await prisma.pinnedChat.upsert({
+     *   create: {
+     *     // ... data to create a PinnedChat
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PinnedChat we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PinnedChatUpsertArgs>(args: SelectSubset<T, PinnedChatUpsertArgs<ExtArgs>>): Prisma__PinnedChatClient<$Result.GetResult<Prisma.$PinnedChatPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PinnedChats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PinnedChatCountArgs} args - Arguments to filter PinnedChats to count.
+     * @example
+     * // Count the number of PinnedChats
+     * const count = await prisma.pinnedChat.count({
+     *   where: {
+     *     // ... the filter for the PinnedChats we want to count
+     *   }
+     * })
+    **/
+    count<T extends PinnedChatCountArgs>(
+      args?: Subset<T, PinnedChatCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PinnedChatCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PinnedChat.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PinnedChatAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PinnedChatAggregateArgs>(args: Subset<T, PinnedChatAggregateArgs>): Prisma.PrismaPromise<GetPinnedChatAggregateType<T>>
+
+    /**
+     * Group by PinnedChat.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PinnedChatGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PinnedChatGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PinnedChatGroupByArgs['orderBy'] }
+        : { orderBy?: PinnedChatGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PinnedChatGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPinnedChatGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PinnedChat model
+   */
+  readonly fields: PinnedChatFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PinnedChat.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PinnedChatClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    chat<T extends ChatDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ChatDefaultArgs<ExtArgs>>): Prisma__ChatClient<$Result.GetResult<Prisma.$ChatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PinnedChat model
+   */
+  interface PinnedChatFieldRefs {
+    readonly id: FieldRef<"PinnedChat", 'String'>
+    readonly chatId: FieldRef<"PinnedChat", 'String'>
+    readonly userId: FieldRef<"PinnedChat", 'String'>
+    readonly createdAt: FieldRef<"PinnedChat", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PinnedChat findUnique
+   */
+  export type PinnedChatFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    /**
+     * Filter, which PinnedChat to fetch.
+     */
+    where: PinnedChatWhereUniqueInput
+  }
+
+  /**
+   * PinnedChat findUniqueOrThrow
+   */
+  export type PinnedChatFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    /**
+     * Filter, which PinnedChat to fetch.
+     */
+    where: PinnedChatWhereUniqueInput
+  }
+
+  /**
+   * PinnedChat findFirst
+   */
+  export type PinnedChatFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    /**
+     * Filter, which PinnedChat to fetch.
+     */
+    where?: PinnedChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PinnedChats to fetch.
+     */
+    orderBy?: PinnedChatOrderByWithRelationInput | PinnedChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PinnedChats.
+     */
+    cursor?: PinnedChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PinnedChats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PinnedChats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PinnedChats.
+     */
+    distinct?: PinnedChatScalarFieldEnum | PinnedChatScalarFieldEnum[]
+  }
+
+  /**
+   * PinnedChat findFirstOrThrow
+   */
+  export type PinnedChatFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    /**
+     * Filter, which PinnedChat to fetch.
+     */
+    where?: PinnedChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PinnedChats to fetch.
+     */
+    orderBy?: PinnedChatOrderByWithRelationInput | PinnedChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PinnedChats.
+     */
+    cursor?: PinnedChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PinnedChats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PinnedChats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PinnedChats.
+     */
+    distinct?: PinnedChatScalarFieldEnum | PinnedChatScalarFieldEnum[]
+  }
+
+  /**
+   * PinnedChat findMany
+   */
+  export type PinnedChatFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    /**
+     * Filter, which PinnedChats to fetch.
+     */
+    where?: PinnedChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PinnedChats to fetch.
+     */
+    orderBy?: PinnedChatOrderByWithRelationInput | PinnedChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PinnedChats.
+     */
+    cursor?: PinnedChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PinnedChats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PinnedChats.
+     */
+    skip?: number
+    distinct?: PinnedChatScalarFieldEnum | PinnedChatScalarFieldEnum[]
+  }
+
+  /**
+   * PinnedChat create
+   */
+  export type PinnedChatCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PinnedChat.
+     */
+    data: XOR<PinnedChatCreateInput, PinnedChatUncheckedCreateInput>
+  }
+
+  /**
+   * PinnedChat createMany
+   */
+  export type PinnedChatCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PinnedChats.
+     */
+    data: PinnedChatCreateManyInput | PinnedChatCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PinnedChat createManyAndReturn
+   */
+  export type PinnedChatCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * The data used to create many PinnedChats.
+     */
+    data: PinnedChatCreateManyInput | PinnedChatCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PinnedChat update
+   */
+  export type PinnedChatUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PinnedChat.
+     */
+    data: XOR<PinnedChatUpdateInput, PinnedChatUncheckedUpdateInput>
+    /**
+     * Choose, which PinnedChat to update.
+     */
+    where: PinnedChatWhereUniqueInput
+  }
+
+  /**
+   * PinnedChat updateMany
+   */
+  export type PinnedChatUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PinnedChats.
+     */
+    data: XOR<PinnedChatUpdateManyMutationInput, PinnedChatUncheckedUpdateManyInput>
+    /**
+     * Filter which PinnedChats to update
+     */
+    where?: PinnedChatWhereInput
+    /**
+     * Limit how many PinnedChats to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PinnedChat updateManyAndReturn
+   */
+  export type PinnedChatUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * The data used to update PinnedChats.
+     */
+    data: XOR<PinnedChatUpdateManyMutationInput, PinnedChatUncheckedUpdateManyInput>
+    /**
+     * Filter which PinnedChats to update
+     */
+    where?: PinnedChatWhereInput
+    /**
+     * Limit how many PinnedChats to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PinnedChat upsert
+   */
+  export type PinnedChatUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PinnedChat to update in case it exists.
+     */
+    where: PinnedChatWhereUniqueInput
+    /**
+     * In case the PinnedChat found by the `where` argument doesn't exist, create a new PinnedChat with this data.
+     */
+    create: XOR<PinnedChatCreateInput, PinnedChatUncheckedCreateInput>
+    /**
+     * In case the PinnedChat was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PinnedChatUpdateInput, PinnedChatUncheckedUpdateInput>
+  }
+
+  /**
+   * PinnedChat delete
+   */
+  export type PinnedChatDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+    /**
+     * Filter which PinnedChat to delete.
+     */
+    where: PinnedChatWhereUniqueInput
+  }
+
+  /**
+   * PinnedChat deleteMany
+   */
+  export type PinnedChatDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PinnedChats to delete
+     */
+    where?: PinnedChatWhereInput
+    /**
+     * Limit how many PinnedChats to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PinnedChat without action
+   */
+  export type PinnedChatDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PinnedChat
+     */
+    select?: PinnedChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PinnedChat
+     */
+    omit?: PinnedChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PinnedChatInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model TierModel
    */
 
@@ -12783,7 +15301,8 @@ export namespace Prisma {
     title: 'title',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    userId: 'userId'
+    userId: 'userId',
+    projectId: 'projectId'
   };
 
   export type ChatScalarFieldEnum = (typeof ChatScalarFieldEnum)[keyof typeof ChatScalarFieldEnum]
@@ -12809,6 +15328,28 @@ export namespace Prisma {
   };
 
   export type MemoryScalarFieldEnum = (typeof MemoryScalarFieldEnum)[keyof typeof MemoryScalarFieldEnum]
+
+
+  export const ProjectScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    emoji: 'emoji',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
+
+
+  export const PinnedChatScalarFieldEnum: {
+    id: 'id',
+    chatId: 'chatId',
+    userId: 'userId',
+    createdAt: 'createdAt'
+  };
+
+  export type PinnedChatScalarFieldEnum = (typeof PinnedChatScalarFieldEnum)[keyof typeof PinnedChatScalarFieldEnum]
 
 
   export const TierModelScalarFieldEnum: {
@@ -12986,6 +15527,8 @@ export namespace Prisma {
     chats?: ChatListRelationFilter
     memories?: MemoryListRelationFilter
     subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
+    projects?: ProjectListRelationFilter
+    pinnedChats?: PinnedChatListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -13002,6 +15545,8 @@ export namespace Prisma {
     chats?: ChatOrderByRelationAggregateInput
     memories?: MemoryOrderByRelationAggregateInput
     subscription?: SubscriptionOrderByWithRelationInput
+    projects?: ProjectOrderByRelationAggregateInput
+    pinnedChats?: PinnedChatOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -13021,6 +15566,8 @@ export namespace Prisma {
     chats?: ChatListRelationFilter
     memories?: MemoryListRelationFilter
     subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
+    projects?: ProjectListRelationFilter
+    pinnedChats?: PinnedChatListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -13379,8 +15926,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Chat"> | Date | string
     updatedAt?: DateTimeFilter<"Chat"> | Date | string
     userId?: StringFilter<"Chat"> | string
+    projectId?: StringNullableFilter<"Chat"> | string | null
     messages?: MessageListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
+    pinnedBy?: PinnedChatListRelationFilter
   }
 
   export type ChatOrderByWithRelationInput = {
@@ -13389,8 +15939,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    projectId?: SortOrderInput | SortOrder
     messages?: MessageOrderByRelationAggregateInput
     user?: UserOrderByWithRelationInput
+    project?: ProjectOrderByWithRelationInput
+    pinnedBy?: PinnedChatOrderByRelationAggregateInput
   }
 
   export type ChatWhereUniqueInput = Prisma.AtLeast<{
@@ -13402,8 +15955,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Chat"> | Date | string
     updatedAt?: DateTimeFilter<"Chat"> | Date | string
     userId?: StringFilter<"Chat"> | string
+    projectId?: StringNullableFilter<"Chat"> | string | null
     messages?: MessageListRelationFilter
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
+    pinnedBy?: PinnedChatListRelationFilter
   }, "id">
 
   export type ChatOrderByWithAggregationInput = {
@@ -13412,6 +15968,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    projectId?: SortOrderInput | SortOrder
     _count?: ChatCountOrderByAggregateInput
     _max?: ChatMaxOrderByAggregateInput
     _min?: ChatMinOrderByAggregateInput
@@ -13426,6 +15983,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Chat"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Chat"> | Date | string
     userId?: StringWithAggregatesFilter<"Chat"> | string
+    projectId?: StringNullableWithAggregatesFilter<"Chat"> | string | null
   }
 
   export type MessageWhereInput = {
@@ -13536,6 +16094,123 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Memory"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Memory"> | Date | string
     userId?: StringWithAggregatesFilter<"Memory"> | string
+  }
+
+  export type ProjectWhereInput = {
+    AND?: ProjectWhereInput | ProjectWhereInput[]
+    OR?: ProjectWhereInput[]
+    NOT?: ProjectWhereInput | ProjectWhereInput[]
+    id?: StringFilter<"Project"> | string
+    name?: StringFilter<"Project"> | string
+    emoji?: StringFilter<"Project"> | string
+    userId?: StringFilter<"Project"> | string
+    createdAt?: DateTimeFilter<"Project"> | Date | string
+    updatedAt?: DateTimeFilter<"Project"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    chats?: ChatListRelationFilter
+  }
+
+  export type ProjectOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    emoji?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    chats?: ChatOrderByRelationAggregateInput
+  }
+
+  export type ProjectWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ProjectWhereInput | ProjectWhereInput[]
+    OR?: ProjectWhereInput[]
+    NOT?: ProjectWhereInput | ProjectWhereInput[]
+    name?: StringFilter<"Project"> | string
+    emoji?: StringFilter<"Project"> | string
+    userId?: StringFilter<"Project"> | string
+    createdAt?: DateTimeFilter<"Project"> | Date | string
+    updatedAt?: DateTimeFilter<"Project"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    chats?: ChatListRelationFilter
+  }, "id">
+
+  export type ProjectOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    emoji?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProjectCountOrderByAggregateInput
+    _max?: ProjectMaxOrderByAggregateInput
+    _min?: ProjectMinOrderByAggregateInput
+  }
+
+  export type ProjectScalarWhereWithAggregatesInput = {
+    AND?: ProjectScalarWhereWithAggregatesInput | ProjectScalarWhereWithAggregatesInput[]
+    OR?: ProjectScalarWhereWithAggregatesInput[]
+    NOT?: ProjectScalarWhereWithAggregatesInput | ProjectScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Project"> | string
+    name?: StringWithAggregatesFilter<"Project"> | string
+    emoji?: StringWithAggregatesFilter<"Project"> | string
+    userId?: StringWithAggregatesFilter<"Project"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Project"> | Date | string
+  }
+
+  export type PinnedChatWhereInput = {
+    AND?: PinnedChatWhereInput | PinnedChatWhereInput[]
+    OR?: PinnedChatWhereInput[]
+    NOT?: PinnedChatWhereInput | PinnedChatWhereInput[]
+    id?: StringFilter<"PinnedChat"> | string
+    chatId?: StringFilter<"PinnedChat"> | string
+    userId?: StringFilter<"PinnedChat"> | string
+    createdAt?: DateTimeFilter<"PinnedChat"> | Date | string
+    chat?: XOR<ChatScalarRelationFilter, ChatWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type PinnedChatOrderByWithRelationInput = {
+    id?: SortOrder
+    chatId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    chat?: ChatOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type PinnedChatWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    chatId_userId?: PinnedChatChatIdUserIdCompoundUniqueInput
+    AND?: PinnedChatWhereInput | PinnedChatWhereInput[]
+    OR?: PinnedChatWhereInput[]
+    NOT?: PinnedChatWhereInput | PinnedChatWhereInput[]
+    chatId?: StringFilter<"PinnedChat"> | string
+    userId?: StringFilter<"PinnedChat"> | string
+    createdAt?: DateTimeFilter<"PinnedChat"> | Date | string
+    chat?: XOR<ChatScalarRelationFilter, ChatWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "chatId_userId">
+
+  export type PinnedChatOrderByWithAggregationInput = {
+    id?: SortOrder
+    chatId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    _count?: PinnedChatCountOrderByAggregateInput
+    _max?: PinnedChatMaxOrderByAggregateInput
+    _min?: PinnedChatMinOrderByAggregateInput
+  }
+
+  export type PinnedChatScalarWhereWithAggregatesInput = {
+    AND?: PinnedChatScalarWhereWithAggregatesInput | PinnedChatScalarWhereWithAggregatesInput[]
+    OR?: PinnedChatScalarWhereWithAggregatesInput[]
+    NOT?: PinnedChatScalarWhereWithAggregatesInput | PinnedChatScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PinnedChat"> | string
+    chatId?: StringWithAggregatesFilter<"PinnedChat"> | string
+    userId?: StringWithAggregatesFilter<"PinnedChat"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"PinnedChat"> | Date | string
   }
 
   export type TierModelWhereInput = {
@@ -13652,6 +16327,8 @@ export namespace Prisma {
     chats?: ChatCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutUserInput
     subscription?: SubscriptionCreateNestedOneWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -13668,6 +16345,8 @@ export namespace Prisma {
     chats?: ChatUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutUserInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -13684,6 +16363,8 @@ export namespace Prisma {
     chats?: ChatUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutUserNestedInput
     subscription?: SubscriptionUpdateOneWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -13700,6 +16381,8 @@ export namespace Prisma {
     chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutUserNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -14103,6 +16786,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     messages?: MessageCreateNestedManyWithoutChatInput
     user: UserCreateNestedOneWithoutChatsInput
+    project?: ProjectCreateNestedOneWithoutChatsInput
+    pinnedBy?: PinnedChatCreateNestedManyWithoutChatInput
   }
 
   export type ChatUncheckedCreateInput = {
@@ -14111,7 +16796,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    projectId?: string | null
     messages?: MessageUncheckedCreateNestedManyWithoutChatInput
+    pinnedBy?: PinnedChatUncheckedCreateNestedManyWithoutChatInput
   }
 
   export type ChatUpdateInput = {
@@ -14121,6 +16808,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     messages?: MessageUpdateManyWithoutChatNestedInput
     user?: UserUpdateOneRequiredWithoutChatsNestedInput
+    project?: ProjectUpdateOneWithoutChatsNestedInput
+    pinnedBy?: PinnedChatUpdateManyWithoutChatNestedInput
   }
 
   export type ChatUncheckedUpdateInput = {
@@ -14129,7 +16818,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
     messages?: MessageUncheckedUpdateManyWithoutChatNestedInput
+    pinnedBy?: PinnedChatUncheckedUpdateManyWithoutChatNestedInput
   }
 
   export type ChatCreateManyInput = {
@@ -14138,6 +16829,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    projectId?: string | null
   }
 
   export type ChatUpdateManyMutationInput = {
@@ -14153,6 +16845,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MessageCreateInput = {
@@ -14263,6 +16956,119 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ProjectCreateInput = {
+    id?: string
+    name: string
+    emoji?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutProjectsInput
+    chats?: ChatCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateInput = {
+    id?: string
+    name: string
+    emoji?: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    chats?: ChatUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutProjectsNestedInput
+    chats?: ChatUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chats?: ChatUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectCreateManyInput = {
+    id?: string
+    name: string
+    emoji?: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProjectUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProjectUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PinnedChatCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    chat: ChatCreateNestedOneWithoutPinnedByInput
+    user: UserCreateNestedOneWithoutPinnedChatsInput
+  }
+
+  export type PinnedChatUncheckedCreateInput = {
+    id?: string
+    chatId: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type PinnedChatUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chat?: ChatUpdateOneRequiredWithoutPinnedByNestedInput
+    user?: UserUpdateOneRequiredWithoutPinnedChatsNestedInput
+  }
+
+  export type PinnedChatUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chatId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PinnedChatCreateManyInput = {
+    id?: string
+    chatId: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type PinnedChatUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PinnedChatUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chatId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TierModelCreateInput = {
@@ -14452,6 +17258,18 @@ export namespace Prisma {
     isNot?: SubscriptionWhereInput | null
   }
 
+  export type ProjectListRelationFilter = {
+    every?: ProjectWhereInput
+    some?: ProjectWhereInput
+    none?: ProjectWhereInput
+  }
+
+  export type PinnedChatListRelationFilter = {
+    every?: PinnedChatWhereInput
+    some?: PinnedChatWhereInput
+    none?: PinnedChatWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -14470,6 +17288,14 @@ export namespace Prisma {
   }
 
   export type MemoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProjectOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PinnedChatOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14822,6 +17648,11 @@ export namespace Prisma {
     none?: MessageWhereInput
   }
 
+  export type ProjectNullableScalarRelationFilter = {
+    is?: ProjectWhereInput | null
+    isNot?: ProjectWhereInput | null
+  }
+
   export type MessageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -14832,6 +17663,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    projectId?: SortOrder
   }
 
   export type ChatMaxOrderByAggregateInput = {
@@ -14840,6 +17672,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    projectId?: SortOrder
   }
 
   export type ChatMinOrderByAggregateInput = {
@@ -14848,6 +17681,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+    projectId?: SortOrder
   }
 
   export type EnumMessageRoleFilter<$PrismaModel = never> = {
@@ -14918,6 +17752,59 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     userId?: SortOrder
+  }
+
+  export type ProjectCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    emoji?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProjectMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    emoji?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProjectMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    emoji?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PinnedChatChatIdUserIdCompoundUniqueInput = {
+    chatId: string
+    userId: string
+  }
+
+  export type PinnedChatCountOrderByAggregateInput = {
+    id?: SortOrder
+    chatId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PinnedChatMaxOrderByAggregateInput = {
+    id?: SortOrder
+    chatId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PinnedChatMinOrderByAggregateInput = {
+    id?: SortOrder
+    chatId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type TierModelModelIdTierCompoundUniqueInput = {
@@ -15004,6 +17891,20 @@ export namespace Prisma {
     connect?: SubscriptionWhereUniqueInput
   }
 
+  export type ProjectCreateNestedManyWithoutUserInput = {
+    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
+    createMany?: ProjectCreateManyUserInputEnvelope
+    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+  }
+
+  export type PinnedChatCreateNestedManyWithoutUserInput = {
+    create?: XOR<PinnedChatCreateWithoutUserInput, PinnedChatUncheckedCreateWithoutUserInput> | PinnedChatCreateWithoutUserInput[] | PinnedChatUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PinnedChatCreateOrConnectWithoutUserInput | PinnedChatCreateOrConnectWithoutUserInput[]
+    createMany?: PinnedChatCreateManyUserInputEnvelope
+    connect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+  }
+
   export type SessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -15036,6 +17937,20 @@ export namespace Prisma {
     create?: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
     connectOrCreate?: SubscriptionCreateOrConnectWithoutUserInput
     connect?: SubscriptionWhereUniqueInput
+  }
+
+  export type ProjectUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
+    createMany?: ProjectCreateManyUserInputEnvelope
+    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+  }
+
+  export type PinnedChatUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PinnedChatCreateWithoutUserInput, PinnedChatUncheckedCreateWithoutUserInput> | PinnedChatCreateWithoutUserInput[] | PinnedChatUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PinnedChatCreateOrConnectWithoutUserInput | PinnedChatCreateOrConnectWithoutUserInput[]
+    createMany?: PinnedChatCreateManyUserInputEnvelope
+    connect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -15124,6 +18039,34 @@ export namespace Prisma {
     update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutUserInput, SubscriptionUpdateWithoutUserInput>, SubscriptionUncheckedUpdateWithoutUserInput>
   }
 
+  export type ProjectUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
+    upsert?: ProjectUpsertWithWhereUniqueWithoutUserInput | ProjectUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ProjectCreateManyUserInputEnvelope
+    set?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    disconnect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    delete?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    update?: ProjectUpdateWithWhereUniqueWithoutUserInput | ProjectUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ProjectUpdateManyWithWhereWithoutUserInput | ProjectUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+  }
+
+  export type PinnedChatUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PinnedChatCreateWithoutUserInput, PinnedChatUncheckedCreateWithoutUserInput> | PinnedChatCreateWithoutUserInput[] | PinnedChatUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PinnedChatCreateOrConnectWithoutUserInput | PinnedChatCreateOrConnectWithoutUserInput[]
+    upsert?: PinnedChatUpsertWithWhereUniqueWithoutUserInput | PinnedChatUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PinnedChatCreateManyUserInputEnvelope
+    set?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    disconnect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    delete?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    connect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    update?: PinnedChatUpdateWithWhereUniqueWithoutUserInput | PinnedChatUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PinnedChatUpdateManyWithWhereWithoutUserInput | PinnedChatUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PinnedChatScalarWhereInput | PinnedChatScalarWhereInput[]
+  }
+
   export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
@@ -15188,6 +18131,34 @@ export namespace Prisma {
     delete?: SubscriptionWhereInput | boolean
     connect?: SubscriptionWhereUniqueInput
     update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutUserInput, SubscriptionUpdateWithoutUserInput>, SubscriptionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ProjectUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput> | ProjectCreateWithoutUserInput[] | ProjectUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProjectCreateOrConnectWithoutUserInput | ProjectCreateOrConnectWithoutUserInput[]
+    upsert?: ProjectUpsertWithWhereUniqueWithoutUserInput | ProjectUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ProjectCreateManyUserInputEnvelope
+    set?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    disconnect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    delete?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+    update?: ProjectUpdateWithWhereUniqueWithoutUserInput | ProjectUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ProjectUpdateManyWithWhereWithoutUserInput | ProjectUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+  }
+
+  export type PinnedChatUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PinnedChatCreateWithoutUserInput, PinnedChatUncheckedCreateWithoutUserInput> | PinnedChatCreateWithoutUserInput[] | PinnedChatUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PinnedChatCreateOrConnectWithoutUserInput | PinnedChatCreateOrConnectWithoutUserInput[]
+    upsert?: PinnedChatUpsertWithWhereUniqueWithoutUserInput | PinnedChatUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PinnedChatCreateManyUserInputEnvelope
+    set?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    disconnect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    delete?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    connect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    update?: PinnedChatUpdateWithWhereUniqueWithoutUserInput | PinnedChatUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PinnedChatUpdateManyWithWhereWithoutUserInput | PinnedChatUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PinnedChatScalarWhereInput | PinnedChatScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -15261,11 +18232,31 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type ProjectCreateNestedOneWithoutChatsInput = {
+    create?: XOR<ProjectCreateWithoutChatsInput, ProjectUncheckedCreateWithoutChatsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutChatsInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type PinnedChatCreateNestedManyWithoutChatInput = {
+    create?: XOR<PinnedChatCreateWithoutChatInput, PinnedChatUncheckedCreateWithoutChatInput> | PinnedChatCreateWithoutChatInput[] | PinnedChatUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: PinnedChatCreateOrConnectWithoutChatInput | PinnedChatCreateOrConnectWithoutChatInput[]
+    createMany?: PinnedChatCreateManyChatInputEnvelope
+    connect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+  }
+
   export type MessageUncheckedCreateNestedManyWithoutChatInput = {
     create?: XOR<MessageCreateWithoutChatInput, MessageUncheckedCreateWithoutChatInput> | MessageCreateWithoutChatInput[] | MessageUncheckedCreateWithoutChatInput[]
     connectOrCreate?: MessageCreateOrConnectWithoutChatInput | MessageCreateOrConnectWithoutChatInput[]
     createMany?: MessageCreateManyChatInputEnvelope
     connect?: MessageWhereUniqueInput | MessageWhereUniqueInput[]
+  }
+
+  export type PinnedChatUncheckedCreateNestedManyWithoutChatInput = {
+    create?: XOR<PinnedChatCreateWithoutChatInput, PinnedChatUncheckedCreateWithoutChatInput> | PinnedChatCreateWithoutChatInput[] | PinnedChatUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: PinnedChatCreateOrConnectWithoutChatInput | PinnedChatCreateOrConnectWithoutChatInput[]
+    createMany?: PinnedChatCreateManyChatInputEnvelope
+    connect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
   }
 
   export type MessageUpdateManyWithoutChatNestedInput = {
@@ -15290,6 +18281,30 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutChatsInput, UserUpdateWithoutChatsInput>, UserUncheckedUpdateWithoutChatsInput>
   }
 
+  export type ProjectUpdateOneWithoutChatsNestedInput = {
+    create?: XOR<ProjectCreateWithoutChatsInput, ProjectUncheckedCreateWithoutChatsInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutChatsInput
+    upsert?: ProjectUpsertWithoutChatsInput
+    disconnect?: ProjectWhereInput | boolean
+    delete?: ProjectWhereInput | boolean
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutChatsInput, ProjectUpdateWithoutChatsInput>, ProjectUncheckedUpdateWithoutChatsInput>
+  }
+
+  export type PinnedChatUpdateManyWithoutChatNestedInput = {
+    create?: XOR<PinnedChatCreateWithoutChatInput, PinnedChatUncheckedCreateWithoutChatInput> | PinnedChatCreateWithoutChatInput[] | PinnedChatUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: PinnedChatCreateOrConnectWithoutChatInput | PinnedChatCreateOrConnectWithoutChatInput[]
+    upsert?: PinnedChatUpsertWithWhereUniqueWithoutChatInput | PinnedChatUpsertWithWhereUniqueWithoutChatInput[]
+    createMany?: PinnedChatCreateManyChatInputEnvelope
+    set?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    disconnect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    delete?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    connect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    update?: PinnedChatUpdateWithWhereUniqueWithoutChatInput | PinnedChatUpdateWithWhereUniqueWithoutChatInput[]
+    updateMany?: PinnedChatUpdateManyWithWhereWithoutChatInput | PinnedChatUpdateManyWithWhereWithoutChatInput[]
+    deleteMany?: PinnedChatScalarWhereInput | PinnedChatScalarWhereInput[]
+  }
+
   export type MessageUncheckedUpdateManyWithoutChatNestedInput = {
     create?: XOR<MessageCreateWithoutChatInput, MessageUncheckedCreateWithoutChatInput> | MessageCreateWithoutChatInput[] | MessageUncheckedCreateWithoutChatInput[]
     connectOrCreate?: MessageCreateOrConnectWithoutChatInput | MessageCreateOrConnectWithoutChatInput[]
@@ -15302,6 +18317,20 @@ export namespace Prisma {
     update?: MessageUpdateWithWhereUniqueWithoutChatInput | MessageUpdateWithWhereUniqueWithoutChatInput[]
     updateMany?: MessageUpdateManyWithWhereWithoutChatInput | MessageUpdateManyWithWhereWithoutChatInput[]
     deleteMany?: MessageScalarWhereInput | MessageScalarWhereInput[]
+  }
+
+  export type PinnedChatUncheckedUpdateManyWithoutChatNestedInput = {
+    create?: XOR<PinnedChatCreateWithoutChatInput, PinnedChatUncheckedCreateWithoutChatInput> | PinnedChatCreateWithoutChatInput[] | PinnedChatUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: PinnedChatCreateOrConnectWithoutChatInput | PinnedChatCreateOrConnectWithoutChatInput[]
+    upsert?: PinnedChatUpsertWithWhereUniqueWithoutChatInput | PinnedChatUpsertWithWhereUniqueWithoutChatInput[]
+    createMany?: PinnedChatCreateManyChatInputEnvelope
+    set?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    disconnect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    delete?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    connect?: PinnedChatWhereUniqueInput | PinnedChatWhereUniqueInput[]
+    update?: PinnedChatUpdateWithWhereUniqueWithoutChatInput | PinnedChatUpdateWithWhereUniqueWithoutChatInput[]
+    updateMany?: PinnedChatUpdateManyWithWhereWithoutChatInput | PinnedChatUpdateManyWithWhereWithoutChatInput[]
+    deleteMany?: PinnedChatScalarWhereInput | PinnedChatScalarWhereInput[]
   }
 
   export type ChatCreateNestedOneWithoutMessagesInput = {
@@ -15334,6 +18363,90 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutMemoriesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMemoriesInput, UserUpdateWithoutMemoriesInput>, UserUncheckedUpdateWithoutMemoriesInput>
+  }
+
+  export type UserCreateNestedOneWithoutProjectsInput = {
+    create?: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProjectsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ChatCreateNestedManyWithoutProjectInput = {
+    create?: XOR<ChatCreateWithoutProjectInput, ChatUncheckedCreateWithoutProjectInput> | ChatCreateWithoutProjectInput[] | ChatUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ChatCreateOrConnectWithoutProjectInput | ChatCreateOrConnectWithoutProjectInput[]
+    createMany?: ChatCreateManyProjectInputEnvelope
+    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+  }
+
+  export type ChatUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<ChatCreateWithoutProjectInput, ChatUncheckedCreateWithoutProjectInput> | ChatCreateWithoutProjectInput[] | ChatUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ChatCreateOrConnectWithoutProjectInput | ChatCreateOrConnectWithoutProjectInput[]
+    createMany?: ChatCreateManyProjectInputEnvelope
+    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutProjectsNestedInput = {
+    create?: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProjectsInput
+    upsert?: UserUpsertWithoutProjectsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProjectsInput, UserUpdateWithoutProjectsInput>, UserUncheckedUpdateWithoutProjectsInput>
+  }
+
+  export type ChatUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<ChatCreateWithoutProjectInput, ChatUncheckedCreateWithoutProjectInput> | ChatCreateWithoutProjectInput[] | ChatUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ChatCreateOrConnectWithoutProjectInput | ChatCreateOrConnectWithoutProjectInput[]
+    upsert?: ChatUpsertWithWhereUniqueWithoutProjectInput | ChatUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: ChatCreateManyProjectInputEnvelope
+    set?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    disconnect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    delete?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    update?: ChatUpdateWithWhereUniqueWithoutProjectInput | ChatUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: ChatUpdateManyWithWhereWithoutProjectInput | ChatUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: ChatScalarWhereInput | ChatScalarWhereInput[]
+  }
+
+  export type ChatUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<ChatCreateWithoutProjectInput, ChatUncheckedCreateWithoutProjectInput> | ChatCreateWithoutProjectInput[] | ChatUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: ChatCreateOrConnectWithoutProjectInput | ChatCreateOrConnectWithoutProjectInput[]
+    upsert?: ChatUpsertWithWhereUniqueWithoutProjectInput | ChatUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: ChatCreateManyProjectInputEnvelope
+    set?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    disconnect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    delete?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    connect?: ChatWhereUniqueInput | ChatWhereUniqueInput[]
+    update?: ChatUpdateWithWhereUniqueWithoutProjectInput | ChatUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: ChatUpdateManyWithWhereWithoutProjectInput | ChatUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: ChatScalarWhereInput | ChatScalarWhereInput[]
+  }
+
+  export type ChatCreateNestedOneWithoutPinnedByInput = {
+    create?: XOR<ChatCreateWithoutPinnedByInput, ChatUncheckedCreateWithoutPinnedByInput>
+    connectOrCreate?: ChatCreateOrConnectWithoutPinnedByInput
+    connect?: ChatWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPinnedChatsInput = {
+    create?: XOR<UserCreateWithoutPinnedChatsInput, UserUncheckedCreateWithoutPinnedChatsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPinnedChatsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ChatUpdateOneRequiredWithoutPinnedByNestedInput = {
+    create?: XOR<ChatCreateWithoutPinnedByInput, ChatUncheckedCreateWithoutPinnedByInput>
+    connectOrCreate?: ChatCreateOrConnectWithoutPinnedByInput
+    upsert?: ChatUpsertWithoutPinnedByInput
+    connect?: ChatWhereUniqueInput
+    update?: XOR<XOR<ChatUpdateToOneWithWhereWithoutPinnedByInput, ChatUpdateWithoutPinnedByInput>, ChatUncheckedUpdateWithoutPinnedByInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutPinnedChatsNestedInput = {
+    create?: XOR<UserCreateWithoutPinnedChatsInput, UserUncheckedCreateWithoutPinnedChatsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPinnedChatsInput
+    upsert?: UserUpsertWithoutPinnedChatsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPinnedChatsInput, UserUpdateWithoutPinnedChatsInput>, UserUncheckedUpdateWithoutPinnedChatsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -15637,6 +18750,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     messages?: MessageCreateNestedManyWithoutChatInput
+    project?: ProjectCreateNestedOneWithoutChatsInput
+    pinnedBy?: PinnedChatCreateNestedManyWithoutChatInput
   }
 
   export type ChatUncheckedCreateWithoutUserInput = {
@@ -15644,7 +18759,9 @@ export namespace Prisma {
     title?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectId?: string | null
     messages?: MessageUncheckedCreateNestedManyWithoutChatInput
+    pinnedBy?: PinnedChatUncheckedCreateNestedManyWithoutChatInput
   }
 
   export type ChatCreateOrConnectWithoutUserInput = {
@@ -15714,6 +18831,56 @@ export namespace Prisma {
   export type SubscriptionCreateOrConnectWithoutUserInput = {
     where: SubscriptionWhereUniqueInput
     create: XOR<SubscriptionCreateWithoutUserInput, SubscriptionUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProjectCreateWithoutUserInput = {
+    id?: string
+    name: string
+    emoji?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    chats?: ChatCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    emoji?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    chats?: ChatUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutUserInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProjectCreateManyUserInputEnvelope = {
+    data: ProjectCreateManyUserInput | ProjectCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PinnedChatCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    chat: ChatCreateNestedOneWithoutPinnedByInput
+  }
+
+  export type PinnedChatUncheckedCreateWithoutUserInput = {
+    id?: string
+    chatId: string
+    createdAt?: Date | string
+  }
+
+  export type PinnedChatCreateOrConnectWithoutUserInput = {
+    where: PinnedChatWhereUniqueInput
+    create: XOR<PinnedChatCreateWithoutUserInput, PinnedChatUncheckedCreateWithoutUserInput>
+  }
+
+  export type PinnedChatCreateManyUserInputEnvelope = {
+    data: PinnedChatCreateManyUserInput | PinnedChatCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type SessionUpsertWithWhereUniqueWithoutUserInput = {
@@ -15806,6 +18973,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Chat"> | Date | string
     updatedAt?: DateTimeFilter<"Chat"> | Date | string
     userId?: StringFilter<"Chat"> | string
+    projectId?: StringNullableFilter<"Chat"> | string | null
   }
 
   export type MemoryUpsertWithWhereUniqueWithoutUserInput = {
@@ -15876,6 +19044,60 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ProjectUpsertWithWhereUniqueWithoutUserInput = {
+    where: ProjectWhereUniqueInput
+    update: XOR<ProjectUpdateWithoutUserInput, ProjectUncheckedUpdateWithoutUserInput>
+    create: XOR<ProjectCreateWithoutUserInput, ProjectUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProjectUpdateWithWhereUniqueWithoutUserInput = {
+    where: ProjectWhereUniqueInput
+    data: XOR<ProjectUpdateWithoutUserInput, ProjectUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ProjectUpdateManyWithWhereWithoutUserInput = {
+    where: ProjectScalarWhereInput
+    data: XOR<ProjectUpdateManyMutationInput, ProjectUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ProjectScalarWhereInput = {
+    AND?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+    OR?: ProjectScalarWhereInput[]
+    NOT?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+    id?: StringFilter<"Project"> | string
+    name?: StringFilter<"Project"> | string
+    emoji?: StringFilter<"Project"> | string
+    userId?: StringFilter<"Project"> | string
+    createdAt?: DateTimeFilter<"Project"> | Date | string
+    updatedAt?: DateTimeFilter<"Project"> | Date | string
+  }
+
+  export type PinnedChatUpsertWithWhereUniqueWithoutUserInput = {
+    where: PinnedChatWhereUniqueInput
+    update: XOR<PinnedChatUpdateWithoutUserInput, PinnedChatUncheckedUpdateWithoutUserInput>
+    create: XOR<PinnedChatCreateWithoutUserInput, PinnedChatUncheckedCreateWithoutUserInput>
+  }
+
+  export type PinnedChatUpdateWithWhereUniqueWithoutUserInput = {
+    where: PinnedChatWhereUniqueInput
+    data: XOR<PinnedChatUpdateWithoutUserInput, PinnedChatUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PinnedChatUpdateManyWithWhereWithoutUserInput = {
+    where: PinnedChatScalarWhereInput
+    data: XOR<PinnedChatUpdateManyMutationInput, PinnedChatUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PinnedChatScalarWhereInput = {
+    AND?: PinnedChatScalarWhereInput | PinnedChatScalarWhereInput[]
+    OR?: PinnedChatScalarWhereInput[]
+    NOT?: PinnedChatScalarWhereInput | PinnedChatScalarWhereInput[]
+    id?: StringFilter<"PinnedChat"> | string
+    chatId?: StringFilter<"PinnedChat"> | string
+    userId?: StringFilter<"PinnedChat"> | string
+    createdAt?: DateTimeFilter<"PinnedChat"> | Date | string
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id?: string
     name: string
@@ -15889,6 +19111,8 @@ export namespace Prisma {
     chats?: ChatCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutUserInput
     subscription?: SubscriptionCreateNestedOneWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -15904,6 +19128,8 @@ export namespace Prisma {
     chats?: ChatUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutUserInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -15935,6 +19161,8 @@ export namespace Prisma {
     chats?: ChatUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutUserNestedInput
     subscription?: SubscriptionUpdateOneWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -15950,6 +19178,8 @@ export namespace Prisma {
     chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutUserNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -15965,6 +19195,8 @@ export namespace Prisma {
     chats?: ChatCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutUserInput
     subscription?: SubscriptionCreateNestedOneWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -15980,6 +19212,8 @@ export namespace Prisma {
     chats?: ChatUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutUserInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -16011,6 +19245,8 @@ export namespace Prisma {
     chats?: ChatUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutUserNestedInput
     subscription?: SubscriptionUpdateOneWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -16026,6 +19262,8 @@ export namespace Prisma {
     chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutUserNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSubscriptionInput = {
@@ -16041,6 +19279,8 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionInput = {
@@ -16056,6 +19296,8 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionInput = {
@@ -16087,6 +19329,8 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionInput = {
@@ -16102,6 +19346,8 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MessageCreateWithoutChatInput = {
@@ -16141,6 +19387,8 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     memories?: MemoryCreateNestedManyWithoutUserInput
     subscription?: SubscriptionCreateNestedOneWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutChatsInput = {
@@ -16156,11 +19404,58 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     memories?: MemoryUncheckedCreateNestedManyWithoutUserInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutChatsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutChatsInput, UserUncheckedCreateWithoutChatsInput>
+  }
+
+  export type ProjectCreateWithoutChatsInput = {
+    id?: string
+    name: string
+    emoji?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutProjectsInput
+  }
+
+  export type ProjectUncheckedCreateWithoutChatsInput = {
+    id?: string
+    name: string
+    emoji?: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ProjectCreateOrConnectWithoutChatsInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutChatsInput, ProjectUncheckedCreateWithoutChatsInput>
+  }
+
+  export type PinnedChatCreateWithoutChatInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutPinnedChatsInput
+  }
+
+  export type PinnedChatUncheckedCreateWithoutChatInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type PinnedChatCreateOrConnectWithoutChatInput = {
+    where: PinnedChatWhereUniqueInput
+    create: XOR<PinnedChatCreateWithoutChatInput, PinnedChatUncheckedCreateWithoutChatInput>
+  }
+
+  export type PinnedChatCreateManyChatInputEnvelope = {
+    data: PinnedChatCreateManyChatInput | PinnedChatCreateManyChatInput[]
+    skipDuplicates?: boolean
   }
 
   export type MessageUpsertWithWhereUniqueWithoutChatInput = {
@@ -16214,6 +19509,8 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     memories?: MemoryUpdateManyWithoutUserNestedInput
     subscription?: SubscriptionUpdateOneWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutChatsInput = {
@@ -16229,6 +19526,53 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     memories?: MemoryUncheckedUpdateManyWithoutUserNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProjectUpsertWithoutChatsInput = {
+    update: XOR<ProjectUpdateWithoutChatsInput, ProjectUncheckedUpdateWithoutChatsInput>
+    create: XOR<ProjectCreateWithoutChatsInput, ProjectUncheckedCreateWithoutChatsInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutChatsInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutChatsInput, ProjectUncheckedUpdateWithoutChatsInput>
+  }
+
+  export type ProjectUpdateWithoutChatsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutProjectsNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutChatsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PinnedChatUpsertWithWhereUniqueWithoutChatInput = {
+    where: PinnedChatWhereUniqueInput
+    update: XOR<PinnedChatUpdateWithoutChatInput, PinnedChatUncheckedUpdateWithoutChatInput>
+    create: XOR<PinnedChatCreateWithoutChatInput, PinnedChatUncheckedCreateWithoutChatInput>
+  }
+
+  export type PinnedChatUpdateWithWhereUniqueWithoutChatInput = {
+    where: PinnedChatWhereUniqueInput
+    data: XOR<PinnedChatUpdateWithoutChatInput, PinnedChatUncheckedUpdateWithoutChatInput>
+  }
+
+  export type PinnedChatUpdateManyWithWhereWithoutChatInput = {
+    where: PinnedChatScalarWhereInput
+    data: XOR<PinnedChatUpdateManyMutationInput, PinnedChatUncheckedUpdateManyWithoutChatInput>
   }
 
   export type ChatCreateWithoutMessagesInput = {
@@ -16237,6 +19581,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutChatsInput
+    project?: ProjectCreateNestedOneWithoutChatsInput
+    pinnedBy?: PinnedChatCreateNestedManyWithoutChatInput
   }
 
   export type ChatUncheckedCreateWithoutMessagesInput = {
@@ -16245,6 +19591,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     userId: string
+    projectId?: string | null
+    pinnedBy?: PinnedChatUncheckedCreateNestedManyWithoutChatInput
   }
 
   export type ChatCreateOrConnectWithoutMessagesInput = {
@@ -16269,6 +19617,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutChatsNestedInput
+    project?: ProjectUpdateOneWithoutChatsNestedInput
+    pinnedBy?: PinnedChatUpdateManyWithoutChatNestedInput
   }
 
   export type ChatUncheckedUpdateWithoutMessagesInput = {
@@ -16277,6 +19627,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    pinnedBy?: PinnedChatUncheckedUpdateManyWithoutChatNestedInput
   }
 
   export type UserCreateWithoutMemoriesInput = {
@@ -16292,6 +19644,8 @@ export namespace Prisma {
     accounts?: AccountCreateNestedManyWithoutUserInput
     chats?: ChatCreateNestedManyWithoutUserInput
     subscription?: SubscriptionCreateNestedOneWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMemoriesInput = {
@@ -16307,6 +19661,8 @@ export namespace Prisma {
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     chats?: ChatUncheckedCreateNestedManyWithoutUserInput
     subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+    pinnedChats?: PinnedChatUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMemoriesInput = {
@@ -16338,6 +19694,8 @@ export namespace Prisma {
     accounts?: AccountUpdateManyWithoutUserNestedInput
     chats?: ChatUpdateManyWithoutUserNestedInput
     subscription?: SubscriptionUpdateOneWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMemoriesInput = {
@@ -16353,6 +19711,278 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
     subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
+    pinnedChats?: PinnedChatUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutProjectsInput = {
+    id?: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    role?: $Enums.Role
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionCreateNestedOneWithoutUserInput
+    pinnedChats?: PinnedChatCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutProjectsInput = {
+    id?: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    role?: $Enums.Role
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
+    pinnedChats?: PinnedChatUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutProjectsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
+  }
+
+  export type ChatCreateWithoutProjectInput = {
+    id?: string
+    title?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    messages?: MessageCreateNestedManyWithoutChatInput
+    user: UserCreateNestedOneWithoutChatsInput
+    pinnedBy?: PinnedChatCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatUncheckedCreateWithoutProjectInput = {
+    id?: string
+    title?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    messages?: MessageUncheckedCreateNestedManyWithoutChatInput
+    pinnedBy?: PinnedChatUncheckedCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatCreateOrConnectWithoutProjectInput = {
+    where: ChatWhereUniqueInput
+    create: XOR<ChatCreateWithoutProjectInput, ChatUncheckedCreateWithoutProjectInput>
+  }
+
+  export type ChatCreateManyProjectInputEnvelope = {
+    data: ChatCreateManyProjectInput | ChatCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutProjectsInput = {
+    update: XOR<UserUpdateWithoutProjectsInput, UserUncheckedUpdateWithoutProjectsInput>
+    create: XOR<UserCreateWithoutProjectsInput, UserUncheckedCreateWithoutProjectsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutProjectsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutProjectsInput, UserUncheckedUpdateWithoutProjectsInput>
+  }
+
+  export type UserUpdateWithoutProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
+    pinnedChats?: PinnedChatUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutProjectsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+    pinnedChats?: PinnedChatUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ChatUpsertWithWhereUniqueWithoutProjectInput = {
+    where: ChatWhereUniqueInput
+    update: XOR<ChatUpdateWithoutProjectInput, ChatUncheckedUpdateWithoutProjectInput>
+    create: XOR<ChatCreateWithoutProjectInput, ChatUncheckedCreateWithoutProjectInput>
+  }
+
+  export type ChatUpdateWithWhereUniqueWithoutProjectInput = {
+    where: ChatWhereUniqueInput
+    data: XOR<ChatUpdateWithoutProjectInput, ChatUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type ChatUpdateManyWithWhereWithoutProjectInput = {
+    where: ChatScalarWhereInput
+    data: XOR<ChatUpdateManyMutationInput, ChatUncheckedUpdateManyWithoutProjectInput>
+  }
+
+  export type ChatCreateWithoutPinnedByInput = {
+    id?: string
+    title?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    messages?: MessageCreateNestedManyWithoutChatInput
+    user: UserCreateNestedOneWithoutChatsInput
+    project?: ProjectCreateNestedOneWithoutChatsInput
+  }
+
+  export type ChatUncheckedCreateWithoutPinnedByInput = {
+    id?: string
+    title?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+    projectId?: string | null
+    messages?: MessageUncheckedCreateNestedManyWithoutChatInput
+  }
+
+  export type ChatCreateOrConnectWithoutPinnedByInput = {
+    where: ChatWhereUniqueInput
+    create: XOR<ChatCreateWithoutPinnedByInput, ChatUncheckedCreateWithoutPinnedByInput>
+  }
+
+  export type UserCreateWithoutPinnedChatsInput = {
+    id?: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    role?: $Enums.Role
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    chats?: ChatCreateNestedManyWithoutUserInput
+    memories?: MemoryCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionCreateNestedOneWithoutUserInput
+    projects?: ProjectCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPinnedChatsInput = {
+    id?: string
+    name: string
+    email: string
+    emailVerified: boolean
+    image?: string | null
+    createdAt: Date | string
+    updatedAt: Date | string
+    role?: $Enums.Role
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    chats?: ChatUncheckedCreateNestedManyWithoutUserInput
+    memories?: MemoryUncheckedCreateNestedManyWithoutUserInput
+    subscription?: SubscriptionUncheckedCreateNestedOneWithoutUserInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPinnedChatsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPinnedChatsInput, UserUncheckedCreateWithoutPinnedChatsInput>
+  }
+
+  export type ChatUpsertWithoutPinnedByInput = {
+    update: XOR<ChatUpdateWithoutPinnedByInput, ChatUncheckedUpdateWithoutPinnedByInput>
+    create: XOR<ChatCreateWithoutPinnedByInput, ChatUncheckedCreateWithoutPinnedByInput>
+    where?: ChatWhereInput
+  }
+
+  export type ChatUpdateToOneWithWhereWithoutPinnedByInput = {
+    where?: ChatWhereInput
+    data: XOR<ChatUpdateWithoutPinnedByInput, ChatUncheckedUpdateWithoutPinnedByInput>
+  }
+
+  export type ChatUpdateWithoutPinnedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: MessageUpdateManyWithoutChatNestedInput
+    user?: UserUpdateOneRequiredWithoutChatsNestedInput
+    project?: ProjectUpdateOneWithoutChatsNestedInput
+  }
+
+  export type ChatUncheckedUpdateWithoutPinnedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
+    messages?: MessageUncheckedUpdateManyWithoutChatNestedInput
+  }
+
+  export type UserUpsertWithoutPinnedChatsInput = {
+    update: XOR<UserUpdateWithoutPinnedChatsInput, UserUncheckedUpdateWithoutPinnedChatsInput>
+    create: XOR<UserCreateWithoutPinnedChatsInput, UserUncheckedCreateWithoutPinnedChatsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPinnedChatsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPinnedChatsInput, UserUncheckedUpdateWithoutPinnedChatsInput>
+  }
+
+  export type UserUpdateWithoutPinnedChatsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    chats?: ChatUpdateManyWithoutUserNestedInput
+    memories?: MemoryUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUpdateOneWithoutUserNestedInput
+    projects?: ProjectUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPinnedChatsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    chats?: ChatUncheckedUpdateManyWithoutUserNestedInput
+    memories?: MemoryUncheckedUpdateManyWithoutUserNestedInput
+    subscription?: SubscriptionUncheckedUpdateOneWithoutUserNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SessionCreateManyUserInput = {
@@ -16385,6 +20015,7 @@ export namespace Prisma {
     title?: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    projectId?: string | null
   }
 
   export type MemoryCreateManyUserInput = {
@@ -16392,6 +20023,20 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type ProjectCreateManyUserInput = {
+    id?: string
+    name: string
+    emoji?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PinnedChatCreateManyUserInput = {
+    id?: string
+    chatId: string
+    createdAt?: Date | string
   }
 
   export type SessionUpdateWithoutUserInput = {
@@ -16475,6 +20120,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     messages?: MessageUpdateManyWithoutChatNestedInput
+    project?: ProjectUpdateOneWithoutChatsNestedInput
+    pinnedBy?: PinnedChatUpdateManyWithoutChatNestedInput
   }
 
   export type ChatUncheckedUpdateWithoutUserInput = {
@@ -16482,7 +20129,9 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
     messages?: MessageUncheckedUpdateManyWithoutChatNestedInput
+    pinnedBy?: PinnedChatUncheckedUpdateManyWithoutChatNestedInput
   }
 
   export type ChatUncheckedUpdateManyWithoutUserInput = {
@@ -16490,6 +20139,7 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    projectId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MemoryUpdateWithoutUserInput = {
@@ -16513,10 +20163,60 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ProjectUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chats?: ChatUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chats?: ChatUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    emoji?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PinnedChatUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chat?: ChatUpdateOneRequiredWithoutPinnedByNestedInput
+  }
+
+  export type PinnedChatUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chatId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PinnedChatUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chatId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type MessageCreateManyChatInput = {
     id?: string
     role: $Enums.MessageRole
     content: string
+    createdAt?: Date | string
+  }
+
+  export type PinnedChatCreateManyChatInput = {
+    id?: string
+    userId: string
     createdAt?: Date | string
   }
 
@@ -16539,6 +20239,60 @@ export namespace Prisma {
     role?: EnumMessageRoleFieldUpdateOperationsInput | $Enums.MessageRole
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PinnedChatUpdateWithoutChatInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPinnedChatsNestedInput
+  }
+
+  export type PinnedChatUncheckedUpdateWithoutChatInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PinnedChatUncheckedUpdateManyWithoutChatInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatCreateManyProjectInput = {
+    id?: string
+    title?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+  }
+
+  export type ChatUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: MessageUpdateManyWithoutChatNestedInput
+    user?: UserUpdateOneRequiredWithoutChatsNestedInput
+    pinnedBy?: PinnedChatUpdateManyWithoutChatNestedInput
+  }
+
+  export type ChatUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    messages?: MessageUncheckedUpdateManyWithoutChatNestedInput
+    pinnedBy?: PinnedChatUncheckedUpdateManyWithoutChatNestedInput
+  }
+
+  export type ChatUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
 

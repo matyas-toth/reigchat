@@ -2,70 +2,421 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+} from "@/components/ui/dropdown-menu";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Search01Icon, PlusSignIcon, Folder01Icon, BookOpen01Icon, ArrowDown01Icon, SidebarLeftIcon, BrainIcon } from "@hugeicons/core-free-icons";
+import {
+  Search01Icon,
+  PlusSignIcon,
+  Folder01Icon,
+  ArrowDown01Icon,
+  SidebarLeftIcon,
+  BrainIcon,
+  MoreHorizontalIcon,
+  PencilEdit01Icon,
+  Delete01Icon,
+  FavouriteIcon,
+  FavouriteSquareIcon,
+  ArrowRight01Icon,
+} from "@hugeicons/core-free-icons";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { MoveToProjectPicker, Project } from "./MoveToProjectPicker";
 
-interface Chat {
+export interface Chat {
   id: string;
   title: string;
   createdAt: string;
   updatedAt: string;
+  projectId: string | null;
+  pinned: boolean;
 }
 
 interface ChatSidebarProps {
   chats: Chat[];
+  projects: Project[];
   activeChat: string | null;
   onSelectChat: (id: string) => void;
-  onNewChat: () => void;
+  onNewChat: (projectId?: string) => void;
   onDeleteChat: (id: string) => void;
-
+  onRenameChat: (id: string, title: string) => void;
+  onPinChat: (id: string, pinned: boolean) => void;
+  onMoveChat: (id: string, projectId: string | null) => void;
+  onCreateProject: (name: string, emoji: string) => Promise<Project>;
+  onRenameProject: (id: string, name: string) => void;
+  onDeleteProject: (id: string) => void;
   isOpen: boolean;
   onToggle: () => void;
   isMobile?: boolean;
 }
 
+// ── Inline editable text ──────────────────────────────────
+function InlineEdit({
+  value,
+  onSave,
+  onCancel,
+  className,
+}: {
+  value: string;
+  onSave: (v: string) => void;
+  onCancel: () => void;
+  className?: string;
+}) {
+  const [text, setText] = useState(value);
+  const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => ref.current?.select(), []);
+
+  return (
+    <input
+      ref={ref}
+      value={text}
+      onChange={(e) => setText(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") onSave(text.trim() || value);
+        if (e.key === "Escape") onCancel();
+      }}
+      onBlur={() => onSave(text.trim() || value)}
+      className={cn(
+        "flex-1 truncate bg-transparent outline-none caret-emerald-500 text-[13px] font-medium",
+        className
+      )}
+    />
+  );
+}
+
+// ── Single chat row ───────────────────────────────────────
+function ChatRow({
+  chat,
+  isActive,
+  projects,
+  onSelect,
+  onDelete,
+  onRename,
+  onPin,
+  onMove,
+  onCreateProject,
+}: {
+  chat: Chat;
+  isActive: boolean;
+  projects: Project[];
+  onSelect: () => void;
+  onDelete: () => void;
+  onRename: (title: string) => void;
+  onPin: (pinned: boolean) => void;
+  onMove: (projectId: string | null) => void;
+  onCreateProject: (name: string) => Promise<Project>;
+}) {
+  const [editing, setEditing] = useState(false);
+
+  if (editing) {
+    return (
+      <div
+        className={cn(
+          "flex items-center rounded-lg px-2 h-9 text-[13px]",
+          isActive
+            ? "bg-zinc-200 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-50"
+            : "bg-muted/50 text-foreground"
+        )}
+      >
+        <InlineEdit
+          value={chat.title}
+          onSave={(v) => { onRename(v); setEditing(false); }}
+          onCancel={() => setEditing(false)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={cn(
+        "group flex items-center rounded-lg h-9 px-2 text-[13px] transition-colors cursor-pointer",
+        isActive
+          ? "bg-zinc-200 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-50"
+          : "text-foreground/70 hover:bg-muted/50 hover:text-foreground"
+      )}
+      onClick={onSelect}
+    >
+      <span className="flex-1 truncate font-medium">{chat.title}</span>
+
+      {/* Hover actions */}
+      <div className="ml-1 hidden shrink-0 items-center gap-0.5 group-hover:flex">
+        <button
+          onClick={(e) => { e.stopPropagation(); setEditing(true); }}
+          className="rounded p-1 text-muted-foreground/50 hover:text-foreground transition-colors"
+          title="Átnevezés"
+        >
+          <HugeiconsIcon icon={PencilEdit01Icon} size={13} strokeWidth={2} />
+        </button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <button
+                onClick={(e) => e.stopPropagation()}
+                className="rounded p-1 text-muted-foreground/50 hover:text-foreground transition-colors"
+              >
+                <HugeiconsIcon icon={MoreHorizontalIcon} size={14} strokeWidth={2} />
+              </button>
+            }
+          />
+          <DropdownMenuContent
+            align="end"
+            sideOffset={4}
+            className="w-44 rounded-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <DropdownMenuItem onClick={() => setEditing(true)}>
+              <HugeiconsIcon icon={PencilEdit01Icon} size={14} strokeWidth={2} className="mr-2" />
+              Átnevezés
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onPin(!chat.pinned)}>
+              <HugeiconsIcon icon={chat.pinned ? FavouriteSquareIcon : FavouriteIcon} size={14} strokeWidth={2} className="mr-2" />
+              {chat.pinned ? "Kitűzés törlése" : "Kitűzés"}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {/* Move to project sub-menu */}
+
+
+            <DropdownMenuItem
+              onClick={onDelete}
+              className="text-destructive focus:text-destructive"
+            >
+              <HugeiconsIcon icon={Delete01Icon} size={14} strokeWidth={2} className="mr-2" />
+              Törlés
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <button
+          onClick={(e) => { e.stopPropagation(); onDelete(); }}
+          className="rounded p-1 text-muted-foreground/50 hover:text-destructive transition-colors"
+          title="Törlés"
+        >
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            <path d="M4.5 4.5l7 7M11.5 4.5l-7 7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── Project row ────────────────────────────────────────────
+function ProjectRow({
+  project,
+  chats,
+  activeChat,
+  projects,
+  isDefaultOpen,
+  onNewChat,
+  onSelectChat,
+  onDeleteChat,
+  onRenameChat,
+  onPinChat,
+  onMoveChat,
+  onCreateProject,
+  onRenameProject,
+  onDeleteProject,
+}: {
+  project: Project;
+  chats: Chat[];
+  activeChat: string | null;
+  projects: Project[];
+  isDefaultOpen: boolean;
+  onNewChat: () => void;
+  onSelectChat: (id: string) => void;
+  onDeleteChat: (id: string) => void;
+  onRenameChat: (id: string, title: string) => void;
+  onPinChat: (id: string, pinned: boolean) => void;
+  onMoveChat: (id: string, projectId: string | null) => void;
+  onCreateProject: (name: string) => Promise<Project>;
+  onRenameProject: (name: string) => void;
+  onDeleteProject: () => void;
+}) {
+  const [open, setOpen] = useState(isDefaultOpen);
+  const [editingName, setEditingName] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const MAX_VISIBLE = 5;
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? chats : chats.slice(0, MAX_VISIBLE);
+
+  return (
+    <Collapsible open={open} onOpenChange={setOpen}>
+      <div className="group/proj flex items-center gap-1 rounded-lg px-2 py-1.5 hover:bg-muted/40 transition-colors">
+        <CollapsibleTrigger
+          render={
+            <button className="flex flex-1 items-center gap-2 min-w-0" />
+          }
+        >
+          <span className="text-base leading-none">{project.emoji}</span>
+          {editingName ? (
+            <InlineEdit
+              value={project.name}
+              onSave={(v) => { onRenameProject(v); setEditingName(false); }}
+              onCancel={() => setEditingName(false)}
+              className="text-sm font-medium text-foreground"
+            />
+          ) : (
+            <span className="flex-1 truncate text-sm font-medium text-foreground/80 text-left">
+              {project.name}
+            </span>
+          )}
+          <span className="text-[10px] text-muted-foreground/60 tabular-nums">{chats.length}</span>
+          <HugeiconsIcon
+            icon={ArrowDown01Icon}
+            size={14}
+            className={cn("text-muted-foreground/50 shrink-0 transition-transform", open ? "" : "-rotate-90")}
+          />
+        </CollapsibleTrigger>
+
+        {/* Project actions */}
+        <div className="hidden group-hover/proj:flex items-center gap-0.5 shrink-0">
+          <button
+            onClick={(e) => { e.stopPropagation(); onNewChat(); }}
+            className="rounded p-1 text-muted-foreground/50 hover:text-emerald-500 transition-colors"
+            title="Új chat ebben a projektben"
+          >
+            <HugeiconsIcon icon={PlusSignIcon} size={13} strokeWidth={2.5} />
+          </button>
+          {!editingName && (
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={
+                  <button className="rounded p-1 text-muted-foreground/50 hover:text-foreground transition-colors" />
+                }
+              >
+                <HugeiconsIcon icon={MoreHorizontalIcon} size={14} strokeWidth={2} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" sideOffset={4} className="w-40 rounded-xl">
+                <DropdownMenuItem onClick={() => setEditingName(true)}>
+                  <HugeiconsIcon icon={PencilEdit01Icon} size={14} strokeWidth={2} className="mr-2" />
+                  Átnevezés
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                {confirmDelete ? (
+                  <>
+                    <DropdownMenuItem
+                      onClick={onDeleteProject}
+                      className="text-destructive focus:text-destructive font-medium"
+                    >
+                      Igen, törlés
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setConfirmDelete(false)}>
+                      Mégse
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <DropdownMenuItem
+                    onClick={() => setConfirmDelete(true)}
+                    className="text-destructive focus:text-destructive"
+                  >
+                    <HugeiconsIcon icon={Delete01Icon} size={14} strokeWidth={2} className="mr-2" />
+                    Törlés
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
+      </div>
+
+      <CollapsibleContent>
+        <div className="ml-4 pl-2 border-l border-border/30 flex flex-col gap-0.5 mt-0.5 mb-1">
+          {chats.length === 0 && (
+            <p className="py-2 px-2 text-xs text-muted-foreground/50">Még nincs chat itt.</p>
+          )}
+          {visible.map((chat) => (
+            <ChatRow
+              key={chat.id}
+              chat={chat}
+              isActive={activeChat === chat.id}
+              projects={projects}
+              onSelect={() => onSelectChat(chat.id)}
+              onDelete={() => onDeleteChat(chat.id)}
+              onRename={(t) => onRenameChat(chat.id, t)}
+              onPin={(p) => onPinChat(chat.id, p)}
+              onMove={(pId) => onMoveChat(chat.id, pId)}
+              onCreateProject={onCreateProject}
+            />
+          ))}
+          {chats.length > MAX_VISIBLE && !showAll && (
+            <button
+              onClick={() => setShowAll(true)}
+              className="py-1 px-2 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors text-left"
+            >
+              … még {chats.length - MAX_VISIBLE} chat
+            </button>
+          )}
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
+  );
+}
+
+// ── Main Sidebar ───────────────────────────────────────────
 export function ChatSidebar({
   chats,
+  projects,
   activeChat,
   onSelectChat,
   onNewChat,
   onDeleteChat,
-
+  onRenameChat,
+  onPinChat,
+  onMoveChat,
+  onCreateProject,
+  onRenameProject,
+  onDeleteProject,
   isOpen,
   onToggle,
   isMobile = false,
 }: ChatSidebarProps) {
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
   const [quota, setQuota] = useState<{ percentUsed: number; tier: string; exhausted: boolean; isLifetime: boolean; windowResetsAt: string | null } | null>(null);
+  const [search, setSearch] = useState("");
+
+  // Inline project creation state
+  const [creatingProject, setCreatingProject] = useState(false);
+  const [newProjectName, setNewProjectName] = useState("");
 
   useEffect(() => {
     setMounted(true);
     fetch("/api/usage").then(r => r.ok ? r.json() : null).then(d => { if (d) setQuota(d); });
   }, []);
 
-  const handleSignOut = async () => {
-    await signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.push("/login");
-        },
-      },
-    });
+  const handleCreateInlineProject = async () => {
+    if (!newProjectName.trim()) return;
+    await onCreateProject(newProjectName.trim(), "📁");
+    setNewProjectName("");
+    setCreatingProject(false);
   };
+
+  // Derived data
+  const pinnedChats = chats.filter((c) => c.pinned);
+  const unorganizedChats = chats.filter((c) => !c.projectId);
+
+  const filteredChats = search
+    ? chats.filter((c) => c.title.toLowerCase().includes(search.toLowerCase()))
+    : null;
 
   return (
     <aside
@@ -80,7 +431,7 @@ export function ChatSidebar({
       )}
     >
       <div className="flex h-full flex-col px-4 pt-2 pb-4 w-full">
-        {/* Top Header Section */}
+        {/* Header */}
         <div className="flex items-center justify-between py-2 mb-4">
           <div className="flex items-center gap-2">
             <HugeiconsIcon icon={BrainIcon} size={32} strokeWidth={1.8} />
@@ -96,18 +447,20 @@ export function ChatSidebar({
           </Button>
         </div>
 
-        {/* Search & Primary Action */}
-        <div className="flex flex-col gap-3 mb-0 ">
-          <div className="relative flex items-center">
+        {/* Search & New Chat */}
+        <div className="flex flex-col gap-0 mb-8">
+          <div className="relative flex items-center mb-1">
             <HugeiconsIcon icon={Search01Icon} size={16} strokeWidth={1.8} className="absolute left-3 text-muted-foreground" />
             <input
               type="text"
               placeholder="Keresés..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-white dark:bg-zinc-900/60 hover:bg-zinc-50 dark:hover:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-800 border-none rounded-lg h-9 pl-9 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground text-foreground"
             />
           </div>
           <button
-            onClick={onNewChat}
+            onClick={() => onNewChat()}
             className="flex items-center gap-3 px-2 py-2 text-sm text-foreground/80 hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors group"
           >
             <HugeiconsIcon className="text-muted-foreground group-hover:text-foreground" icon={PlusSignIcon} size={18} strokeWidth={2.4} />
@@ -115,73 +468,100 @@ export function ChatSidebar({
           </button>
         </div>
 
-        {/* Main Navigation & Pinned Items */}
-        <div className="flex flex-col gap-1 mb-5">
-          <button className="flex items-center gap-3 px-2 py-2 text-sm text-foreground/80 hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors group">
-            <HugeiconsIcon icon={Folder01Icon} strokeWidth={2.4} size={18} className="text-muted-foreground group-hover:text-foreground" />
-            Projektek
-          </button>
 
-        </div>
-
-        <div className="h-px bg-border/40 w-full mb-5" />
 
         <ScrollArea className="flex-1 -mx-2 px-2 overflow-y-auto">
-          <div className="flex flex-col gap-6">
-
-            {/* Pinned Section */}
-            <div>
-              <div className="px-2 text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-2">Kitűzött</div>
-              <div className="flex flex-col gap-0.5">
-                {["Research & Analysis", "Web Search", "Knowledge Base"].map((item) => (
-                  <button key={item} className="flex items-center gap-3 px-2 py-2 text-[13px] text-foreground/75 hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors group text-left">
-                    <HugeiconsIcon icon={Folder01Icon} size={16} strokeWidth={2.4} className="text-muted-foreground group-hover:text-foreground shrink-0" />
-                    <span className="truncate">{item}</span>
-                  </button>
-                ))}
+          {/* ── Search results ─────────────────────────── */}
+          {filteredChats ? (
+            <div className="flex flex-col gap-1">
+              <div className="px-2 text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-1">
+                Keresési eredmények
               </div>
-            </div>
-
-            {/* Recents Section */}
-            <div>
-              <div className="px-2 text-[11px] font-medium text-muted-foreground uppercase tracking-wider mb-2">Legutóbbi</div>
-              <div className="flex flex-col gap-0.5">
-                {chats.length === 0 && (
-                  <div className="px-10 py-4 text-xs text-muted-foreground text-center opacity-50">
-                    Nincs aktív beszélgetés, kezdj egyet a "Új chat" gombbal!
-                  </div>
-                )}
-                {chats.map((chat) => (
-                  <div
+              {filteredChats.length === 0 ? (
+                <p className="px-2 py-4 text-xs text-muted-foreground/50 text-center">
+                  Nincs találat
+                </p>
+              ) : (
+                filteredChats.map((chat) => (
+                  <ChatRow
                     key={chat.id}
-                    className={cn(
-                      "group flex items-center justify-between rounded-lg h-9 px-2 py-2 text-[13px] transition-colors cursor-pointer",
-                      activeChat === chat.id
-                        ? "bg-zinc-200 dark:bg-zinc-800/80 text-zinc-900 dark:text-zinc-50"
-                        : "text-foreground/70 hover:bg-muted/50 hover:text-foreground"
-                    )}
-                    onClick={() => onSelectChat(chat.id)}
-                  >
-                    <span className="truncate font-medium">
-                      {chat.title}
-                    </span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDeleteChat(chat.id);
-                      }}
-                      className="ml-2 hidden shrink-0 rounded p-1 text-muted-foreground/50 hover:text-destructive group-hover:block transition-colors"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                        <path d="M4.5 4.5l7 7M11.5 4.5l-7 7" />
-                      </svg>
-                    </button>
-                  </div>
-                ))}
-              </div>
+                    chat={chat}
+                    isActive={activeChat === chat.id}
+                    projects={projects}
+                    onSelect={() => { onSelectChat(chat.id); setSearch(""); }}
+                    onDelete={() => onDeleteChat(chat.id)}
+                    onRename={(t) => onRenameChat(chat.id, t)}
+                    onPin={(p) => onPinChat(chat.id, p)}
+                    onMove={(pId) => onMoveChat(chat.id, pId)}
+                    onCreateProject={(name) => onCreateProject(name, "📁")}
+                  />
+                ))
+              )}
             </div>
+          ) : (
+            <div className="flex flex-col gap-5">
+              {/* ── Pinned ────────────────────────────── */}
+              {pinnedChats.length > 0 && (
+                <div className="mb-2">
+                  <div className="px-2 text-[12px] font-medium text-muted-foreground/60 mb-1">
+                    Kitűzött
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    {pinnedChats.map((chat) => (
+                      <ChatRow
+                        key={chat.id}
+                        chat={chat}
+                        isActive={activeChat === chat.id}
+                        projects={projects}
+                        onSelect={() => onSelectChat(chat.id)}
+                        onDelete={() => onDeleteChat(chat.id)}
+                        onRename={(t) => onRenameChat(chat.id, t)}
+                        onPin={(p) => onPinChat(chat.id, p)}
+                        onMove={(pId) => onMoveChat(chat.id, pId)}
+                        onCreateProject={(name) => onCreateProject(name, "📁")}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
 
-          </div>
+
+
+
+
+              {/* ── Recents (unorganized) ──────────────── */}
+              {unorganizedChats.length > 0 && (
+                <div>
+                  <div className="px-2 text-[12px] font-medium  text-muted-foreground/60 mb-1">
+                    Legutóbbi
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    {unorganizedChats.map((chat) => (
+                      <ChatRow
+                        key={chat.id}
+                        chat={chat}
+                        isActive={activeChat === chat.id}
+                        projects={projects}
+                        onSelect={() => onSelectChat(chat.id)}
+                        onDelete={() => onDeleteChat(chat.id)}
+                        onRename={(t) => onRenameChat(chat.id, t)}
+                        onPin={(p) => onPinChat(chat.id, p)}
+                        onMove={(pId) => onMoveChat(chat.id, pId)}
+                        onCreateProject={(name) => onCreateProject(name, "📁")}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Empty state */}
+              {chats.length === 0 && (
+                <div className="px-4 py-8 text-xs text-muted-foreground text-center opacity-50">
+                  Nincs aktív beszélgetés,<br />kezdj egyet az "Új chat" gombbal!
+                </div>
+              )}
+            </div>
+          )}
         </ScrollArea>
 
         {/* Footer */}
@@ -192,8 +572,7 @@ export function ChatSidebar({
               className="group text-left p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 border border-zinc-200/50 dark:border-white/5 transition-colors"
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
-
+                <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
                   Kvóta
                 </span>
                 <span className={cn("text-[11px] font-medium", quota.exhausted ? "text-red-500" : "text-zinc-700 dark:text-zinc-300")}>
@@ -207,14 +586,13 @@ export function ChatSidebar({
                 />
               </div>
               {mounted && session?.user && (
-                <div className="flex items-center gap-3 group cursor-pointer mt-4" onClick={() => router.push("/profile")}>
+                <div className="flex items-center gap-3 group cursor-pointer mt-4">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[13px] font-medium text-zinc-950">
-                    {session.user.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "JB"}
+                    {session.user.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "U"}
                   </div>
                   <div className="flex flex-1 flex-col overflow-hidden">
                     <div className="flex items-center gap-2">
-                      <span className="truncate text-[14px] font-medium text-zinc-900 dark:text-white">{session.user.name || "James Brown"}</span>
-
+                      <span className="truncate text-[14px] font-medium text-zinc-900 dark:text-white">{session.user.name}</span>
                     </div>
                   </div>
                   <HugeiconsIcon icon={ArrowDown01Icon} size={16} className="text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -222,9 +600,6 @@ export function ChatSidebar({
               )}
             </button>
           )}
-
-
-
         </div>
       </div>
     </aside>

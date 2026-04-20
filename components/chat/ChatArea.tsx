@@ -10,15 +10,31 @@ import { cn } from "@/lib/utils";
 import ChatSpinner from "./ChatSpinner";
 import { AnimatePresence, motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ChatSpark01Icon, ArrowDown01Icon } from "@hugeicons/core-free-icons";
+import { ChatSpark01Icon, ArrowDown01Icon, PencilEdit01Icon, FavouriteIcon, FavouriteSquareIcon, Delete01Icon, Folder01Icon } from "@hugeicons/core-free-icons";
 import { MemoizedMarkdown } from "../memoized-markdown";
 import { useSession } from "@/lib/auth-client";
+import { MoveToProjectPicker, Project } from "./MoveToProjectPicker";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface ChatAreaProps {
   chatId: string | null;
   chatTitle?: string;
-  onNewChat: () => void;
+  chatProjectName?: string;
+  chatProjectId?: string | null;
+  projects: Project[];
+  onNewChat: (projectId?: string) => void;
   onChatUpdated: () => void;
+  onRenameChat: (title: string) => void;
+  onPinChat: (pinned: boolean) => void;
+  onMoveChat: (projectId: string | null) => void;
+  onDeleteChat: () => void;
+  onCreateProject: (name: string, emoji: string) => Promise<Project>;
   sidebarOpen: boolean;
   onToggleSidebar: () => void;
 }
@@ -97,8 +113,16 @@ function extractToolParts(message: UIMessage): ToolPart[] {
 export function ChatArea({
   chatId,
   chatTitle = "Beszélgetés",
+  chatProjectName,
+  chatProjectId,
+  projects,
   onNewChat,
   onChatUpdated,
+  onRenameChat,
+  onPinChat,
+  onMoveChat,
+  onDeleteChat,
+  onCreateProject,
   sidebarOpen,
   onToggleSidebar,
 }: ChatAreaProps) {
@@ -147,8 +171,16 @@ export function ChatArea({
     <ChatInner
       chatId={chatId}
       chatTitle={chatTitle}
+      chatProjectName={chatProjectName}
+      chatProjectId={chatProjectId ?? null}
+      projects={projects}
       initialMessages={historyMessages}
       onChatUpdated={onChatUpdated}
+      onRenameChat={onRenameChat}
+      onPinChat={onPinChat}
+      onMoveChat={onMoveChat}
+      onDeleteChat={onDeleteChat}
+      onCreateProject={onCreateProject}
       sidebarOpen={sidebarOpen}
       onToggleSidebar={onToggleSidebar}
     />
@@ -207,15 +239,31 @@ function ToolCallStack({
 function ChatInner({
   chatId,
   chatTitle,
+  chatProjectName,
+  chatProjectId,
+  projects,
   initialMessages,
   onChatUpdated,
+  onRenameChat,
+  onPinChat,
+  onMoveChat,
+  onDeleteChat,
+  onCreateProject,
   sidebarOpen,
   onToggleSidebar,
 }: {
   chatId: string;
   chatTitle: string;
+  chatProjectName?: string;
+  chatProjectId: string | null;
+  projects: Project[];
   initialMessages: UIMessage[];
   onChatUpdated: () => void;
+  onRenameChat: (title: string) => void;
+  onPinChat: (pinned: boolean) => void;
+  onMoveChat: (projectId: string | null) => void;
+  onDeleteChat: () => void;
+  onCreateProject: (name: string, emoji: string) => Promise<Project>;
   sidebarOpen: boolean;
   onToggleSidebar: () => void;
 }) {
@@ -317,20 +365,139 @@ function ChatInner({
     (p) => p.type === "text" && (p as { text: string }).text.length > 0
   );
 
+  // Inline title rename state
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [titleDraft, setTitleDraft] = useState(chatTitle);
+  const [movePickerOpen, setMovePickerOpen] = useState(false);
+  // Keep draft in sync when prop changes (chat switch)
+  useEffect(() => { setTitleDraft(chatTitle); }, [chatTitle]);
+
+  const commitRename = () => {
+    setEditingTitle(false);
+    const trimmed = titleDraft.trim();
+    if (trimmed && trimmed !== chatTitle) onRenameChat(trimmed);
+    else setTitleDraft(chatTitle);
+  };
+
   return (
     <div className="flex w-full h-full overflow-hidden">
       <div className="flex h-full flex-1 flex-col min-w-[300px]">
         {/* Header */}
-        <div className="flex h-14 items-center justify-between px-6 pt-2 select-none">
-          <div className="flex items-center text-sm font-medium">
-            <span className="text-muted-foreground/70">Projects</span>
-            <span className="text-muted-foreground/40 mx-2">/</span>
-            <span className="text-foreground flex items-center cursor-pointer hover:text-foreground/80 transition-colors">
-              {chatTitle}
-              <HugeiconsIcon icon={ArrowDown01Icon} size={16} strokeWidth={2} className="ml-1 text-muted-foreground/60" />
-            </span>
+        <div className="flex h-14 items-center justify-between px-5  select-none">
+          <div className="flex items-center text-sm font-medium min-w-0">
+            {/* Project breadcrumb — only if chat belongs to a project */}
+            {chatProjectName && (
+              <>
+                <MoveToProjectPicker
+                  trigger={
+                    <button className="text-muted-foreground/70 hover:text-foreground transition-colors shrink-0 truncate max-w-[100px]">
+                      {chatProjectName}
+                    </button>
+                  }
+                  projects={projects}
+                  currentProjectId={chatProjectId}
+                  onMove={onMoveChat}
+                  onCreateProject={(name) => onCreateProject(name, "📁")}
+                />
+                <span className="text-muted-foreground/30 mx-2 shrink-0">/</span>
+              </>
+            )}
+
+            {/* Editable chat title */}
+            {editingTitle ? (
+              <input
+                autoFocus
+                value={titleDraft}
+                onChange={(e) => setTitleDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") commitRename();
+                  if (e.key === "Escape") { setEditingTitle(false); setTitleDraft(chatTitle); }
+                }}
+                onBlur={commitRename}
+                className="bg-transparent text-foreground text-sm font-medium outline-none caret-emerald-500 min-w-0 w-auto max-w-[240px]"
+                style={{ width: `${Math.max(titleDraft.length, 6)}ch` }}
+              />
+            ) : (
+              <button
+                onClick={() => setEditingTitle(true)}
+                className="text-foreground font-medium hover:text-foreground/80 transition-colors truncate max-w-[200px]"
+                title="Kattints az átnevezéshez"
+              >
+                {chatTitle}
+              </button>
+            )}
           </div>
-        </div>        {/* Dynamic Area */}
+
+          {/* Caret dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <button className="ml-2 shrink-0 flex items-center justify-center h-7 w-7 rounded-md text-muted-foreground/60 hover:text-foreground hover:bg-muted/50 transition-colors" />
+              }
+            >
+              <HugeiconsIcon icon={ArrowDown01Icon} size={15} strokeWidth={2} />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" sideOffset={6} className="w-48 rounded-xl">
+              <DropdownMenuItem onClick={() => setEditingTitle(true)}>
+                <HugeiconsIcon icon={PencilEdit01Icon} size={14} strokeWidth={2} className="mr-2" />
+                Átnevezés
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setMovePickerOpen(true)}>
+                <HugeiconsIcon icon={Folder01Icon} size={14} strokeWidth={2} className="mr-2" />
+                Áthelyezés...
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => onDeleteChat()} className="text-destructive focus:text-destructive">
+                <HugeiconsIcon icon={Delete01Icon} size={14} strokeWidth={2} className="mr-2" />
+                Törlés
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {/* Invisible controlled move picker triggered from dropdown */}
+        {movePickerOpen && (
+          <div className="hidden">
+            <MoveToProjectPicker
+              trigger={<span />}
+              projects={projects}
+              currentProjectId={chatProjectId}
+              onMove={(pId) => { onMoveChat(pId); setMovePickerOpen(false); }}
+              onCreateProject={(name) => onCreateProject(name, "📁")}
+            />
+          </div>
+        )}
+        {/* Show the picker as a floating sheet when triggered from dropdown */}
+        {movePickerOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-start justify-center pt-32"
+            onClick={() => setMovePickerOpen(false)}
+          >
+            <div
+              className="w-56 p-1.5 rounded-xl shadow-lg border border-border/60 bg-popover"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="px-2.5 py-1.5 text-xs font-medium text-muted-foreground">Áthelyezés projektbe</p>
+              <div className="h-px bg-border/40 mb-1" />
+              <button
+                onClick={() => { onMoveChat(null); setMovePickerOpen(false); }}
+                className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm text-muted-foreground hover:bg-muted/60 hover:text-foreground transition-colors"
+              >
+                <span>–</span> <span>Nincs projekt</span>
+              </button>
+              {projects.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => { onMoveChat(p.id); setMovePickerOpen(false); }}
+                  className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm text-foreground/80 hover:bg-muted/60 hover:text-foreground transition-colors"
+                >
+                  <span>{p.emoji}</span> <span className="truncate">{p.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        {/* Dynamic Area */}
         <div className="flex-1 flex flex-col relative overflow-hidden">
           {/* Messages Wrapper */}
           {(messages.length > 0 || isThinking) && (
