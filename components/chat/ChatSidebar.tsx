@@ -102,7 +102,7 @@ export function ChatSidebar({
             <HugeiconsIcon icon={Search01Icon} size={16} strokeWidth={1.8} className="absolute left-3 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Keresés..."
               className="w-full bg-white dark:bg-zinc-900/60 hover:bg-zinc-50 dark:hover:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-800 border-none rounded-lg h-9 pl-9 pr-4 text-sm outline-none transition-colors placeholder:text-muted-foreground text-foreground"
             />
           </div>
@@ -207,13 +207,13 @@ export function ChatSidebar({
                 />
               </div>
               {mounted && session?.user && (
-                <div className="flex items-center gap-3 group cursor-pointer mt-6" onClick={() => router.push("/profile")}>
+                <div className="flex items-center gap-3 group cursor-pointer mt-4" onClick={() => router.push("/profile")}>
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-[13px] font-medium text-zinc-950">
                     {session.user.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "JB"}
                   </div>
                   <div className="flex flex-1 flex-col overflow-hidden">
                     <div className="flex items-center gap-2">
-                      <span className="truncate text-[16px] font-medium text-zinc-900 dark:text-white">{session.user.name || "James Brown"}</span>
+                      <span className="truncate text-[14px] font-medium text-zinc-900 dark:text-white">{session.user.name || "James Brown"}</span>
 
                     </div>
                   </div>
