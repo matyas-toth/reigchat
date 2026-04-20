@@ -442,13 +442,10 @@ function ChatInner({
                 <HugeiconsIcon icon={PencilEdit01Icon} size={14} strokeWidth={2} className="mr-2" />
                 Átnevezés
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setMovePickerOpen(true)}>
-                <HugeiconsIcon icon={Folder01Icon} size={14} strokeWidth={2} className="mr-2" />
-                Áthelyezés...
-              </DropdownMenuItem>
+
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => onDeleteChat()} className="text-destructive focus:text-destructive">
-                <HugeiconsIcon icon={Delete01Icon} size={14} strokeWidth={2} className="mr-2" />
+                <HugeiconsIcon icon={Delete01Icon} size={14} strokeWidth={2} className="mr-2 text-destructive group-focus:text-destructive! focus:text-destructive" />
                 Törlés
               </DropdownMenuItem>
             </DropdownMenuContent>
