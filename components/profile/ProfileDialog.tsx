@@ -409,7 +409,7 @@ export function ProfileDialog({ open, onOpenChange }: { open: boolean; onOpenCha
                       >
 
                         <div className="px-6 py-4">
-                          <div className="flex items-start justify-between">
+                          <div className="flex items-start justify-between translate-y-1.5">
                             <div>
                               <h3 className="text-4xl font-medium">{plan.name}</h3>
                             </div>
