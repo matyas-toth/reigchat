@@ -36,8 +36,9 @@ import {
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { useSession, signOut } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MoveToProjectPicker, Project } from "./MoveToProjectPicker";
+import { ProfileDialog } from "@/components/profile/ProfileDialog";
 
 export interface Chat {
   id: string;
@@ -406,10 +407,19 @@ export function ChatSidebar({
   const [creatingProject, setCreatingProject] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
 
+  const searchParams = useSearchParams();
+  const [profileOpen, setProfileOpen] = useState(false);
+
   useEffect(() => {
     setMounted(true);
     fetch("/api/usage").then(r => r.ok ? r.json() : null).then(d => { if (d) setQuota(d); });
-  }, []);
+
+    if (searchParams?.get("settings") === "1" || searchParams?.get("upgraded") === "1") {
+      setProfileOpen(true);
+    }
+
+
+  }, [searchParams]);
 
   const handleCreateInlineProject = async () => {
     if (!newProjectName.trim()) return;
@@ -576,7 +586,7 @@ export function ChatSidebar({
         <div className="pt-4 mt-auto flex flex-col gap-4">
           {mounted && quota && (
             <button
-              onClick={() => router.push("/profile")}
+              onClick={() => setProfileOpen(true)}
               className="group text-left p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/40 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 border border-zinc-200/50 dark:border-white/5 transition-colors"
             >
               <div className="flex items-center justify-between mb-2">
@@ -610,6 +620,7 @@ export function ChatSidebar({
           )}
         </div>
       </div>
+      <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
     </aside>
   );
 }

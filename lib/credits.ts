@@ -23,9 +23,9 @@ export const CREDITS_PER_DOLLAR = 1_000_000; // 1 credit = $0.000001
  *   FREE:  Lifetime 50 000 credits (~$0.05 API cost)
  */
 export const TIER_CREDIT_LIMITS = {
-  FREE:  { lifetime: 50_000 },
-  PRO:   { perWindow: 120_000, windowMs: 8 * 60 * 60 * 1000 },
-  ULTRA: { perWindow: 125_000, windowMs: 1 * 60 * 60 * 1000 },
+  FREE: { lifetime: 50_000 },
+  PRO: { perWindow: 120_000, windowMs: 8 * 60 * 60 * 1000 },
+  ULTRA: { perWindow: 1_000_000, windowMs: 8 * 60 * 60 * 1000 },
 } as const;
 
 /**

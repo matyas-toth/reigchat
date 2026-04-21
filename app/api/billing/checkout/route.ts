@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     payment_method_types: ["card"],
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${process.env.BETTER_AUTH_URL}/dashboard?upgraded=1`,
-    cancel_url: `${process.env.BETTER_AUTH_URL}/profile`,
+    cancel_url: `${process.env.BETTER_AUTH_URL}/dashboard?settings=1`,
     metadata: { userId: user.id },
     subscription_data: {
       metadata: { userId: user.id },

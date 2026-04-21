@@ -142,11 +142,7 @@ function ModelCard({
         )}>
           {model.multiplier === 0 ? "ingyenes" : `${model.multiplier}×`}
         </span>
-        {!model.accessible && (
-          <span className="text-[10px] text-muted-foreground/40 italic hidden group-hover:block">
-            Szükséges: {model.requiredTier}
-          </span>
-        )}
+
       </div>
 
     </button>
@@ -193,7 +189,7 @@ export function ChatInput({
 
   const handleModelSelect = (model: ModelOption) => {
     if (!model.accessible) {
-      router.push("/profile");
+      router.push("?settings=1&packages=1");
       setPickerOpen(false);
       return;
     }
