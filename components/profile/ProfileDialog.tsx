@@ -57,8 +57,7 @@ const PLANS = [
     tagline: "Azoknak, akik gyorsabban gondolkodnak, mint írnak.",
     badge: "Legnépszerűbb",
     features: [
-      { text: "120,000 kredit 8 óránként", included: true },
-      { text: "Napi 3× újratöltődő kvóta", included: true },
+      { text: "Nagy, 8 óránként újratöltődő kvóta", included: true },
       { text: "Nagy modell választék", included: true },
       { text: "Reig Code hozzáférés", included: true },
       { text: "Bármikor lemondható", included: true },
@@ -76,8 +75,7 @@ const PLANS = [
     tagline: "Amikor a második agyad keményebben dolgozik, mint az első.",
     badge: "Erőfelhasználóknak",
     features: [
-      { text: "1,000,000 kredit 8 óránként", included: true },
-      { text: "Napi 3× újratöltődő kvóta", included: true },
+      { text: "Több, mint 10x nagyobb kvóta, mint a Pro-ban", included: true },
       { text: "Az összes AI modell", included: true },
       { text: "Minden a Pro csomagból", included: true },
       { text: "Korai hozzáférés a funkciókhoz", included: true },

@@ -615,25 +615,25 @@ function ChatInner({
 
             {/* Quota wall banner or normal input */}
             {quotaError ? (
-              <div className="border-t border-border/50 bg-background px-4 py-6">
+              <div className="bg-background px-4 py-6">
                 <div className="mx-auto flex max-w-2xl flex-col items-center justify-center rounded-xl border border-border bg-card p-6 text-center text-card-foreground shadow-sm">
-                  <p className="text-base font-semibold mb-2 flex items-center gap-2">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-destructive"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
-                    Your thinking space is full.
+                  <p className="text-2xl font-medium mb-2 flex items-center gap-2">
+                    Kifogytál a limitből
                   </p>
                   <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto leading-relaxed">
                     {quotaError.reason === "lifetime_exhausted"
-                      ? "You've used your free allowance — and honestly, you made good use of it. Every project you haven't mapped yet, that's what Pro is for."
-                      : `Your 8-hour window is exhausted. Resets ${quotaError.resetsAt ? `in ${Math.max(0, Math.round((new Date(quotaError.resetsAt).getTime() - Date.now()) / 60000))} minutes` : "soon"}.`}
+                      ? "Elfogyott az ingyenesen elérhető limited — de őszintén, nagyon jó hasznát vetted. Minden projekt, amit még nem térképeztél fel, arra való a Pro."
+                      : `Elfogyott a felhasználható kvótád. Újra elérhető lesz a Reig Chat ${quotaError.resetsAt ? `${Math.max(0, Math.round((new Date(quotaError.resetsAt).getTime() - Date.now()) / 60000))} perc múlva` : "hamarosan"}.`}
                   </p>
                   <Button
                     variant="default"
+                    size={"lg"}
                     className="w-full max-w-sm"
-                    onClick={() => window.location.href = '/profile'}
+                    onClick={() => window.location.href = '?settings=1&packages=1'}
                   >
-                    Unlock Unlimited Thinking — $12/mo
+                    Oldd fel a korlátlan chatelést
                   </Button>
-                  <p className="mt-3 text-[11px] text-muted-foreground/60">No commitment. Cancel anytime. Your data stays.</p>
+                  <p className="mt-3 text-[11px] text-muted-foreground/60">Nincs elköteleződés. Bármikor lemondható. Az adataid biztonságban maradnak.</p>
                 </div>
               </div>
             ) : (
