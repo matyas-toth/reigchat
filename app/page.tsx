@@ -271,16 +271,7 @@ const PLANS = [
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 export default function LandingPage() {
-  const { data: session, isPending } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (session && !isPending) {
-      router.push("/dashboard");
-    }
-  }, [session, isPending, router]);
-
-  if (session) return null;
+  const { data: session } = useSession();
 
   return (
     <div className="min-h-screen w-full bg-background overflow-x-hidden">

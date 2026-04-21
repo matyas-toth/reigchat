@@ -32,6 +32,10 @@ import {
   FavouriteIcon,
   FavouriteSquareIcon,
   ArrowRight01Icon,
+  CheckCheck,
+  Checkbox,
+  SparklesIcon,
+  SettingsIcon,
 } from "@hugeicons/core-free-icons";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
@@ -39,6 +43,7 @@ import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MoveToProjectPicker, Project } from "./MoveToProjectPicker";
 import { ProfileDialog } from "@/components/profile/ProfileDialog";
+import Link from "next/link";
 
 export interface Chat {
   id: string;
@@ -479,7 +484,7 @@ export function ChatSidebar({
           </div>
           <button
             onClick={() => onNewChat()}
-            className="flex items-center gap-3 px-2 py-2 text-sm text-foreground/80 hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors group"
+            className="flex cursor-pointer items-center gap-3 px-2 py-2 text-sm text-foreground/80 hover:text-foreground hover:bg-muted/50 rounded-lg transition-colors group"
           >
             <HugeiconsIcon className="text-muted-foreground group-hover:text-foreground" icon={PlusSignIcon} size={18} strokeWidth={2.4} />
             <span>Új Chat</span>
@@ -584,6 +589,15 @@ export function ChatSidebar({
 
         {/* Footer */}
         <div className="pt-4 mt-auto flex flex-col gap-4">
+
+          {mounted && quota && quota.tier == "FREE" && (
+            <Link className="w-full" href="?settings=1&packages=1">
+              <Button className={"h-12 w-full text-base tracking-tight  shadow-[inset_0_2.5px_2px_#FFFFFF55] dark:shadow-[inset_0_-2.5px_2px_#00000055] relative overflow-hidden"} size={"lg"}>Oldd fel az összes modellt
+                <HugeiconsIcon className="scale-125 ml-1" size={128} icon={SparklesIcon} />
+                <div className="absolute h-10 w-10 bg-blue-500 blur-lg scale-x-200 translate-y-12"></div>
+              </Button>
+            </Link>
+          )}
           {mounted && quota && (
             <button
               onClick={() => setProfileOpen(true)}
@@ -613,7 +627,7 @@ export function ChatSidebar({
                       <span className="truncate text-[14px] font-medium text-zinc-900 dark:text-white">{session.user.name}</span>
                     </div>
                   </div>
-                  <HugeiconsIcon icon={ArrowDown01Icon} size={16} className="text-muted-foreground group-hover:text-foreground transition-colors" />
+                  <HugeiconsIcon icon={SettingsIcon} size={16} className="text-muted-foreground group-hover:text-foreground transition-colors" />
                 </div>
               )}
             </button>

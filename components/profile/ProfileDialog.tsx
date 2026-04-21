@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import type { Tier } from "@/generated/prisma";
-import { useSession } from "@/lib/auth-client";
+import { useSession, signOut } from "@/lib/auth-client";
 import { useTheme } from "next-themes";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ChatSpinner from "@/components/chat/ChatSpinner";
@@ -100,12 +100,12 @@ function formatTimeUntil(dateStr: string | null): string {
 function UsageMeter({ quota }: { quota: QuotaStatus }) {
   const pct = quota.percentUsed;
   const label = quota.isLifetime
-    ? `${pct}% életre szóló kvóta felhasználva`
+    ? `${pct}% egyszeri kvóta felhasználva`
     : `${pct}% felhasználva ebben a ciklusban`;
 
   const sublabel = quota.isLifetime
     ? quota.exhausted
-      ? "Életre szóló kvóta kimerítve — frissíts előfizetést."
+      ? "Életre szóló kvóta kimerítve. Válassz előfizetést a korlátlan élményért."
       : `${100 - pct}% maradt az ingyenes hozzáférésből.`
     : quota.windowResetsAt
       ? `Frissül: ${formatTimeUntil(quota.windowResetsAt)}`
@@ -116,9 +116,9 @@ function UsageMeter({ quota }: { quota: QuotaStatus }) {
       <CardContent className="p-4 sm:p-5 py-0!">
         <div className="mb-3 flex items-center justify-between">
           <span className="text-sm font-medium text-foreground">Kvóta</span>
-          <span className={cn("text-xs", pct >= 100 ? "text-destructive font-bold" : "text-muted-foreground")}>{pct}%</span>
+          <span className={cn("text-xs", "text-muted-foreground")}>{pct}%</span>
         </div>
-        <Progress value={Math.min(100, pct)} className={cn("h-2 w-full", pct >= 100 && "[&>div]:bg-destructive")} />
+        <Progress value={Math.min(100, pct)} className={cn("h-2 w-full")} />
         <p className="mt-4 text-xs text-muted-foreground font-medium">{label}</p>
         {sublabel && (
           <p className={cn("mt-1 text-[11px]", pct >= 80 && !quota.exhausted ? "text-destructive" : "text-muted-foreground/60")}>
@@ -252,6 +252,19 @@ export function ProfileDialog({ open, onOpenChange }: { open: boolean; onOpenCha
               ))}
             </div>
           </ScrollArea>
+
+          <div className="p-3">
+            <button
+              onClick={async () => {
+                await signOut();
+                window.location.href = "/";
+              }}
+              className="flex items-center w-full gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-left text-destructive/90 hover:bg-destructive/10 hover:text-destructive"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+              Kijelentkezés
+            </button>
+          </div>
         </div>
 
         {/* Right Content */}
