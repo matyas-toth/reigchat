@@ -123,6 +123,7 @@ function ChatRow({
   onCreateProject: (name: string) => Promise<Project>;
 }) {
   const [editing, setEditing] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   if (editing) {
     return (
@@ -156,7 +157,10 @@ function ChatRow({
       <span className="flex-1 truncate font-medium">{chat.title}</span>
 
       {/* Hover actions */}
-      <div className="ml-1 hidden shrink-0 items-center gap-0.5 group-hover:flex">
+      <div className={cn(
+        "ml-1 shrink-0 items-center gap-0.5",
+        menuOpen ? "flex" : "hidden group-hover:flex"
+      )}>
         <button
           onClick={(e) => { e.stopPropagation(); setEditing(true); }}
           className="rounded p-1 text-muted-foreground/50 hover:text-foreground transition-colors"
@@ -165,7 +169,7 @@ function ChatRow({
           <HugeiconsIcon icon={PencilEdit01Icon} size={13} strokeWidth={2} />
         </button>
 
-        <DropdownMenu>
+        <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
           <DropdownMenuTrigger
             render={
               <button
@@ -196,7 +200,7 @@ function ChatRow({
 
             <DropdownMenuItem
               onClick={onDelete}
-              className="text-destructive focus:text-destructive"
+              className="text-destructive focus:text-destructive group"
             >
               <HugeiconsIcon icon={Delete01Icon} size={14} strokeWidth={2} className="mr-2" />
               Törlés
@@ -256,6 +260,7 @@ function ProjectRow({
   const MAX_VISIBLE = 5;
   const [showAll, setShowAll] = useState(false);
   const visible = showAll ? chats : chats.slice(0, MAX_VISIBLE);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
@@ -287,7 +292,10 @@ function ProjectRow({
         </CollapsibleTrigger>
 
         {/* Project actions */}
-        <div className="hidden group-hover/proj:flex items-center gap-0.5 shrink-0">
+        <div className={cn(
+          "items-center gap-0.5 shrink-0",
+          menuOpen ? "flex" : "hidden group-hover/proj:flex"
+        )}>
           <button
             onClick={(e) => { e.stopPropagation(); onNewChat(); }}
             className="rounded p-1 text-muted-foreground/50 hover:text-emerald-500 transition-colors"
@@ -296,7 +304,7 @@ function ProjectRow({
             <HugeiconsIcon icon={PlusSignIcon} size={13} strokeWidth={2.5} />
           </button>
           {!editingName && (
-            <DropdownMenu>
+            <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
               <DropdownMenuTrigger
                 render={
                   <button className="rounded p-1 text-muted-foreground/50 hover:text-foreground transition-colors" />
